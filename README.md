@@ -1,240 +1,297 @@
-১) উদ্দেশ্য (Purpose)
-একটি পূর্ণাঙ্গ ওয়েব-ভিত্তিক ERP তৈরি করা যা Sales, HR, Accounts, Investment, এবং Booking পরিচালনা করবে।
-২) স্কোপ (Scope)
-Website: Booking ও Investment View, Portal: Admin, Director, Manager, HR, Accounts, Sales, Investor, Customer লগইন সুবিধা।
-৩) ইউজার রোল ও লগইন
-Admin, Director, Manager, Officer, HR, Accounts, Investor, Customer রোল থাকবে; প্রত্যেকের আলাদা পারমিশন।
-৪) Admin & Policy Module
-৩ সদস্য অনুমোদন, নীতি সংরক্ষণ, কমিশন রেট, ডিভিডেন্ড রেট, শেয়ার ইউনিট মূল্য নির্ধারণ।
-৫) Customer & Booking Module
-গ্রাহক রেজিস্ট্রেশন, রুম সার্চ, বুকিং, পেমেন্ট গেটওয়ে, রিফান্ড, রিভিউ।
-৬) Employee & HR Module
-কর্মী রেজিস্ট্রেশন, গ্রেড ১–৬, উপস্থিতি, বেতন, ইনসেনটিভ, পারফরম্যান্স রিপোর্ট।
-৭) Sales & Marketing Module
-লিড ট্র্যাকিং, শেয়ার বিক্রয়, কমিশন ক্যালকুলেশন, রিপোর্ট ও অনুমোদন।
-৮) Investment & Share Management
-Investor Registration, Share Issue, Stage-based (MÖW) প্ল্যান, ৫০% পুনঃবিনিয়োগ, লাভ বণ্টন।
-৯) Accounts & Finance Module
-দৈনিক আয়-ব্যয়, ইনভয়েস, কিস্তি, ব্যালেন্স রিপোর্ট, অডিট লগ।
-১০) ফর্ম ফিল্ড ও ভ্যালিডেশন
-Customer (NID বাধ্যতামূলক), Employee (SSC/Docs), Investor (Nominee/Bank), Share (3-Approver Gate)।
-১১) Workflow
-Sales: Lead→Proposal→Investor→Approval→Payment; Booking: Search→Pay→Confirm→Cancel; Investment: Stage Update→Reinvest।
-১২) রিপোর্ট/ড্যাশবোর্ড
-Admin, HR, Accounts, Sales, Investor, Customer Dashboard ও রিপোর্ট এক্সপোর্ট (PDF/Excel)।
-১৩) Non-Functional Requirements
-Security: RBAC, SSL; Users; Backup: Daily Auto; 
-১৪) Tech Stack
-Frontend: React.js; Backend: Laravel/Django; DB: MySQL/PostgreSQL; Auth: JWT; Reports: PDF/Excel।
-১৫) QA Checklist
-3-Approver flow, NID Validation, Stage Config, Booking Refund, Role Permission Matrix Pass।
-১৬) Traceability Table
-Req ID	Description	Source/Reference
-R-ADM-01	৩ সদস্য অনুমোদন প্রক্রিয়া	অন্যান্য.pdf
-R-CUS-02	গ্রাহক NID বাধ্যতামূলক	গ্রাহক.pdf
-R-EMP-03	কর্মী SSC ও ডকুমেন্ট যাচাই	কর্মী.pdf
-R-INV-04	ধাপভিত্তিক লাভ বণ্টন ও ৫০% পুনঃবিনিয়োগ	কর্মী প্ল্যান.pdf
+# Hurream ERP Requirements & Implementation Guide
 
- 
-১) উদ্দেশ্য (Purpose)
-এই সিস্টেমের উদ্দেশ্য হলো একটি ওয়েব-ভিত্তিক ERP তৈরি করা যেখানে Sales/Share, Accounts/Finance, HR/Employee, Customer/Booking, Admin/Policy—সব এক প্লাটফর্মে চলবে।
-ফাইলভিত্তিক বাধ্যতামূলক নীতিমালা সিস্টেমে বলবৎ থাকবে—যেমন ৩ সদস্যের অনুমোদন (policy/approval panel), গ্রাহকের NID/ভেরিফিকেশন, ধাপে ধাপে আর্থিক পরিকল্পনা, লাভের ৫০% পুনঃবিনিয়োগ ইত্যাদি।
-________________________________________
-২) স্কোপ (Scope)
-•	Website (Public): রুম/প্যাকেজ দেখা, অনলাইন বুকিং/পেমেন্ট, ইনভেস্টমেন্ট অফার দেখানো
-•	Portal (Private): Admin, Director/MD, Manager, Officer (Sales/Marketing), HR, Accounts, Investor, Customer
-•	Modules: Admin & Policy, Customer/Booking, HR/Employee, Sales/Share, Investment/Profit, Accounts/Finance, Reports
-________________________________________
-৩) ইউজার রোল ও লগইন (User Roles & Login)
-রোল:
-1.	Admin – সিস্টেম কনফিগ/নীতি/অনুমোদন
-2.	Director/MD/Chairman – উচ্চস্তরের অনুমোদন/রিপোর্ট
-3.	Shareholder Director / ED/SED / AGM/DGM/GM / Deputy/Asst. Manager / Marketing Officer – গ্রেডভিত্তিক ক্ষমতা (গ্রেড ১–৬) (নিয়োগ/সেলস স্টার্ট গ্রেড-৬)
-4.	HR Officer – কর্মী/গ্রেড/উপস্থিতি/বেতন
-5.	Accounts/Finance – আয়/ব্যয়/ইনভয়েস/রিপোর্ট
-6.	Sales/Marketing Officer – লিড/শেয়ার সেলস/কালেকশন
-7.	Investor – শেয়ার, কিস্তি/ডিভিডেন্ড দেখবেন
-8.	Customer (Guest) – বুকিং/পেমেন্ট, ইনভয়েস
-গ্রেড কাঠামো ও সেলস শুরু গ্রেড-৬ (মার্কেটিং অফিসার) থেকে—প্রক্রিয়া এবং পারমিশনে প্রতিফলিত হবে। (ছবিভিত্তিক তথ্য)
-লগইন নিয়মাবলি (সকল রোল):
-•	২-ফ্যাক্টর (OTP/SMS/Email) – বাধ্যতামূলক Admin/Finance-এ
-•	পাসওয়ার্ড স্ট্রেংথ, রিসেট OTP
-•	রোল-ভিত্তিক মেনু/ফিচার ভিজিবিলিটি
-•	অডিট লগ: কে/কখন/কি করলেন—সব ট্র্যাক
-________________________________________
-৪) Admin & Policy Module (ফাইলভিত্তিক নীতিমালা)
-৪.১ নীতি ও অনুমোদন (Policy & Approvals)
-•	৩ সদস্যের অনুমোদন প্যানেল: বড় সিদ্ধান্ত/ইস্যু রিকুইজিশন/পেআউট/নীতি পরিবর্তনে ন্যূনতম ৩ জন কর্তৃপক্ষের সম্মতি লাগবে; সিস্টেমে multi-approver workflow থাকবে।
-•	Policy Registry: চুক্তি/নীতির সংস্করণিং, কার্যকর তারিখ
-•	Role Matrix: রোল × মডিউল × অ্যাকশন (Create/Read/Update/Delete/Approve)
-৪.২ কনফিগারেশন
-•	শেয়ার ইউনিট মূল্য (ডিফল্ট ২৫,০০০ টাকা—ওভাররাইডেবল)
-•	কিস্তি স্কিম (মেয়াদ/কিস্তি-পরিমাণ)
-•	ডিভিডেন্ড রেট/পিরিয়ড (মাসিক/ত্রৈমাসিক/বার্ষিক)
-•	কমিশন রেট (সেলস/অফিসার-ভিত্তিক)
-•	নোটিফিকেশন টেমপ্লেট (SMS/Email)
-________________________________________
-৫) Customer & Online Booking Module
-৫.১ রেজিস্ট্রেশন/ভেরিফিকেশন (ফাইল শর্ত)
-•	Customer Profile ফিল্ড: নাম, মোবাইল, ইমেইল, ঠিকানা, NID (আবশ্যক), রেফারেন্স।
-•	ডকুমেন্ট আপলোড: NID/ফটো
-•	স্ট্যাটাস: New/Verified/Blacklisted
-৫.২ বুকিং
-•	রুম সার্চ (তারিখ/অতিথি সংখ্যা/টাইপ)
-•	রুম অ্যাভেইলেবিলিটি/প্রাইসিং (সিজন/কুপন)
-•	অগ্রিম/পূর্ণ পেমেন্ট (Bkash/Nagad/Card/Bank)
-•	কনফার্মেশন SMS/Email + ইনভয়েস PDF
-•	বাতিল/রিফান্ড নীতি (কনফিগারেবল)
-৫.৩ রিপোর্ট
-•	বুকিং সারাংশ (দিন/মাস/টাইপ)
-•	রিফান্ড রিপোর্ট
-•	কাস্টমার লাইফটাইম ভ্যালু
-________________________________________
-৬) Employee & HR Module (কর্মী নির্দেশিকা-ভিত্তিক)
-৬.১ কর্মী প্রোফাইল
-•	ফিল্ড: নাম, বাবা/মা, NID, ঠিকানা, মোবাইল, ইমেইল, শিক্ষাগত (ন্যূনতম SSC/সমমান), যোগ্যতা, ছবি, জয়নিং তারিখ, গ্রেড/পদবি।
-•	ডকস: NID/Police verification, রেফারেন্স, PVS ID (যেখানে প্রযোজ্য)।
-•	যাচাইকরণ ধাপ: ডক চেকলিস্ট/অ্যাপ্রুভাল
-৬.২ গ্রেড/দায়িত্ব
-•	গ্রেড ১–৬ ও দায়িত্বভিত্তিক KPI
-•	মার্কেটিং অফিসার (গ্রেড-৬): লিড→শেয়ার সেলস→কালেকশন (সেলস KPI)
-৬.৩ উপস্থিতি/শিফট/বেতন
-•	Biometric/Web check-in; Late/Overtime নিয়ম
-•	Salary = Base + Allowance + Commission (সেলস)
-•	Leave Policy (Casual/Sick/Earn)
-•	পারফরম্যান্স রিভিউ ও ইনসেনটিভ
-________________________________________
-৭) Sales & Marketing (শেয়ার বিক্রয়—কর্মীদের মাধ্যমে)
-৭.১ লিড/CRM
-•	Lead ফিল্ড: নাম, মোবাইল, উৎস, বাজেট, আগ্রহ, স্ট্যাটাস (Lead/Prospect/Investor)
-•	অটো রিমাইন্ডার/ফলোআপ নোট
-৭.২ শেয়ার অফার/সেলস
-•	শেয়ার প্যাকেজ—Unit Price/Qty/Payment Mode
-•	শেয়ার সার্টিফিকেট (PDF, QR) অটো-জেনারেট
-•	কমিশন ক্যালকুলেশন (Configurable)
-•	সেলস Approval (মাল্টি-স্টেপ) – বড় বরাদ্দে ৩-Approver নীতির সাথে লিঙ্ক
-৭.৩ রিপোর্ট
-•	Officer-wise Sales/Collection
-•	Conversion Rate
-•	Commission Payable
-________________________________________
-৮) Investment & Share Management (ফাইলভিত্তিক আর্থিক নীতি)
-৮.১ Investor Registration
-•	ফিল্ড: নাম, NID, মোবাইল, ইমেইল, ঠিকানা, ব্যাংক তথ্য, Nominee
-•	ভেরিফিকেশন: OTP + Admin Approval
-•	Investor Dashboard: Holding, Payments, Dividends
-৮.২ Share Issue/Allocation
-•	শেয়ার ইউনিট মূল্য (ডিফল্ট ২৫,০০০), Qty, Issue Date
-•	Payment Plan: এককালীন/কিস্তি
-•	Share Ledger/Certificate/Transfer
-৮.৩ ধাপভিত্তিক আর্থিক পরিকল্পনা (MÖW)
-•	পর্যায়ভিত্তিক (MÖW-5, MÖW-4, ইত্যাদি) মূলধন/লাভ যোগের নিয়ম—সিস্টেমে কনফিগারেবল স্টেজ টেবিল থাকবে; লাভ/টপ-আপ যুক্ত হলে নতুন ধাপে বর্ধিত মূলধন অটো হিসাব হবে।
-•	লাভের ৫০% পুনঃবিনিয়োগ—পরবর্তী ছয় মাস/ধাপে Auto-Apply (On/Off)।
-৮.৪ Profit Distribution (Dividend)
-•	Periodic (Monthly/Quarterly/Yearly)
-•	Share-অনুপাতিক লাভ বণ্টন
-•	Tax/Charges Auto-Deduct
-•	Disbursement: Bank/MFS; Advice/Slip জেনারেট
-•	Dividend History (Investor-wise)
-________________________________________
-৯) Accounts & Finance (ফাইলভিত্তিক সংখ্যা/ধাপের প্রতিফলন)
-৯.১ আয়/ব্যয়/কিস্তি
-•	Daily Cash/Bank Book
-•	Installment Schedule + Reminder
-•	Voucher: Receipt/Payment/Journal
-৯.২ আর্থিক ধাপ/সংখ্যা (রেফারেন্স)
-•	ফাইলে প্রদত্ত মূলধন/বোনাস/ধাপভিত্তিক বৃদ্ধি ও মোট আয়-ব্যয়ের সারাংশ—এই প্যারামিটারগুলো কনফিগ থাকবে; রিপোর্টে ধাপ-ট্র্যাকিং দেখা যাবে।
-•	৩য় ধাপ/৪র্থ ধাপ ইত্যাদির Target vs Achieved রিপোর্ট (স্টেজ নাম/তারিখসহ)
-৯.৩ রিপোর্ট
-•	Trial Balance, Income Statement, Balance Sheet
-•	Cashflow, Bank Reconciliation
-•	Audit Log (Entity/Action/Time/IP)
-________________________________________
-১০) ফর্ম-ফিল্ড/ভ্যালিডেশন (ডেভেলপমেন্ট-রেডি)
-১০.১ Customer Form
-•	Required: নাম, মোবাইল, NID, ঠিকানা; Optional: ইমেইল, রেফারেন্স
-•	NID format/file upload বাধ্যতামূলক; Duplicate NID Block
-•	Status: New→Verified (ডক চেক)
-১০.২ Employee Form
-•	Required: নাম, মোবাইল, NID, ঠিকানা, শিক্ষাগত (SSC/সমমান), গ্রেড; Docs: NID/Police Verification/Photo; PVS ID (যদি প্রযোজ্য)
-১০.৩ Investor Form
-•	Required: নাম, NID, মোবাইল, ইমেইল, ঠিকানা; Bank/Nominee
-•	OTP Verify + Admin Approve
-১০.৪ Share Issue Form
-•	Fields: Investor, Unit Price (ডিফল্ট ২৫,০০০), Qty, Payment Mode (One-time/Installment), Stage (MÖW), Approver(s)
-•	Validation: Amount = Unit×Qty; Large Issue → 3-Approver Gate
-১০.৫ Booking Form
-•	Date In/Out, Guest Count, Room Type, Price Plan, Payment
-________________________________________
-১১) Workflow (ধাপে ধাপে)
-১১.১ শেয়ার সেলস
-1.	Officer লিড এন্ট্রি করবে → Prospect
-2.	Proposal/Brochure পাঠাবে
-3.	Investor Register → Verify
-4.	Share Issue (Qty/Price) → Approval Flow (3-Approver when flagged)
-5.	Payment (One-time/Installment)
-6.	Certificate + Receipt
-7.	Commission Auto-Calc
-১১.২ ধাপভিত্তিক (MÖW) ফান্ড গ্রোথ
-1.	Stage Config (MÖW-5/4/6...)
-2.	Period Close → Profit Add → 50% Reinvest Enable থাকলে Auto-Topup
-3.	Next Stage Capital Compute
-4.	Reports Update
-১১.৩ বুকিং
-1.	Search → Select Room → Pay → Confirm
-2.	Invoice + SMS/Email
-3.	Cancel/Refund (Policy)
-________________________________________
-১২) রিপোর্ট/ড্যাশবোর্ড (Must-have)
-•	Admin: Approvals pending, Policy changes, Audit
-•	Director/MD: Stage-wise Capital, Profit, Sales, Booking
-•	Sales Manager: Officer-wise Sales/Commission
-•	HR: Attendance, Salary, Grade Movement
-•	Accounts: TB/IS/BS, Cashflow, Reco
-•	Investor: Holdings, Payments, Dividends
-•	Customer: Bookings, Invoices
-________________________________________
-১৩) Non-Functional
-•	Security: RBAC, Encryption, SSL, 2FA
-•	Performance: ১০০০+ concurrent users
-•	Availability: 99.9% target
-•	Backup: Daily + On-demand
-•	Localization: বাংলা/ইংরেজি
-•	Logs: ১ বছর অনলাইন, আর্কাইভ ৫ বছর
-________________________________________
-১৪) টেক স্ট্যাক (প্রস্তাবিত)
-•	Frontend: React/Tailwind
-•	Backend: Laravel/Django REST
-•	DB: MySQL/PostgreSQL
-•	Auth: JWT/OAuth2
-•	Reports: PDF/Excel Export
-________________________________________
-১৫) Accept/Done Criteria (QA Checklist)
-•	3-Approver flow কার্যকর (flagged ops)
-•	Customer/Employee NID বাধ্যতামূলক—ডুপ্লিকেট ব্লক
-•	MÖW stage config + 50% reinvest অটো কাজ করে
-•	Share certificate/receipt তৈরি হয়
-•	Booking → Pay → Confirm → Cancel/Refund কাজ করে
-•	All role-wise permission matrix pass
-________________________________________
-১৬) ট্রেসেবিলিটি টেবিল (Requirement → Screen/Process)
-Req ID	উৎস/ফাইল	স্ক্রিন/প্রসেস
-R-ADM-01	৩-Approver পলিসি	Approval Settings, Issue Approvals
-R-CUS-02	Customer NID বাধ্যতামূলক	Customer Form + Verify
-R-EMP-03	Employee SSC/Docs	Employee Form + Doc Checklist
-R-INV-04	Unit=25,000 (config)	Share Config + Issue
-R-MOW-05	ধাপ/লাভ-টপআপ/৫০% reinvest	Stage Engine + Close Period
+This document consolidates the functional scope, validation rules, approval flows, and implementation guidance for the Hurream web-based ERP platform. The specification is bilingual where appropriate so business stakeholders and engineers can reference the same source of truth.
 
+## Table of Contents
 
-## Backend API Implementation
+1. [Purpose](#1-purpose)
+2. [Scope](#2-scope)
+3. [User Roles & Authentication](#3-user-roles--authentication)
+4. [Admin & Policy Module](#4-admin--policy-module)
+5. [Customer & Booking Module](#5-customer--booking-module)
+6. [Employee & HR Module](#6-employee--hr-module)
+7. [Sales & Marketing Module](#7-sales--marketing-module)
+8. [Investment & Share Management](#8-investment--share-management)
+9. [Accounts & Finance Module](#9-accounts--finance-module)
+10. [Forms & Validation Rules](#10-forms--validation-rules)
+11. [Core Workflows](#11-core-workflows)
+12. [Dashboards & Reports](#12-dashboards--reports)
+13. [Non-Functional Requirements](#13-non-functional-requirements)
+14. [Suggested Tech Stack](#14-suggested-tech-stack)
+15. [Acceptance / QA Checklist](#15-acceptance--qa-checklist)
+16. [Traceability Matrix](#16-traceability-matrix)
+17. [Backend API Implementation Notes](#17-backend-api-implementation-notes)
 
-The `/hphrms_api` directory now contains a complete PHP-based REST API that follows the requested module structure. Highlights:
+---
 
-* Token-based authentication with multi-role enforcement (Admin, HR, Accounts, Officer, Investor, Customer).
-* CRUD endpoints for customers, bookings, investors, employees, leads, approvals, accounts, shares, and transactions.
-* Booking cancellation/refund flow plus aggregated reports for sales, investments, and finance.
-* Lightweight migration and seeding tooling (`php artisan migrate`, `php artisan db:seed`) backed by SQLite for easy local setup.
-* A ready-to-import Postman collection lives at `hphrms_api/docs/hphrms_postman_collection.json`.
+## 1) Purpose
+
+একটি পূর্ণাঙ্গ ওয়েব-ভিত্তিক ERP তৈরি করা যেখানে Sales/Share, Accounts/Finance, HR/Employee, Customer/Booking, Admin/Policy—সব এক প্ল্যাটফর্মে পরিচালিত হবে। Key policy-driven obligations include:
+
+- ৩ সদস্যের অনুমোদন প্রক্রিয়া (multi-approver policy panel)।
+- গ্রাহক এবং কর্মীর NID যাচাই ও ডকুমেন্টেশন।
+- ধাপভিত্তিক আর্থিক পরিকল্পনা (MÖW) এবং লাভের ৫০% স্বয়ংক্রিয় পুনঃবিনিয়োগ।
+
+## 2) Scope
+
+- **Website (Public):** রুম/প্যাকেজ দেখা, অনলাইন বুকিং/পেমেন্ট, ইনভেস্টমেন্ট অফার প্রদর্শন।
+- **Portal (Private):** Admin, Director/MD, Manager, Officer (Sales/Marketing), HR, Accounts, Investor, Customer।
+- **Modules:** Admin & Policy, Customer/Booking, HR/Employee, Sales/Share, Investment/Profit, Accounts/Finance, Reports।
+
+## 3) User Roles & Authentication
+
+| Role | Core Responsibilities |
+|------|-----------------------|
+| Admin | System configuration, policy management, approvals |
+| Director / MD / Chairman | Executive approvals, strategic reports |
+| Shareholder Director / ED / SED / AGM / DGM / GM / Deputy & Assistant Manager / Marketing Officer | গ্রেড ১–৬ ভিত্তিক দায়িত্ব ও অনুমতি (সেলস গ্রেড-৬ থেকে শুরু) |
+| HR Officer | Employee lifecycle, attendance, payroll |
+| Accounts / Finance | আয়-ব্যয়, ইনভয়েসিং, আর্থিক রিপোর্ট |
+| Sales / Marketing Officer | লিড ম্যানেজমেন্ট, শেয়ার বিক্রয়, কালেকশন |
+| Investor | হোল্ডিংস, কিস্তি, ডিভিডেন্ড পর্যবেক্ষণ |
+| Customer | বুকিং, পেমেন্ট, ইনভয়েস |
+
+Authentication requirements:
+
+- ২-ফ্যাক্টর (OTP/SMS/Email) বাধ্যতামূলক Admin ও Finance ব্যবহারকারীর জন্য।
+- স্ট্রং পাসওয়ার্ড নীতি ও OTP-ভিত্তিক পাসওয়ার্ড রিসেট।
+- Role-based menu visibility ও granular RBAC ম্যাট্রিক্স।
+- প্রত্যেক কার্যক্রমের জন্য অডিট লগ (কে/কখন/কি করলেন)।
+
+## 4) Admin & Policy Module
+
+### 4.1 নীতি ও অনুমোদন
+
+- ৩ সদস্যের অনুমোদন প্যানেল: বড় সিদ্ধান্ত, শেয়ার ইস্যু, পেআউট, নীতি পরিবর্তন ইত্যাদিতে ন্যূনতম ৩ জন কর্তৃপক্ষের সম্মতি আবশ্যক।
+- Policy Registry: চুক্তি/নীতির সংস্করণিং ও কার্যকর তারিখ সংরক্ষণ।
+- Role Matrix: Role × Module × Action (Create/Read/Update/Delete/Approve) কনফিগারেশন।
+
+### 4.2 কনফিগারেশন সেটিংস
+
+- শেয়ার ইউনিট মূল্য (ডিফল্ট ২৫,০০০ টাকা — ওভাররাইডেবল)।
+- কিস্তি স্কিম (মেয়াদ, কিস্তি পরিমাণ)।
+- ডিভিডেন্ড রেট ও পিরিয়ড (মাসিক/ত্রৈমাসিক/বার্ষিক)।
+- কমিশন রেট (রোল বা অফিসার ভিত্তিক)।
+- SMS/Email নোটিফিকেশন টেমপ্লেট।
+
+## 5) Customer & Booking Module
+
+### 5.1 রেজিস্ট্রেশন ও ভেরিফিকেশন
+
+- Customer প্রোফাইল ফিল্ড: নাম, মোবাইল, ইমেইল, ঠিকানা, NID (আবশ্যক), রেফারেন্স।
+- ডকুমেন্ট আপলোড: NID কপি ও ফটো।
+- স্ট্যাটাস লাইফসাইকেল: New → Verified → (ঐচ্ছিক) Blacklisted।
+
+### 5.2 বুকিং লাইফসাইকেল
+
+- তারিখ, অতিথি সংখ্যা ও টাইপ অনুযায়ী রুম সার্চ।
+- সিজনাল প্রাইসিং, কুপন, অ্যাভেইলেবিলিটি চেক।
+- অগ্রিম বা পূর্ণ পেমেন্ট (Bkash, Nagad, Card, Bank)।
+- কনফার্মেশন SMS/Email ও ইনভয়েস PDF।
+- বাতিল/রিফান্ড নীতি কনফিগারেশন।
+
+### 5.3 রিপোর্টিং
+
+- দিন/মাস/টাইপভিত্তিক বুকিং সারাংশ।
+- রিফান্ড রিপোর্ট।
+- কাস্টমার লাইফটাইম ভ্যালু অ্যানালিটিক্স।
+
+## 6) Employee & HR Module
+
+### 6.1 কর্মী প্রোফাইল
+
+- আবশ্যক ফিল্ড: নাম, পিতা/মাতা, NID, ঠিকানা, মোবাইল, ইমেইল, ন্যূনতম SSC/সমমান শিক্ষাগত যোগ্যতা, যোগ্যতা বিবরণ, ছবি, যোগদান তারিখ, গ্রেড/পদবি।
+- ডকুমেন্টেশন: NID, পুলিশ ভেরিফিকেশন, রেফারেন্স, প্রয়োজনে PVS ID।
+- ডকুমেন্ট চেকলিস্ট ও অনুমোদন পর্যায়।
+
+### 6.2 গ্রেড ও KPI
+
+- গ্রেড ১–৬ দায়িত্ব ও KPI ম্যাপিং।
+- মার্কেটিং অফিসার (গ্রেড-৬): লিড → শেয়ার সেলস → কালেকশন।
+
+### 6.3 উপস্থিতি ও বেতন
+
+- Biometric/Web check-in সহ লেট/ওভারটাইম নিয়মাবলি।
+- Salary = Base + Allowance + Commission (সেলস ভূমিকা)।
+- Leave Policy (Casual/Sick/Earn)।
+- পারফরম্যান্স রিভিউ ও ইনসেনটিভ।
+
+## 7) Sales & Marketing Module
+
+### 7.1 লিড / CRM
+
+- Lead ফিল্ড: নাম, মোবাইল, উৎস, বাজেট, আগ্রহ, স্ট্যাটাস (Lead → Prospect → Investor)।
+- অটো রিমাইন্ডার ও ফলো-আপ নোট।
+
+### 7.2 শেয়ার সেলস
+
+- প্যাকেজ: Unit Price, Quantity, Payment Mode কনফিগারেশন।
+- শেয়ার সার্টিফিকেট (PDF + QR) অটো-জেনারেশন।
+- কমিশন ক্যালকুলেশন (Configurable rules)।
+- বড় বরাদ্দে মাল্টি-স্টেপ সেলস অনুমোদন (৩-Approver নীতির সাথে সিঙ্ক)।
+
+### 7.3 রিপোর্ট
+
+- Officer-wise Sales/Collection।
+- Conversion Rate বিশ্লেষণ।
+- Commission Payable ট্র্যাকিং।
+
+## 8) Investment & Share Management
+
+### 8.1 Investor Registration
+
+- প্রোফাইল ফিল্ড: নাম, NID, মোবাইল, ইমেইল, ঠিকানা, ব্যাংক তথ্য, Nominee।
+- ভেরিফিকেশন: OTP + Admin Approval।
+- Investor Dashboard: Holdings, Payments, Dividends।
+
+### 8.2 Share Issue & Allocation
+
+- শেয়ার ইউনিট মূল্য (ডিফল্ট ২৫,০০০), Quantity, Issue Date।
+- Payment Plan: এককালীন অথবা কিস্তি।
+- Share Ledger, Certificate, Transfer ট্র্যাকিং।
+
+### 8.3 ধাপভিত্তিক আর্থিক পরিকল্পনা (MÖW)
+
+- কনফিগারেবল স্টেজ টেবিল (যেমন MÖW-5, MÖW-4)।
+- লাভ বা টপ-আপ যুক্ত হলে নতুন ধাপের মূলধন অটো হিসাব।
+- লাভের ৫০% পুনঃবিনিয়োগ (On/Off) পরবর্তী ধাপ/ছয় মাসে অটো প্রয়োগ।
+
+### 8.4 Profit Distribution (Dividend)
+
+- Periodic disbursement (Monthly/Quarterly/Yearly)।
+- Share proportion অনুযায়ী লাভ বণ্টন।
+- Tax/Charges অটো কাট-অফ।
+- Disbursement via Bank/MFS + Advice/Slip জেনারেশন।
+- Investor-wise Dividend History।
+
+## 9) Accounts & Finance Module
+
+### 9.1 আয়/ব্যয়/কিস্তি
+
+- Daily Cash/Bank Book।
+- Installment Schedule ও Reminder সিস্টেম।
+- Voucher টাইপ: Receipt, Payment, Journal।
+
+### 9.2 আর্থিক ধাপ ও সংখ্যা
+
+- কনফিগারেবল Capital/Bonus ধাপ এবং Target vs Achieved রিপোর্ট।
+- স্টেজ নাম/তারিখসহ আর্থিক প্রগ্রেস ট্র্যাকিং।
+
+### 9.3 রিপোর্টিং
+
+- Trial Balance, Income Statement, Balance Sheet।
+- Cashflow ও Bank Reconciliation।
+- Entity/Action/Time/IP সহ অডিট লগ।
+
+## 10) Forms & Validation Rules
+
+### 10.1 Customer Form
+
+- Required: নাম, মোবাইল, NID, ঠিকানা।
+- Optional: ইমেইল, রেফারেন্স।
+- NID format + ফাইল আপলোড বাধ্যতামূলক; ডুপ্লিকেট NID ব্লক।
+- স্ট্যাটাস: New → Verified (ডক চেকের পর)।
+
+### 10.2 Employee Form
+
+- Required: নাম, মোবাইল, NID, ঠিকানা, SSC/সমমান শিক্ষাগত তথ্য, গ্রেড।
+- Docs: NID, Police Verification, Photo; প্রয়োজনে PVS ID।
+
+### 10.3 Investor Form
+
+- Required: নাম, NID, মোবাইল, ইমেইল, ঠিকানা।
+- অতিরিক্ত: Bank Account, Nominee।
+- OTP যাচাই ও Admin Approval।
+
+### 10.4 Share Issue Form
+
+- ফিল্ড: Investor, Unit Price (ডিফল্ট ২৫,০০০), Quantity, Payment Mode (One-time/Installment), Stage (MÖW), Approver(s)।
+- Validation: Amount = Unit × Quantity; বড় বরাদ্দে ৩-Approver Gate ট্রিগার।
+
+### 10.5 Booking Form
+
+- Date In/Out, Guest Count, Room Type, Price Plan, Payment Details।
+
+## 11) Core Workflows
+
+### 11.1 শেয়ার সেলস
+
+1. Officer লিড এন্ট্রি করে Prospect-এ রূপান্তর।
+2. Proposal/Brochure প্রেরণ।
+3. Investor Registration → Verification।
+4. Share Issue (Qty/Price) → Approval Flow (flagged হলে ৩-Approver)।
+5. Payment (One-time/Installment)।
+6. Certificate & Receipt জেনারেশন।
+7. কমিশন স্বয়ংক্রিয় গণনা।
+
+### 11.2 MÖW Stage-Based Fund Growth
+
+1. Stage Config (MÖW-5/4/6 ...)।
+2. Period Close → Profit Add → ৫০% Reinvest (যদি Enabled)।
+3. Next Stage Capital অটো কম্পিউট।
+4. রিপোর্ট আপডেট।
+
+### 11.3 বুকিং
+
+1. Search → Select Room → Pay → Confirm।
+2. Invoice + SMS/Email ডেলিভারি।
+3. Cancel/Refund পলিসি অনুসারে প্রসেস।
+
+## 12) Dashboards & Reports
+
+- **Admin:** Approvals pending, Policy changes, Audit trail।
+- **Director/MD:** Stage-wise Capital, Profit, Sales, Booking সারাংশ।
+- **Sales Manager:** Officer-wise Sales/Commission মেট্রিক্স।
+- **HR:** Attendance, Salary, Grade Movement।
+- **Accounts:** Trial Balance, Income Statement, Balance Sheet, Cashflow, Reconciliation।
+- **Investor:** Holdings, Payments, Dividends।
+- **Customer:** Bookings, Invoices।
+
+## 13) Non-Functional Requirements
+
+- Security: RBAC, Encryption, SSL, 2FA।
+- Performance: ১০০০+ concurrent users লক্ষ্য।
+- Availability: 99.9% আপটাইম টার্গেট।
+- Backup: দৈনিক স্বয়ংক্রিয় এবং অন-ডিমান্ড।
+- Localization: বাংলা ও ইংরেজি ইন্টারফেস।
+- Logging: ১ বছর অনলাইন, আর্কাইভ ৫ বছর।
+
+## 14) Suggested Tech Stack
+
+- Frontend: React.js + Tailwind CSS।
+- Backend: Laravel বা Django REST।
+- Database: MySQL বা PostgreSQL।
+- Authentication: JWT / OAuth2।
+- Reporting: PDF ও Excel Export।
+
+## 15) Acceptance / QA Checklist
+
+- 3-Approver flow সব flagged অপারেশনে কার্যকর।
+- Customer/Employee NID বাধ্যতামূলক এবং ডুপ্লিকেট ব্লক।
+- MÖW stage configuration ও ৫০% reinvest অটো টপ-আপ সঠিকভাবে কাজ করে।
+- Share certificate ও receipt জেনারেশন।
+- Booking → Pay → Confirm → Cancel/Refund সম্পূর্ণ ফ্লো সফল।
+- Role-wise permission matrix যাচাই করা।
+
+## 16) Traceability Matrix
+
+| Req ID | বর্ণনা | উৎস/ফাইল | ম্যাপড স্ক্রিন/প্রসেস |
+|--------|--------|-----------|------------------------|
+| R-ADM-01 | ৩ সদস্য অনুমোদন প্রক্রিয়া | অন্যান্য.pdf | Approval Settings, Issue Approvals |
+| R-CUS-02 | Customer NID বাধ্যতামূলক | গ্রাহক.pdf | Customer Form + Verification |
+| R-EMP-03 | Employee SSC ও ডকুমেন্ট যাচাই | কর্মী.pdf | Employee Form + Doc Checklist |
+| R-INV-04 | ধাপভিত্তিক লাভ বণ্টন ও ৫০% পুনঃবিনিয়োগ | কর্মী প্ল্যান.pdf | Stage Engine + Close Period |
+| R-MOW-05 | ধাপ/লাভ-টপআপ ও ৫০% reinvest | Stage Policy Document | Stage Engine Automation |
+
+## 17) Backend API Implementation Notes
+
+`/hphrms_api` ডিরেক্টরিতে ইতিমধ্যে একটি সম্পূর্ণ PHP-ভিত্তিক REST API রয়েছে যা উপরের মডিউলার কাঠামো অনুসরণ করে। উল্লেখযোগ্য দিকসমূহ:
+
+- Token ভিত্তিক Authentication সহ Multi-role enforcement (Admin, HR, Accounts, Officer, Investor, Customer)।
+- Customers, bookings, investors, employees, leads, approvals, accounts, shares এবং transactions এর জন্য CRUD API।
+- বুকিং cancellation/refund ফ্লো এবং sales, investment ও finance-এর জন্য aggregated রিপোর্ট।
+- সহজ সেটআপের জন্য SQLite-সমর্থিত মাইগ্রেশন ও সিডিং টুলিং (`php artisan migrate`, `php artisan db:seed`)।
+- Postman collection: `hphrms_api/docs/hphrms_postman_collection.json`।
 
 ### Quick Start
 
@@ -246,6 +303,7 @@ php artisan db:seed
 php -S localhost:8000 -t public
 ```
 
-Authenticate with the seeded administrator account (`admin@hphrms.test` / `password`) via `/api/auth/login`, then explore the secured endpoints documented in the Postman collection.
+Seeded administrator account: `admin@hphrms.test` / `password` (login via `/api/auth/login`)। এরপর Postman collection অনুসরণ করুন।
 
-> **Note:** The implementation is framework-lightweight so it can run in restricted environments without Composer. All classes are namespaced under `App\` and auto-loaded via `vendor/autoload.php`.
+> **Note:** Implementation টি framework-lightweight; সমস্ত ক্লাস `App\` namespace-এ এবং `vendor/autoload.php` এর মাধ্যমে অটোলোড হয়, ফলে সীমিত পরিবেশেও রান করা যায়।
+
