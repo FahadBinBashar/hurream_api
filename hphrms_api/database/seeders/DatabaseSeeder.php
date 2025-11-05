@@ -29,19 +29,83 @@ return new class {
         }
 
         $this->seedOnce($pdo, 'customers', [
-            ['name' => 'Rahim Uddin', 'NID' => '9876543210', 'address' => 'Dhaka', 'phone' => '01711111111', 'email' => 'rahim@example.com', 'status' => 'active'],
-            ['name' => 'Karim Ali', 'NID' => '1234567890', 'address' => 'Chattogram', 'phone' => '01822222222', 'email' => 'karim@example.com', 'status' => 'active'],
+            [
+                'name' => 'Rahim Uddin',
+                'NID' => '9876543210000',
+                'address' => 'Dhaka',
+                'phone' => '01711111111',
+                'email' => 'rahim@example.com',
+                'status' => 'verified',
+                'reference' => 'MD Approval',
+                'verified_at' => '2025-01-05T10:00:00+06:00',
+            ],
+            [
+                'name' => 'Karim Ali',
+                'NID' => '1234567890123',
+                'address' => 'Chattogram',
+                'phone' => '01822222222',
+                'email' => 'karim@example.com',
+                'status' => 'verified',
+                'reference' => 'Referral Program',
+                'verified_at' => '2025-01-10T10:00:00+06:00',
+            ],
         ], 'NID');
 
         $this->seedOnce($pdo, 'investors', [
-            ['name' => 'Nazmul Hasan', 'NID' => '1234567890123', 'phone' => '01733333333', 'email' => 'nazmul@invest.com', 'bank_info' => 'DBBL-12345', 'nominee' => 'Rafiq'],
-            ['name' => 'Farhana Akter', 'NID' => '9876543210987', 'phone' => '01844444444', 'email' => 'farhana@invest.com', 'bank_info' => 'EBL-54321', 'nominee' => 'Shila'],
+            [
+                'name' => 'Nazmul Hasan',
+                'NID' => '3216549870123',
+                'phone' => '01733333333',
+                'email' => 'nazmul@invest.com',
+                'address' => 'Banani, Dhaka',
+                'bank_info' => 'DBBL-12345',
+                'nominee' => 'Rafiq',
+                'status' => 'active',
+                'otp_verified_at' => '2025-01-08T09:30:00+06:00',
+                'admin_approved_at' => '2025-01-09T11:15:00+06:00',
+            ],
+            [
+                'name' => 'Farhana Akter',
+                'NID' => '9876543210987',
+                'phone' => '01844444444',
+                'email' => 'farhana@invest.com',
+                'address' => 'Agrabad, Chattogram',
+                'bank_info' => 'EBL-54321',
+                'nominee' => 'Shila',
+                'status' => 'pending',
+            ],
         ], 'NID');
 
         $this->seedOnce($pdo, 'shares', [
-            ['investor_id' => 1, 'unit_price' => 25000, 'quantity' => 4, 'stage' => 'MÖW-5', 'reinvest_flag' => 1],
-            ['investor_id' => 2, 'unit_price' => 25000, 'quantity' => 2, 'stage' => 'MÖW-3', 'reinvest_flag' => 0],
+            [
+                'investor_id' => 1,
+                'unit_price' => 25000,
+                'quantity' => 4,
+                'amount' => 100000,
+                'payment_mode' => 'one_time',
+                'stage' => 'MÖW-5',
+                'reinvest_flag' => 1,
+                'approval_status' => 'approved',
+                'approver_gate_triggered' => 0,
+            ],
+            [
+                'investor_id' => 2,
+                'unit_price' => 25000,
+                'quantity' => 25,
+                'amount' => 625000,
+                'payment_mode' => 'installment',
+                'stage' => 'MÖW-6',
+                'reinvest_flag' => 0,
+                'approval_status' => 'pending',
+                'approver_gate_triggered' => 1,
+            ],
         ], ['investor_id', 'stage']);
+
+        $this->seedOnce($pdo, 'approvals', [
+            ['module' => 'share_issue', 'record_id' => 2, 'approver_id' => 1, 'status' => 'pending'],
+            ['module' => 'share_issue', 'record_id' => 2, 'approver_id' => 2, 'status' => 'pending'],
+            ['module' => 'share_issue', 'record_id' => 2, 'approver_id' => 3, 'status' => 'pending'],
+        ], ['module', 'record_id', 'approver_id']);
 
         $this->seedOnce($pdo, 'transactions', [
             ['share_id' => 1, 'amount' => 50000, 'payment_type' => 'bank', 'date' => '2025-01-10'],
@@ -49,8 +113,42 @@ return new class {
         ], ['share_id', 'date']);
 
         $this->seedOnce($pdo, 'employees', [
-            ['name' => 'Anika Chowdhury', 'grade' => 'Grade-1', 'position' => 'Director', 'salary' => 80000, 'join_date' => '2024-01-15'],
-            ['name' => 'Sharif Ahmed', 'grade' => 'Grade-4', 'position' => 'Marketing Officer', 'salary' => 35000, 'join_date' => '2024-03-20'],
+            [
+                'name' => 'Anika Chowdhury',
+                'father_name' => 'Kamrul Chowdhury',
+                'mother_name' => 'Nasima Begum',
+                'nid' => '1234512345123',
+                'address' => 'Dhanmondi, Dhaka',
+                'phone' => '01755555555',
+                'email' => 'anika.hr@example.com',
+                'education' => 'MBA, HRM',
+                'qualifications' => '10+ years leadership',
+                'grade' => 'Grade-1',
+                'position' => 'Director',
+                'join_date' => '2024-01-15',
+                'salary' => 80000,
+                'document_checklist' => json_encode(['nid', 'police_clearance', 'photo']),
+                'photo_path' => 'employees/anika.jpg',
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Sharif Ahmed',
+                'father_name' => 'Jalal Ahmed',
+                'mother_name' => 'Salma Khatun',
+                'nid' => '7890678906789',
+                'address' => 'Sylhet Sadar, Sylhet',
+                'phone' => '01866666666',
+                'email' => 'sharif.sales@example.com',
+                'education' => 'BBA, Marketing',
+                'qualifications' => 'Certified sales professional',
+                'grade' => 'Grade-4',
+                'position' => 'Marketing Officer',
+                'join_date' => '2024-03-20',
+                'salary' => 35000,
+                'document_checklist' => json_encode(['nid', 'police_clearance', 'photo']),
+                'photo_path' => 'employees/sharif.jpg',
+                'status' => 'probation',
+            ],
         ], 'name');
 
         $this->seedOnce($pdo, 'leads', [
@@ -59,8 +157,28 @@ return new class {
         ], 'name');
 
         $this->seedOnce($pdo, 'bookings', [
-            ['customer_id' => 1, 'room_type' => 'Deluxe', 'check_in' => '2025-02-01', 'check_out' => '2025-02-05', 'amount' => 40000, 'payment_status' => 'paid'],
-            ['customer_id' => 2, 'room_type' => 'Suite', 'check_in' => '2025-03-10', 'check_out' => '2025-03-12', 'amount' => 30000, 'payment_status' => 'pending'],
+            [
+                'customer_id' => 1,
+                'room_type' => 'Deluxe',
+                'guest_count' => 2,
+                'check_in' => '2025-02-01',
+                'check_out' => '2025-02-05',
+                'price_plan' => 'Winter Promo',
+                'payment_method' => 'card',
+                'amount' => 40000,
+                'payment_status' => 'paid',
+            ],
+            [
+                'customer_id' => 2,
+                'room_type' => 'Suite',
+                'guest_count' => 3,
+                'check_in' => '2025-03-10',
+                'check_out' => '2025-03-12',
+                'price_plan' => 'Weekend Saver',
+                'payment_method' => 'bkash',
+                'amount' => 30000,
+                'payment_status' => 'pending',
+            ],
         ], ['customer_id', 'check_in']);
 
         $this->seedOnce($pdo, 'accounts', [

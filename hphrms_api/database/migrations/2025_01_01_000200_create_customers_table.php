@@ -6,11 +6,15 @@ return new class {
         $pdo->exec('CREATE TABLE IF NOT EXISTS customers (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            NID TEXT NOT NULL,
-            address TEXT NULL,
+            NID TEXT NOT NULL UNIQUE,
+            address TEXT NOT NULL,
             phone TEXT NOT NULL,
             email TEXT NULL,
-            status TEXT DEFAULT "active",
+            reference TEXT NULL,
+            status TEXT DEFAULT "new",
+            nid_document_path TEXT NULL,
+            photo_path TEXT NULL,
+            verified_at TEXT NULL,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
             updated_at TEXT DEFAULT CURRENT_TIMESTAMP
         )');
