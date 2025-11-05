@@ -225,3 +225,27 @@ R-EMP-03	Employee SSC/Docs	Employee Form + Doc Checklist
 R-INV-04	Unit=25,000 (config)	Share Config + Issue
 R-MOW-05	ধাপ/লাভ-টপআপ/৫০% reinvest	Stage Engine + Close Period
 
+
+## Backend API Implementation
+
+The `/hphrms_api` directory now contains a complete PHP-based REST API that follows the requested module structure. Highlights:
+
+* Token-based authentication with multi-role enforcement (Admin, HR, Accounts, Officer, Investor, Customer).
+* CRUD endpoints for customers, bookings, investors, employees, leads, approvals, accounts, shares, and transactions.
+* Booking cancellation/refund flow plus aggregated reports for sales, investments, and finance.
+* Lightweight migration and seeding tooling (`php artisan migrate`, `php artisan db:seed`) backed by SQLite for easy local setup.
+* A ready-to-import Postman collection lives at `hphrms_api/docs/hphrms_postman_collection.json`.
+
+### Quick Start
+
+```bash
+cd hphrms_api
+cp .env.example .env
+php artisan migrate
+php artisan db:seed
+php -S localhost:8000 -t public
+```
+
+Authenticate with the seeded administrator account (`admin@hphrms.test` / `password`) via `/api/auth/login`, then explore the secured endpoints documented in the Postman collection.
+
+> **Note:** The implementation is framework-lightweight so it can run in restricted environments without Composer. All classes are namespaced under `App\` and auto-loaded via `vendor/autoload.php`.
