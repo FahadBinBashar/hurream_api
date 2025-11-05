@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use App\Core\Migrator;
+use App\Core\Seeder;
+use App\Support\Env;
+
+Env::load(__DIR__ . '/.env');
+
+$command = $argv[1] ?? null;
+
+switch ($command) {
+    case 'migrate':
+        (new Migrator())->migrate();
+        echo "Migrations executed\n";
+        break;
+    case 'db:seed':
+        (new Seeder())->run();
+        echo "Seeders executed\n";
+        break;
+    default:
+        echo "Available commands: migrate, db:seed\n";
+}

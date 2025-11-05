@@ -519,3 +519,27 @@ ________________________________________
 কর্মীরা সরাসরি বিনিয়োগকারীদের কাছে গিয়ে শেয়ার বিক্রি করবে, তাদের তথ্য সিস্টেমে যুক্ত করবে, পেমেন্ট নেবে, এবং কমিশন পাবে।
 সফটওয়্যার পুরো প্রক্রিয়াটি স্বয়ংক্রিয়ভাবে রেকর্ড, ট্র্যাক এবং রিপোর্ট করবে।
 
+
+## Backend API Implementation
+
+The `/hphrms_api` directory now contains a complete PHP-based REST API that follows the requested module structure. Highlights:
+
+* Token-based authentication with multi-role enforcement (Admin, HR, Accounts, Officer, Investor, Customer).
+* CRUD endpoints for customers, bookings, investors, employees, leads, approvals, accounts, shares, and transactions.
+* Booking cancellation/refund flow plus aggregated reports for sales, investments, and finance.
+* Lightweight migration and seeding tooling (`php artisan migrate`, `php artisan db:seed`) backed by SQLite for easy local setup.
+* A ready-to-import Postman collection lives at `hphrms_api/docs/hphrms_postman_collection.json`.
+
+### Quick Start
+
+```bash
+cd hphrms_api
+cp .env.example .env
+php artisan migrate
+php artisan db:seed
+php -S localhost:8000 -t public
+```
+
+Authenticate with the seeded administrator account (`admin@hphrms.test` / `password`) via `/api/auth/login`, then explore the secured endpoints documented in the Postman collection.
+
+> **Note:** The implementation is framework-lightweight so it can run in restricted environments without Composer. All classes are namespaced under `App\` and auto-loaded via `vendor/autoload.php`.

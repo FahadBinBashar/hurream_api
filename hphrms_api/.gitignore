@@ -1,0 +1,5 @@
+/vendor/*
+!/vendor/autoload.php
+/storage/logs/*.log
+.env
+database/*.sqlite
