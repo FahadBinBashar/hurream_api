@@ -32,7 +32,27 @@ class Migrator
 
     protected function ensureMigrationTable(): void
     {
-        $this->pdo->exec('CREATE TABLE IF NOT EXISTS migrations (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, migrated_at TEXT)');
+        $driver = $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
+
+        if ($driver === 'sqlite') {
+            $sql = <<<SQL
+CREATE TABLE IF NOT EXISTS migrations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE,
+    migrated_at TEXT
+)
+SQL;
+        } else {
+            $sql = <<<SQL
+CREATE TABLE IF NOT EXISTS migrations (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) UNIQUE,
+    migrated_at DATETIME NULL
+)
+SQL;
+        }
+
+        $this->pdo->exec($sql);
     }
 
     protected function isMigrated(string $name): bool
