@@ -7,14 +7,14 @@ return new class {
     {
         $pdo = Database::connection();
 
-        $roles = ['admin', 'hr', 'accounts', 'officer', 'investor', 'customer'];
-        foreach ($roles as $role) {
-            $stmt = $pdo->prepare('INSERT OR IGNORE INTO roles (name, permissions) VALUES (:name, :permissions)');
-            $stmt->execute([
+        $roles = array_map(function (string $role): array {
+            return [
                 'name' => $role,
                 'permissions' => json_encode(['*']),
-            ]);
-        }
+            ];
+        }, ['admin', 'hr', 'accounts', 'officer', 'investor', 'customer']);
+
+        $this->seedOnce($pdo, 'roles', $roles, 'name');
 
         $adminExists = $pdo->query("SELECT COUNT(*) FROM users WHERE email = 'admin@hphrms.test'")->fetchColumn();
         if (!$adminExists) {
