@@ -82,6 +82,7 @@ class Application
         $this->middlewareRegistry = [
             'auth' => AuthMiddleware::class,
             'role' => RoleMiddleware::class,
+            'permission' => \App\Http\Middleware\PermissionMiddleware::class,
         ];
     }
 }

@@ -70,4 +70,29 @@ class Request
         $key = 'HTTP_' . strtoupper(str_replace('-', '_', $key));
         return $this->server[$key] ?? $default;
     }
+
+    public function files(): array
+    {
+        return $this->files;
+    }
+
+    public function file(string $key): ?array
+    {
+        return $this->files[$key] ?? null;
+    }
+
+    public function hasFile(string $key): bool
+    {
+        return isset($this->files[$key]) && ($this->files[$key]['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK;
+    }
+
+    public function ip(): ?string
+    {
+        return $this->server['REMOTE_ADDR'] ?? null;
+    }
+
+    public function userAgent(): ?string
+    {
+        return $this->server['HTTP_USER_AGENT'] ?? null;
+    }
 }

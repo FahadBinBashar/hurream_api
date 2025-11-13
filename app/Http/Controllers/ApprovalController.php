@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Core\Request;
 use App\Models\Approval;
+use App\Support\AuditLogger;
+use App\Support\Auth;
 
 class ApprovalController extends Controller
 {
@@ -23,7 +25,9 @@ class ApprovalController extends Controller
             return $response;
         }
 
-        $approval = Approval::create($request->all());
+        $payload = $request->all();
+        $approval = Approval::create($payload);
+        AuditLogger::log(Auth::user(), 'create', 'approvals', 'approval', (int)$approval['id'], $payload, $request->ip(), $request->userAgent());
         return $this->json(['data' => $approval], 201);
     }
 
@@ -44,7 +48,9 @@ class ApprovalController extends Controller
             return $this->json(['message' => 'Approval not found'], 404);
         }
 
-        $updated = Approval::update((int)$params['id'], $request->all());
+        $payload = $request->all();
+        $updated = Approval::update((int)$params['id'], $payload);
+        AuditLogger::log(Auth::user(), 'update', 'approvals', 'approval', (int)$params['id'], $payload, $request->ip(), $request->userAgent());
         return $this->json(['data' => $updated]);
     }
 
@@ -55,6 +61,7 @@ class ApprovalController extends Controller
             return $this->json(['message' => 'Approval not found'], 404);
         }
 
+        AuditLogger::log(Auth::user(), 'delete', 'approvals', 'approval', (int)$params['id'], [], $request->ip(), $request->userAgent());
         return $this->json(['message' => 'Approval deleted']);
     }
 }

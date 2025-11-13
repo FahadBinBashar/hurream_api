@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Core\Request;
 use App\Models\Customer;
+use App\Support\AuditLogger;
+use App\Support\Auth;
+use App\Support\DocumentUpload;
 use App\Support\Validator;
 
 use function array_flip;
@@ -35,12 +38,20 @@ class CustomerController extends Controller
         }
 
         $payload = $this->preparePayload($request->all());
+        try {
+            if ($filePayload = $this->handleDocuments($request)) {
+                $payload = array_merge($payload, $filePayload);
+            }
+        } catch (\Throwable $exception) {
+            return $this->json(['message' => $exception->getMessage()], 422);
+        }
         $payload['status'] = $payload['status'] ?? 'new';
         if (($payload['status'] ?? null) === 'verified' && empty($payload['verified_at'])) {
             $payload['verified_at'] = date('c');
         }
 
         $customer = Customer::create($payload);
+        AuditLogger::log(Auth::user(), 'create', 'customers', 'customer', (int)$customer['id'], $payload, $request->ip(), $request->userAgent());
         return $this->json(['data' => $customer], 201);
     }
 
@@ -77,6 +88,13 @@ class CustomerController extends Controller
         }
 
         $payload = $this->preparePayload($merged);
+        try {
+            if ($filePayload = $this->handleDocuments($request)) {
+                $payload = array_merge($payload, $filePayload);
+            }
+        } catch (\Throwable $exception) {
+            return $this->json(['message' => $exception->getMessage()], 422);
+        }
         if (($payload['status'] ?? null) === 'verified' && empty($payload['verified_at'])) {
             $payload['verified_at'] = date('c');
         }
@@ -85,6 +103,7 @@ class CustomerController extends Controller
         }
 
         $updated = Customer::update((int)$params['id'], $payload);
+        AuditLogger::log(Auth::user(), 'update', 'customers', 'customer', (int)$params['id'], $payload, $request->ip(), $request->userAgent());
         return $this->json(['data' => $updated]);
     }
 
@@ -95,12 +114,13 @@ class CustomerController extends Controller
             return $this->json(['message' => 'Customer not found'], 404);
         }
 
+        AuditLogger::log(Auth::user(), 'delete', 'customers', 'customer', (int)$params['id'], [], $request->ip(), $request->userAgent());
         return $this->json(['message' => 'Customer deleted']);
     }
 
     private function preparePayload(array $input): array
     {
-        $allowed = ['name', 'NID', 'address', 'phone', 'email', 'reference', 'status', 'nid_document_path', 'photo_path', 'verified_at'];
+        $allowed = ['name', 'NID', 'address', 'phone', 'email', 'reference', 'status', 'nid_document_path', 'photo_path', 'verified_at', 'police_verification_path', 'police_verified_at'];
         $filtered = array_intersect_key($input, array_flip($allowed));
 
         foreach ($filtered as $key => $value) {
@@ -114,5 +134,29 @@ class CustomerController extends Controller
         }
 
         return $filtered;
+    }
+
+    private function handleDocuments(Request $request): array
+    {
+        $uploader = new DocumentUpload();
+        $paths = [];
+
+        $filesMap = [
+            'nid_document' => 'nid_document_path',
+            'photo' => 'photo_path',
+            'police_verification' => 'police_verification_path',
+        ];
+
+        foreach ($filesMap as $field => $column) {
+            if ($request->hasFile($field)) {
+                try {
+                    $paths[$column] = $uploader->store($request->file($field), 'customers');
+                } catch (\Throwable $exception) {
+                    throw new \RuntimeException('Failed to upload ' . $field . ': ' . $exception->getMessage());
+                }
+            }
+        }
+
+        return $paths;
     }
 }
