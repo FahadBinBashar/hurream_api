@@ -3,22 +3,34 @@
 use App\Core\Router;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ApprovalController;
+use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\InstallmentController;
 use App\Http\Controllers\InvestorController;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\NotificationTemplateController;
+use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ShareController;
+use App\Http\Controllers\StageController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VoucherController;
 
 return function (Router $router) {
     $router->group('/api', function (Router $router) {
         // Authentication
         $router->add('POST', '/auth/register', [AuthController::class, 'register']);
         $router->add('POST', '/auth/login', [AuthController::class, 'login']);
+        $router->add('POST', '/auth/request-otp', [AuthController::class, 'requestOtp']);
+        $router->add('POST', '/auth/verify-otp', [AuthController::class, 'verifyOtp']);
+        $router->add('POST', '/auth/forgot-password', [AuthController::class, 'forgotPassword']);
+        $router->add('POST', '/auth/reset-password', [AuthController::class, 'resetPassword']);
         $router->add('POST', '/auth/logout', [AuthController::class, 'logout'], ['auth']);
 
         // Users (Admin only)
@@ -49,6 +61,7 @@ return function (Router $router) {
         $router->add('GET', '/investors/{id}', [InvestorController::class, 'show'], ['auth']);
         $router->add('PATCH', '/investors/{id}', [InvestorController::class, 'update'], ['auth']);
         $router->add('DELETE', '/investors/{id}', [InvestorController::class, 'destroy'], ['auth']);
+        $router->add('POST', '/investors/{id}/verify-documents', [InvestorController::class, 'verifyDocuments'], ['auth']);
 
         $router->add('GET', '/shares', [ShareController::class, 'index'], ['auth']);
         $router->add('POST', '/shares', [ShareController::class, 'store'], ['auth']);
@@ -68,6 +81,17 @@ return function (Router $router) {
         $router->add('GET', '/employees/{id}', [EmployeeController::class, 'show'], ['auth']);
         $router->add('PATCH', '/employees/{id}', [EmployeeController::class, 'update'], ['auth']);
         $router->add('DELETE', '/employees/{id}', [EmployeeController::class, 'destroy'], ['auth']);
+        $router->add('POST', '/employees/{id}/attendance/check-in', [EmployeeController::class, 'checkIn'], ['auth']);
+        $router->add('POST', '/employees/{id}/attendance/check-out', [EmployeeController::class, 'checkOut'], ['auth']);
+        $router->add('GET', '/employees/{id}/attendance', [EmployeeController::class, 'attendance'], ['auth']);
+        $router->add('GET', '/employees/{id}/leave-requests', [EmployeeController::class, 'leaveIndex'], ['auth']);
+        $router->add('POST', '/employees/{id}/leave-requests', [EmployeeController::class, 'leaveStore'], ['auth']);
+        $router->add('PATCH', '/leave-requests/{leave_id}', [EmployeeController::class, 'leaveUpdate'], ['auth']);
+        $router->add('POST', '/leave-requests/{leave_id}/approve', [EmployeeController::class, 'leaveApprove'], ['auth']);
+        $router->add('DELETE', '/leave-requests/{leave_id}', [EmployeeController::class, 'leaveDestroy'], ['auth']);
+        $router->add('GET', '/employees/{id}/kpis', [EmployeeController::class, 'kpiIndex'], ['auth']);
+        $router->add('POST', '/employees/{id}/kpis', [EmployeeController::class, 'kpiStore'], ['auth']);
+        $router->add('POST', '/employees/{id}/verify-documents', [EmployeeController::class, 'verifyDocuments'], ['auth']);
 
         // Sales & marketing
         $router->add('GET', '/leads', [LeadController::class, 'index'], ['auth']);
@@ -75,6 +99,12 @@ return function (Router $router) {
         $router->add('GET', '/leads/{id}', [LeadController::class, 'show'], ['auth']);
         $router->add('PATCH', '/leads/{id}', [LeadController::class, 'update'], ['auth']);
         $router->add('DELETE', '/leads/{id}', [LeadController::class, 'destroy'], ['auth']);
+        $router->add('PUT', '/leads/{id}/convert-to-prospect', [LeadController::class, 'convertToProspect'], ['auth']);
+        $router->add('PUT', '/leads/{id}/convert-to-investor', [LeadController::class, 'convertToInvestor'], ['auth']);
+        $router->add('POST', '/leads/{id}/reminders', [LeadController::class, 'storeReminder'], ['auth']);
+        $router->add('GET', '/leads/reminders/upcoming', [LeadController::class, 'upcomingReminders'], ['auth']);
+        $router->add('GET', '/leads/reports/conversion', [LeadController::class, 'conversionReport'], ['auth']);
+        $router->add('GET', '/leads/reports/officer-summary', [LeadController::class, 'officerSummary'], ['auth']);
 
         // Approvals
         $router->add('GET', '/approvals', [ApprovalController::class, 'index'], ['auth']);
@@ -90,9 +120,50 @@ return function (Router $router) {
         $router->add('PATCH', '/accounts/{id}', [AccountController::class, 'update'], ['auth']);
         $router->add('DELETE', '/accounts/{id}', [AccountController::class, 'destroy'], ['auth']);
 
+        $router->add('GET', '/vouchers', [VoucherController::class, 'index'], ['auth']);
+        $router->add('POST', '/vouchers', [VoucherController::class, 'store'], ['auth']);
+        $router->add('GET', '/vouchers/{id}', [VoucherController::class, 'show'], ['auth']);
+
+        $router->add('GET', '/installments', [InstallmentController::class, 'index'], ['auth']);
+        $router->add('POST', '/installments', [InstallmentController::class, 'store'], ['auth']);
+        $router->add('POST', '/installments/{id}/mark-paid', [InstallmentController::class, 'markPaid'], ['auth']);
+
+        $router->add('GET', '/payroll/runs', [PayrollController::class, 'index'], ['auth']);
+        $router->add('POST', '/payroll/runs', [PayrollController::class, 'store'], ['auth']);
+
+        $router->add('POST', '/stages/close-period', [StageController::class, 'closePeriod'], ['auth']);
+        $router->add('GET', '/investors/{id}/stages', [StageController::class, 'investorStages'], ['auth']);
+        $router->add('PATCH', '/investors/{id}/stage', [StageController::class, 'upgrade'], ['auth']);
+        $router->add('GET', '/stages/report', [StageController::class, 'report'], ['auth']);
+
         // Reports
         $router->add('GET', '/reports/sales-summary', [ReportController::class, 'salesSummary'], ['auth']);
         $router->add('GET', '/reports/investment-summary', [ReportController::class, 'investmentSummary'], ['auth']);
         $router->add('GET', '/reports/finance-statement', [ReportController::class, 'financeStatement'], ['auth']);
+        $router->add('GET', '/reports/cash-book', [ReportController::class, 'cashBook'], ['auth']);
+        $router->add('GET', '/reports/bank-book', [ReportController::class, 'bankBook'], ['auth']);
+        $router->add('GET', '/reports/ledger', [ReportController::class, 'ledger'], ['auth']);
+        $router->add('GET', '/reports/trial-balance', [ReportController::class, 'trialBalance'], ['auth']);
+        $router->add('GET', '/reports/income-statement', [ReportController::class, 'incomeStatement'], ['auth']);
+        $router->add('GET', '/reports/balance-sheet', [ReportController::class, 'balanceSheet'], ['auth']);
+
+        $router->add('GET', '/audit-logs', [AuditLogController::class, 'index'], ['auth']);
+
+        $router->add('GET', '/policies', [PolicyController::class, 'index'], ['auth']);
+        $router->add('POST', '/policies', [PolicyController::class, 'store'], ['auth']);
+        $router->add('GET', '/policies/{id}', [PolicyController::class, 'show'], ['auth']);
+        $router->add('PATCH', '/policies/{id}', [PolicyController::class, 'update'], ['auth']);
+        $router->add('DELETE', '/policies/{id}', [PolicyController::class, 'destroy'], ['auth']);
+        $router->add('GET', '/policies/{id}/history', [PolicyController::class, 'history'], ['auth']);
+
+        $router->add('GET', '/settings', [SettingController::class, 'index'], ['auth']);
+        $router->add('PUT', '/settings/{key}', [SettingController::class, 'update'], ['auth']);
+
+        $router->add('GET', '/notification-templates', [NotificationTemplateController::class, 'index'], ['auth']);
+        $router->add('POST', '/notification-templates', [NotificationTemplateController::class, 'store'], ['auth']);
+        $router->add('GET', '/notification-templates/{id}', [NotificationTemplateController::class, 'show'], ['auth']);
+        $router->add('PATCH', '/notification-templates/{id}', [NotificationTemplateController::class, 'update'], ['auth']);
+        $router->add('DELETE', '/notification-templates/{id}', [NotificationTemplateController::class, 'destroy'], ['auth']);
+        $router->add('POST', '/notification-templates/{id}/render', [NotificationTemplateController::class, 'render'], ['auth']);
     });
 };

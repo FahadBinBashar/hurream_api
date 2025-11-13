@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Core\Request;
 use App\Models\Booking;
+use App\Support\AuditLogger;
+use App\Support\Auth;
 use App\Support\Validator;
 
 use function array_flip;
@@ -51,6 +53,7 @@ class BookingController extends Controller
 
         $payload['payment_status'] = $payload['payment_status'] ?? 'pending';
         $booking = Booking::create($payload);
+        AuditLogger::log(Auth::user(), 'create', 'bookings', 'booking', (int)$booking['id'], $payload, $request->ip(), $request->userAgent());
         return $this->json(['data' => $booking], 201);
     }
 
@@ -98,6 +101,7 @@ class BookingController extends Controller
         }
 
         $updated = Booking::update((int)$params['id'], $payload);
+        AuditLogger::log(Auth::user(), 'update', 'bookings', 'booking', (int)$params['id'], $payload, $request->ip(), $request->userAgent());
         return $this->json(['data' => $updated]);
     }
 
@@ -108,6 +112,7 @@ class BookingController extends Controller
             return $this->json(['message' => 'Booking not found'], 404);
         }
 
+        AuditLogger::log(Auth::user(), 'delete', 'bookings', 'booking', (int)$params['id'], [], $request->ip(), $request->userAgent());
         return $this->json(['message' => 'Booking deleted']);
     }
 
@@ -127,6 +132,7 @@ class BookingController extends Controller
         }
 
         $updated = Booking::update((int)$params['id'], $updates);
+        AuditLogger::log(Auth::user(), 'cancel', 'bookings', 'booking', (int)$params['id'], $updates, $request->ip(), $request->userAgent());
         return $this->json(['message' => 'Booking cancelled', 'data' => $updated]);
     }
 

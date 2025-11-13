@@ -6,6 +6,9 @@ use App\Core\Database;
 use App\Core\Request;
 use App\Models\Investor;
 use App\Models\Share;
+use App\Support\AuditLogger;
+use App\Support\Auth;
+use App\Support\DocumentUpload;
 use App\Support\Validator;
 
 use function array_flip;
@@ -44,12 +47,20 @@ class InvestorController extends Controller
         }
 
         $payload = $this->preparePayload($request->all());
+        try {
+            if ($filePayload = $this->handleDocuments($request)) {
+                $payload = array_merge($payload, $filePayload);
+            }
+        } catch (\Throwable $exception) {
+            return $this->json(['message' => $exception->getMessage()], 422);
+        }
         $payload['status'] = $payload['status'] ?? 'pending';
         $payload['otp_verified_at'] = $payload['otp_verified_at'] ?? null;
         $payload['admin_approved_at'] = $payload['admin_approved_at'] ?? null;
 
         $investor = Investor::create($payload);
         $investor['shares'] = [];
+        AuditLogger::log(Auth::user(), 'create', 'investors', 'investor', (int)$investor['id'], $payload, $request->ip(), $request->userAgent());
         return $this->json(['data' => $investor], 201);
     }
 
@@ -91,9 +102,17 @@ class InvestorController extends Controller
         }
 
         $payload = $this->preparePayload($merged);
+        try {
+            if ($filePayload = $this->handleDocuments($request)) {
+                $payload = array_merge($payload, $filePayload);
+            }
+        } catch (\Throwable $exception) {
+            return $this->json(['message' => $exception->getMessage()], 422);
+        }
         $payload['status'] = $payload['status'] ?? 'pending';
 
         $updated = Investor::update((int)$params['id'], $payload);
+        AuditLogger::log(Auth::user(), 'update', 'investors', 'investor', (int)$params['id'], $payload, $request->ip(), $request->userAgent());
         return $this->json(['data' => $updated]);
     }
 
@@ -104,7 +123,33 @@ class InvestorController extends Controller
             return $this->json(['message' => 'Investor not found'], 404);
         }
 
+        AuditLogger::log(Auth::user(), 'delete', 'investors', 'investor', (int)$params['id'], [], $request->ip(), $request->userAgent());
         return $this->json(['message' => 'Investor deleted']);
+    }
+
+    public function verifyDocuments(Request $request, array $params)
+    {
+        $investor = Investor::find((int)$params['id']);
+        if (!$investor) {
+            return $this->json(['message' => 'Investor not found'], 404);
+        }
+
+        $payload = [];
+        if ($request->input('nid_verified')) {
+            $payload['nid_verified_at'] = date('Y-m-d H:i:s');
+        }
+        if ($request->input('police_verified')) {
+            $payload['police_verified_at'] = date('Y-m-d H:i:s');
+        }
+
+        if (empty($payload)) {
+            return $this->json(['message' => 'No verification flags provided'], 400);
+        }
+
+        $updated = Investor::update((int)$investor['id'], $payload);
+        AuditLogger::log(Auth::user(), 'verify_documents', 'investors', 'investor', (int)$investor['id'], $payload, $request->ip(), $request->userAgent());
+
+        return $this->json(['data' => $updated]);
     }
 
     private function preparePayload(array $input): array
@@ -120,6 +165,10 @@ class InvestorController extends Controller
             'status',
             'otp_verified_at',
             'admin_approved_at',
+            'nid_document_path',
+            'police_verification_path',
+            'nid_verified_at',
+            'police_verified_at',
         ];
 
         $filtered = array_intersect_key($input, array_flip($allowed));
@@ -130,5 +179,23 @@ class InvestorController extends Controller
         }
 
         return $filtered;
+    }
+
+    private function handleDocuments(Request $request): array
+    {
+        $uploader = new DocumentUpload();
+        $paths = [];
+        $files = [
+            'nid_document' => 'nid_document_path',
+            'police_verification' => 'police_verification_path',
+        ];
+
+        foreach ($files as $field => $column) {
+            if ($request->hasFile($field)) {
+                $paths[$column] = $uploader->store($request->file($field), 'investors');
+            }
+        }
+
+        return $paths;
     }
 }

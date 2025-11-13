@@ -7,6 +7,8 @@ use App\Core\Request;
 use App\Core\Response;
 use App\Models\Approval;
 use App\Models\Share;
+use App\Support\AuditLogger;
+use App\Support\Auth;
 use App\Support\Env;
 use App\Support\Validator;
 
@@ -53,6 +55,7 @@ class ShareController extends Controller
             $this->syncApprovals((int)$share['id'], $payload['approvers']);
         }
 
+        AuditLogger::log(Auth::user(), 'create', 'shares', 'share', (int)$share['id'], $payload['data'], $request->ip(), $request->userAgent());
         return $this->json(['data' => $share], 201);
     }
 
@@ -104,6 +107,7 @@ class ShareController extends Controller
             $this->clearApprovals((int)$share['id']);
         }
 
+        AuditLogger::log(Auth::user(), 'update', 'shares', 'share', (int)$params['id'], $payload['data'], $request->ip(), $request->userAgent());
         return $this->json(['data' => $updated]);
     }
 
@@ -116,6 +120,7 @@ class ShareController extends Controller
 
         $this->clearApprovals((int)$params['id']);
 
+        AuditLogger::log(Auth::user(), 'delete', 'shares', 'share', (int)$params['id'], [], $request->ip(), $request->userAgent());
         return $this->json(['message' => 'Share deleted']);
     }
 
