@@ -112,44 +112,10 @@ return new class {
             ['share_id' => 2, 'amount' => 25000, 'payment_type' => 'cash', 'date' => '2025-02-12'],
         ], ['share_id', 'date']);
 
-        $this->seedOnce($pdo, 'employees', [
-            [
-                'name' => 'Anika Chowdhury',
-                'father_name' => 'Kamrul Chowdhury',
-                'mother_name' => 'Nasima Begum',
-                'nid' => '1234512345123',
-                'address' => 'Dhanmondi, Dhaka',
-                'phone' => '01755555555',
-                'email' => 'anika.hr@example.com',
-                'education' => 'MBA, HRM',
-                'qualifications' => '10+ years leadership',
-                'grade' => 'Grade-1',
-                'position' => 'Director',
-                'join_date' => '2024-01-15',
-                'salary' => 80000,
-                'document_checklist' => json_encode(['nid', 'police_clearance', 'photo']),
-                'photo_path' => 'employees/anika.jpg',
-                'status' => 'active',
-            ],
-            [
-                'name' => 'Sharif Ahmed',
-                'father_name' => 'Jalal Ahmed',
-                'mother_name' => 'Salma Khatun',
-                'nid' => '7890678906789',
-                'address' => 'Sylhet Sadar, Sylhet',
-                'phone' => '01866666666',
-                'email' => 'sharif.sales@example.com',
-                'education' => 'BBA, Marketing',
-                'qualifications' => 'Certified sales professional',
-                'grade' => 'Grade-4',
-                'position' => 'Marketing Officer',
-                'join_date' => '2024-03-20',
-                'salary' => 35000,
-                'document_checklist' => json_encode(['nid', 'police_clearance', 'photo']),
-                'photo_path' => 'employees/sharif.jpg',
-                'status' => 'probation',
-            ],
-        ], 'name');
+        $employeeSeeder = require __DIR__ . '/EmployeeSeeder.php';
+        $employeeSeeder->run($pdo, function (\PDO $pdo, string $table, array $rows, string|array|null $uniqueKey = null): void {
+            $this->seedOnce($pdo, $table, $rows, $uniqueKey);
+        });
 
         $this->seedOnce($pdo, 'leads', [
             ['officer_id' => 2, 'name' => 'Corporate Client A', 'contact' => 'clientA@example.com', 'status' => 'prospect'],
