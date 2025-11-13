@@ -1,61 +1,994 @@
 {
   "info": {
-    "name": "HPHRMS API",
+    "name": "Hurream ERP API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Postman collection for the HPHRMS REST API"
+    "description": "Comprehensive Postman collection covering the Hurream ERP REST API"
   },
   "item": [
     {
-      "name": "Auth Register",
-      "request": {
-        "method": "POST",
-        "header": [
-          {"key": "Content-Type", "value": "application/json"}
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"user@example.com\",\n  \"password\": \"password\",\n  \"role\": \"customer\"\n}"
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sample Customer\",\n  \"email\": \"customer@example.com\",\n  \"password\": \"password\",\n  \"role\": \"customer\",\n  \"grade_id\": null,\n  \"NID\": \"198765432101\",\n  \"phone\": \"01712345678\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
         },
-        "url": {"raw": "{{base_url}}/api/auth/register", "host": ["{{base_url}}"], "path": ["api", "auth", "register"]}
-      }
-    },
-    {
-      "name": "Auth Login",
-      "request": {
-        "method": "POST",
-        "header": [
-          {"key": "Content-Type", "value": "application/json"}
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"email\": \"admin@hphrms.test\",\n  \"password\": \"password\"\n}"
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@hurream.test\",\n  \"password\": \"password\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
         },
-        "url": {"raw": "{{base_url}}/api/auth/login", "host": ["{{base_url}}"], "path": ["api", "auth", "login"]}
-      }
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "logout"]
+            }
+          }
+        }
+      ]
     },
     {
-      "name": "List Customers",
-      "request": {
-        "method": "GET",
-        "header": [
-          {"key": "Authorization", "value": "Bearer {{token}}"}
-        ],
-        "url": {"raw": "{{base_url}}/api/customers", "host": ["{{base_url}}"], "path": ["api", "customers"]}
-      }
+      "name": "Administration",
+      "item": [
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users"]
+            }
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Back Office Admin\",\n  \"email\": \"backoffice@example.com\",\n  \"password\": \"password\",\n  \"role\": \"admin\",\n  \"grade_id\": 1,\n  \"NID\": \"199123456789\",\n  \"phone\": \"01812345678\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users"]
+            }
+          }
+        },
+        {
+          "name": "Show User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Back Office Admin\",\n  \"email\": \"backoffice@example.com\",\n  \"role\": \"director\",\n  \"grade_id\": 1,\n  \"phone\": \"01812345678\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}"]
+            }
+          }
+        }
+      ]
     },
     {
-      "name": "Sales Summary",
-      "request": {
-        "method": "GET",
-        "header": [
-          {"key": "Authorization", "value": "Bearer {{token}}"}
-        ],
-        "url": {"raw": "{{base_url}}/api/reports/sales-summary", "host": ["{{base_url}}"], "path": ["api", "reports", "sales-summary"]}
-      }
+      "name": "Customers",
+      "item": [
+        {
+          "name": "List Customers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/customers",
+              "host": ["{{base_url}}"],
+              "path": ["api", "customers"]
+            }
+          }
+        },
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sabbir Rahman\",\n  \"NID\": \"1998765432101\",\n  \"phone\": \"01722334455\",\n  \"email\": \"sabbir@example.com\",\n  \"address\": \"Dhaka, Bangladesh\",\n  \"reference\": \"Facebook campaign\",\n  \"status\": \"verified\",\n  \"nid_document_path\": \"/uploads/customers/1998765432101_nid.pdf\",\n  \"photo_path\": \"/uploads/customers/1998765432101_photo.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/customers",
+              "host": ["{{base_url}}"],
+              "path": ["api", "customers"]
+            }
+          }
+        },
+        {
+          "name": "Show Customer",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/customers/{{customer_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "customers", "{{customer_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Customer",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sabbir Rahman\",\n  \"NID\": \"1998765432101\",\n  \"phone\": \"01722334455\",\n  \"email\": \"sabbir@example.com\",\n  \"address\": \"Dhaka, Bangladesh\",\n  \"status\": \"verified\",\n  \"verified_at\": \"2024-01-15T09:00:00+06:00\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/customers/{{customer_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "customers", "{{customer_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Customer",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/customers/{{customer_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "customers", "{{customer_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "List Bookings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bookings",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bookings"]
+            }
+          }
+        },
+        {
+          "name": "Create Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": {{customer_id}},\n  \"room_type\": \"Deluxe Suite\",\n  \"guest_count\": 2,\n  \"check_in\": \"2024-02-01\",\n  \"check_out\": \"2024-02-05\",\n  \"price_plan\": \"Weekend Special\",\n  \"payment_method\": \"bkash\",\n  \"amount\": 35000,\n  \"payment_status\": \"pending\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/bookings",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bookings"]
+            }
+          }
+        },
+        {
+          "name": "Show Booking",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bookings/{{booking_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bookings", "{{booking_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Booking",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": {{customer_id}},\n  \"room_type\": \"Deluxe Suite\",\n  \"guest_count\": 2,\n  \"check_in\": \"2024-02-01\",\n  \"check_out\": \"2024-02-06\",\n  \"price_plan\": \"Weekend Special\",\n  \"payment_method\": \"card\",\n  \"amount\": 42000,\n  \"payment_status\": \"paid\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/bookings/{{booking_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bookings", "{{booking_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refund_amount\": 5000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/bookings/{{booking_id}}/cancel",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bookings", "{{booking_id}}", "cancel"]
+            }
+          }
+        },
+        {
+          "name": "Delete Booking",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bookings/{{booking_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bookings", "{{booking_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Investors",
+      "item": [
+        {
+          "name": "List Investors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/investors",
+              "host": ["{{base_url}}"],
+              "path": ["api", "investors"]
+            }
+          }
+        },
+        {
+          "name": "Create Investor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ayesha Akter\",\n  \"NID\": \"1990123456789\",\n  \"phone\": \"01912345678\",\n  \"email\": \"ayesha@example.com\",\n  \"address\": \"Chattogram, Bangladesh\",\n  \"bank_info\": \"AB Bank - 1234567890\",\n  \"nominee\": \"Mahmud Hasan\",\n  \"status\": \"pending\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/investors",
+              "host": ["{{base_url}}"],
+              "path": ["api", "investors"]
+            }
+          }
+        },
+        {
+          "name": "Show Investor",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/investors/{{investor_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "investors", "{{investor_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Investor",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ayesha Akter\",\n  \"NID\": \"1990123456789\",\n  \"phone\": \"01912345678\",\n  \"email\": \"ayesha@example.com\",\n  \"address\": \"Chattogram, Bangladesh\",\n  \"bank_info\": \"AB Bank - 1234567890\",\n  \"nominee\": \"Mahmud Hasan\",\n  \"status\": \"active\",\n  \"otp_verified_at\": \"2024-01-05T10:00:00+06:00\",\n  \"admin_approved_at\": \"2024-01-06T09:30:00+06:00\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/investors/{{investor_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "investors", "{{investor_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Investor",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/investors/{{investor_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "investors", "{{investor_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shares",
+      "item": [
+        {
+          "name": "List Shares",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/shares",
+              "host": ["{{base_url}}"],
+              "path": ["api", "shares"]
+            }
+          }
+        },
+        {
+          "name": "Create Share Issue",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"investor_id\": {{investor_id}},\n  \"unit_price\": 25000,\n  \"quantity\": 30,\n  \"payment_mode\": \"installment\",\n  \"stage\": \"MÖW-5\",\n  \"reinvest_flag\": 1,\n  \"approvers\": [1, 2, 3]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/shares",
+              "host": ["{{base_url}}"],
+              "path": ["api", "shares"]
+            }
+          }
+        },
+        {
+          "name": "Show Share Issue",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/shares/{{share_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "shares", "{{share_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Share Issue",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"investor_id\": {{investor_id}},\n  \"unit_price\": 26000,\n  \"quantity\": 35,\n  \"payment_mode\": \"installment\",\n  \"stage\": \"MÖW-5\",\n  \"reinvest_flag\": 1,\n  \"approvers\": [1, 2, 3],\n  \"approval_status\": \"approved\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/shares/{{share_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "shares", "{{share_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Share Issue",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/shares/{{share_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "shares", "{{share_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "List Transactions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/transactions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions"]
+            }
+          }
+        },
+        {
+          "name": "Create Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"share_id\": {{share_id}},\n  \"amount\": 150000,\n  \"payment_type\": \"installment\",\n  \"date\": \"2024-02-10\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/transactions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions"]
+            }
+          }
+        },
+        {
+          "name": "Show Transaction",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/transactions/{{transaction_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions", "{{transaction_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Transaction",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 200000,\n  \"payment_type\": \"one_time\",\n  \"date\": \"2024-02-15\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/transactions/{{transaction_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions", "{{transaction_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Transaction",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/transactions/{{transaction_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions", "{{transaction_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Employees",
+      "item": [
+        {
+          "name": "List Employees",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/employees",
+              "host": ["{{base_url}}"],
+              "path": ["api", "employees"]
+            }
+          }
+        },
+        {
+          "name": "Create Employee",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Farhan Ahmed\",\n  \"father_name\": \"Mahmud Ahmed\",\n  \"mother_name\": \"Salma Ahmed\",\n  \"nid\": \"1987654321987\",\n  \"address\": \"Sylhet, Bangladesh\",\n  \"phone\": \"01512345678\",\n  \"email\": \"farhan@example.com\",\n  \"education\": \"SSC\",\n  \"qualifications\": \"Sales specialist\",\n  \"grade\": \"6\",\n  \"position\": \"Marketing Officer\",\n  \"join_date\": \"2023-11-01\",\n  \"salary\": 30000,\n  \"documents\": [\"nid\", \"police_verification\", \"photo\"],\n  \"status\": \"active\",\n  \"photo_path\": \"/uploads/employees/farhan_photo.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/employees",
+              "host": ["{{base_url}}"],
+              "path": ["api", "employees"]
+            }
+          }
+        },
+        {
+          "name": "Show Employee",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/employees/{{employee_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "employees", "{{employee_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Employee",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Farhan Ahmed\",\n  \"father_name\": \"Mahmud Ahmed\",\n  \"mother_name\": \"Salma Ahmed\",\n  \"nid\": \"1987654321987\",\n  \"address\": \"Sylhet, Bangladesh\",\n  \"phone\": \"01512345678\",\n  \"email\": \"farhan@example.com\",\n  \"education\": \"SSC\",\n  \"qualifications\": \"Sales specialist\",\n  \"grade\": \"6\",\n  \"position\": \"Marketing Officer\",\n  \"join_date\": \"2023-11-01\",\n  \"salary\": 32000,\n  \"documents\": [\"nid\", \"police_verification\", \"photo\"],\n  \"status\": \"probation\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/employees/{{employee_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "employees", "{{employee_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Employee",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/employees/{{employee_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "employees", "{{employee_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Leads",
+      "item": [
+        {
+          "name": "List Leads",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/leads",
+              "host": ["{{base_url}}"],
+              "path": ["api", "leads"]
+            }
+          }
+        },
+        {
+          "name": "Create Lead",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"officer_id\": {{employee_id}},\n  \"name\": \"Kamrul Hasan\",\n  \"contact\": \"01612345678\",\n  \"source\": \"Referral\",\n  \"budget\": \"800000\",\n  \"interest\": \"Share Investment\",\n  \"status\": \"prospect\",\n  \"notes\": \"Follow up on 5 Feb\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/leads",
+              "host": ["{{base_url}}"],
+              "path": ["api", "leads"]
+            }
+          }
+        },
+        {
+          "name": "Show Lead",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/leads/{{lead_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "leads", "{{lead_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Lead",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"investor\",\n  \"notes\": \"Converted after proposal\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/leads/{{lead_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "leads", "{{lead_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Lead",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/leads/{{lead_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "leads", "{{lead_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Approvals",
+      "item": [
+        {
+          "name": "List Approvals",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/approvals",
+              "host": ["{{base_url}}"],
+              "path": ["api", "approvals"]
+            }
+          }
+        },
+        {
+          "name": "Create Approval Record",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"module\": \"shares\",\n  \"record_id\": {{share_id}},\n  \"approver_id\": 2,\n  \"status\": \"approved\",\n  \"remarks\": \"Approved for release\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/approvals",
+              "host": ["{{base_url}}"],
+              "path": ["api", "approvals"]
+            }
+          }
+        },
+        {
+          "name": "Show Approval Record",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/approvals/{{approval_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "approvals", "{{approval_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Approval Record",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"rejected\",\n  \"remarks\": \"Requires updated documents\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/approvals/{{approval_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "approvals", "{{approval_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Approval Record",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/approvals/{{approval_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "approvals", "{{approval_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Accounts",
+      "item": [
+        {
+          "name": "List Account Entries",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/accounts",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accounts"]
+            }
+          }
+        },
+        {
+          "name": "Create Account Entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"income\",\n  \"description\": \"Share installment payment\",\n  \"amount\": 85000,\n  \"date\": \"2024-02-10\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accounts"]
+            }
+          }
+        },
+        {
+          "name": "Show Account Entry",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/accounts/{{account_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accounts", "{{account_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Account Entry",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"expense\",\n  \"description\": \"Marketing campaign spend\",\n  \"amount\": 25000,\n  \"date\": \"2024-02-14\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/accounts/{{account_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accounts", "{{account_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Account Entry",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/accounts/{{account_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "accounts", "{{account_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "Sales Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/reports/sales-summary",
+              "host": ["{{base_url}}"],
+              "path": ["api", "reports", "sales-summary"]
+            }
+          }
+        },
+        {
+          "name": "Investment Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/reports/investment-summary",
+              "host": ["{{base_url}}"],
+              "path": ["api", "reports", "investment-summary"]
+            }
+          }
+        },
+        {
+          "name": "Finance Statement",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/reports/finance-statement",
+              "host": ["{{base_url}}"],
+              "path": ["api", "reports", "finance-statement"]
+            }
+          }
+        }
+      ]
     }
   ],
   "variable": [
     {"key": "base_url", "value": "http://localhost"},
-    {"key": "token", "value": ""}
+    {"key": "token", "value": ""},
+    {"key": "user_id", "value": "1"},
+    {"key": "customer_id", "value": "1"},
+    {"key": "booking_id", "value": "1"},
+    {"key": "investor_id", "value": "1"},
+    {"key": "share_id", "value": "1"},
+    {"key": "transaction_id", "value": "1"},
+    {"key": "employee_id", "value": "1"},
+    {"key": "lead_id", "value": "1"},
+    {"key": "approval_id", "value": "1"},
+    {"key": "account_id", "value": "1"}
   ]
 }
