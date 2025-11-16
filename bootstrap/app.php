@@ -1,15 +1,24 @@
 <?php
 
-use App\Core\Application;
-use App\Core\Router;
-use App\Support\Env;
+use Illuminate\Foundation\Application;
 
-require __DIR__ . '/../vendor/autoload.php';
+$app = new Application(
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
+);
 
-Env::load(__DIR__ . '/../.env');
+$app->singleton(
+    Illuminate\Contracts\Http\Kernel::class,
+    App\Http\Kernel::class
+);
 
-$router = new Router();
+$app->singleton(
+    Illuminate\Contracts\Console\Kernel::class,
+    App\Console\Kernel::class
+);
 
-(require __DIR__ . '/../routes/api.php')($router);
+$app->singleton(
+    Illuminate\Contracts\Debug\ExceptionHandler::class,
+    App\Exceptions\Handler::class
+);
 
-return new Application($router);
+return $app;

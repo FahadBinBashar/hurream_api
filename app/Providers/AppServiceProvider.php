@@ -11,7 +11,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(\App\Core\Request::class, function ($app) {
+            return \App\Core\Request::fromIlluminate($app->make('request'));
+        });
     }
 
     /**

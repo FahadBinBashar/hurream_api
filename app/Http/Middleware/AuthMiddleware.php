@@ -4,17 +4,20 @@ namespace App\Http\Middleware;
 
 use App\Core\Database;
 use App\Core\Request;
-use App\Core\Response;
 use App\Support\Auth;
 use PDO;
+use Closure;
+use Illuminate\Http\Request as IlluminateRequest;
+use Symfony\Component\HttpFoundation\Response;
 
-class AuthMiddleware implements MiddlewareInterface
+class AuthMiddleware
 {
-    public function handle(Request $request, callable $next, ?string $parameter = null): Response
+    public function handle(IlluminateRequest $illuminateRequest, Closure $next, ?string $parameter = null): Response
     {
+        $request = Request::fromIlluminate($illuminateRequest);
         $header = $request->header('Authorization');
         if (!$header || !str_starts_with($header, 'Bearer ')) {
-            return new Response(['message' => 'Unauthenticated'], 401);
+            return new \App\Core\Response(['message' => 'Unauthenticated'], 401);
         }
 
         $token = substr($header, 7);
@@ -27,11 +30,11 @@ class AuthMiddleware implements MiddlewareInterface
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$row) {
-            return new Response(['message' => 'Invalid token'], 401);
+            return new \App\Core\Response(['message' => 'Invalid token'], 401);
         }
 
         Auth::setUser($row);
 
-        return $next($request);
+        return $next($illuminateRequest);
     }
 }

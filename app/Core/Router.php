@@ -2,27 +2,17 @@
 
 namespace App\Core;
 
-use Closure;
+use Illuminate\Support\Facades\Route;
 
 class Router
 {
-    protected array $routes = [];
-    protected array $middlewareGroups = [];
-    protected array $currentGroupMiddleware = [];
-    protected string $currentPrefix = '';
-
     public function group(string $prefix, callable $callback, array $middleware = []): void
     {
-        $previousPrefix = $this->currentPrefix;
-        $previousMiddleware = $this->currentGroupMiddleware;
-
-        $this->currentPrefix = rtrim($previousPrefix . '/' . ltrim($prefix, '/'), '/');
-        $this->currentGroupMiddleware = array_merge($previousMiddleware, $middleware);
-
-        $callback($this);
-
-        $this->currentPrefix = $previousPrefix;
-        $this->currentGroupMiddleware = $previousMiddleware;
+        Route::prefix(trim($prefix, '/'))
+            ->middleware($middleware)
+            ->group(function () use ($callback) {
+                $callback($this);
+            });
     }
 
     /**
@@ -30,37 +20,22 @@ class Router
      */
     public function add(string $method, string $uri, callable|array $action, array $middleware = []): void
     {
-        $path = '/' . trim($this->currentPrefix . '/' . ltrim($uri, '/'), '/');
-        if ($path !== '/' && str_ends_with($path, '/')) {
-            $path = rtrim($path, '/');
-        }
+        $route = Route::match([strtolower($method)], ltrim($uri, '/'), function () use ($action) {
+            $params = request()->route()?->parameters() ?? [];
+            $request = app(Request::class);
 
-        $this->routes[] = [
-            'method' => strtoupper($method),
-            'uri' => $path,
-            'action' => $action,
-            'middleware' => array_merge($this->currentGroupMiddleware, $middleware),
-        ];
-    }
+            if (is_array($action)) {
+                [$class, $method] = $action;
+                $controller = app($class);
 
-    public function match(Request $request): ?array
-    {
-        foreach ($this->routes as $route) {
-            if ($route['method'] !== $request->method()) {
-                continue;
+                return $controller->$method($request, $params);
             }
 
-            $pattern = '#^' . preg_replace('#\{([^/]+)\}#', '(?P<$1>[^/]+)', $route['uri']) . '$#';
-            if (preg_match($pattern, $request->path(), $matches)) {
-                $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
-                return [
-                    'action' => $route['action'],
-                    'middleware' => $route['middleware'],
-                    'params' => $params,
-                ];
-            }
-        }
+            return $action($request, $params);
+        });
 
-        return null;
+        if (!empty($middleware)) {
+            $route->middleware($middleware);
+        }
     }
 }
