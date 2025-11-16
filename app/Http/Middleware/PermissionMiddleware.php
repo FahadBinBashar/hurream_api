@@ -4,20 +4,23 @@ namespace App\Http\Middleware;
 
 use App\Core\Database;
 use App\Core\Request;
-use App\Core\Response;
 use App\Support\Auth;
+use Closure;
+use Illuminate\Http\Request as IlluminateRequest;
+use Symfony\Component\HttpFoundation\Response;
 
-class PermissionMiddleware implements MiddlewareInterface
+class PermissionMiddleware
 {
-    public function handle(Request $request, callable $next, ?string $parameter = null): Response
+    public function handle(IlluminateRequest $illuminateRequest, Closure $next, ?string $parameter = null): Response
     {
+        $request = Request::fromIlluminate($illuminateRequest);
         if (!$parameter) {
-            return $next($request);
+            return $next($illuminateRequest);
         }
 
         $user = Auth::user();
         if (!$user) {
-            return new Response(['message' => 'Unauthenticated'], 401);
+            return new \App\Core\Response(['message' => 'Unauthenticated'], 401);
         }
 
         [$module, $action] = array_pad(explode('.', $parameter, 2), 2, 'read');
@@ -34,7 +37,7 @@ class PermissionMiddleware implements MiddlewareInterface
         $permissionStmt->execute(['module' => $module, 'action' => $action]);
         $permission = $permissionStmt->fetch(\PDO::FETCH_ASSOC);
         if (!$permission) {
-            return $next($request);
+            return $next($illuminateRequest);
         }
 
         $rolePermissionStmt = $pdo->prepare('SELECT allowed FROM role_permissions WHERE role_id = :role_id AND permission_id = :permission_id LIMIT 1');
@@ -45,9 +48,9 @@ class PermissionMiddleware implements MiddlewareInterface
         $rolePermission = $rolePermissionStmt->fetch(\PDO::FETCH_ASSOC);
 
         if (!$rolePermission || (int)$rolePermission['allowed'] !== 1) {
-            return new Response(['message' => 'Forbidden'], 403);
+            return new \App\Core\Response(['message' => 'Forbidden'], 403);
         }
 
-        return $next($request);
+        return $next($illuminateRequest);
     }
 }

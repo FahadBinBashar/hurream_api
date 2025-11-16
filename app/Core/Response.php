@@ -2,22 +2,12 @@
 
 namespace App\Core;
 
-class Response
-{
-    public function __construct(
-        protected array $payload,
-        protected int $status = 200,
-        protected array $headers = []
-    ) {
-    }
+use Illuminate\Http\JsonResponse;
 
-    public function send(): void
+class Response extends JsonResponse
+{
+    public function __construct(array $payload, int $status = 200, array $headers = [])
     {
-        http_response_code($this->status);
-        header('Content-Type: application/json');
-        foreach ($this->headers as $name => $value) {
-            header($name . ': ' . $value);
-        }
-        echo json_encode($this->payload, JSON_UNESCAPED_UNICODE);
+        parent::__construct($payload, $status, $headers);
     }
 }

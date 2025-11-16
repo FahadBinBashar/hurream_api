@@ -2,97 +2,114 @@
 
 namespace App\Core;
 
+use Illuminate\Http\Request as IlluminateRequest;
+use Illuminate\Http\UploadedFile;
+
 class Request
 {
-    public function __construct(
-        protected array $get,
-        protected array $post,
-        protected array $server,
-        protected array $files,
-        protected array $cookies,
-        protected mixed $body
-    ) {
+    public function __construct(private IlluminateRequest $baseRequest)
+    {
     }
 
     public static function capture(): self
     {
-        $input = file_get_contents('php://input');
-        $decoded = json_decode($input, true);
-        $body = json_last_error() === JSON_ERROR_NONE ? $decoded : $input;
+        return new self(IlluminateRequest::capture());
+    }
 
-        return new self($_GET, $_POST, $_SERVER, $_FILES, $_COOKIE, $body);
+    public static function fromIlluminate(IlluminateRequest $request): self
+    {
+        return new self($request);
     }
 
     public function method(): string
     {
-        return strtoupper($this->server['REQUEST_METHOD'] ?? 'GET');
+        return strtoupper($this->baseRequest->getMethod());
     }
 
     public function path(): string
     {
-        $uri = $this->server['REQUEST_URI'] ?? '/';
-        $queryPos = strpos($uri, '?');
-        if ($queryPos !== false) {
-            $uri = substr($uri, 0, $queryPos);
-        }
+        $path = $this->baseRequest->path();
 
-        return rtrim($uri, '/') ?: '/';
+        return '/' . ltrim($path, '/');
     }
 
     public function input(string $key = null, $default = null)
     {
         if ($key === null) {
-            if (is_array($this->body)) {
-                return $this->body;
-            }
-
-            return $this->post;
+            return $this->all();
         }
 
-        if (is_array($this->body) && array_key_exists($key, $this->body)) {
-            return $this->body[$key];
-        }
-
-        return $this->post[$key] ?? $default;
+        return $this->baseRequest->input($key, $default);
     }
 
     public function all(): array
     {
-        if (is_array($this->body)) {
-            return $this->body;
-        }
-
-        return array_merge($this->post, $this->get);
+        return $this->baseRequest->all();
     }
 
     public function header(string $key, $default = null)
     {
-        $key = 'HTTP_' . strtoupper(str_replace('-', '_', $key));
-        return $this->server[$key] ?? $default;
+        return $this->baseRequest->header($key, $default);
     }
 
     public function files(): array
     {
-        return $this->files;
+        return array_map(function ($file) {
+            if ($file instanceof UploadedFile) {
+                return $this->normalizeUploadedFile($file);
+            }
+
+            if (is_array($file)) {
+                return array_map(fn($inner) => $inner instanceof UploadedFile ? $this->normalizeUploadedFile($inner) : $inner, $file);
+            }
+
+            return $file;
+        }, $this->baseRequest->allFiles());
     }
 
-    public function file(string $key): ?array
+    public function file(string $key): mixed
     {
-        return $this->files[$key] ?? null;
+        $file = $this->baseRequest->file($key);
+
+        if ($file instanceof UploadedFile) {
+            return $this->normalizeUploadedFile($file);
+        }
+
+        if (is_array($file)) {
+            return array_map(fn($inner) => $inner instanceof UploadedFile ? $this->normalizeUploadedFile($inner) : $inner, $file);
+        }
+
+        return $file;
     }
 
     public function hasFile(string $key): bool
     {
-        return isset($this->files[$key]) && ($this->files[$key]['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK;
+        return $this->baseRequest->hasFile($key);
     }
 
     public function ip(): ?string
     {
-        return $this->server['REMOTE_ADDR'] ?? null;
+        return $this->baseRequest->ip();
     }
 
     public function userAgent(): ?string
     {
-        return $this->server['HTTP_USER_AGENT'] ?? null;
+        return $this->baseRequest->userAgent();
+    }
+
+    public function getIlluminate(): IlluminateRequest
+    {
+        return $this->baseRequest;
+    }
+
+    protected function normalizeUploadedFile(UploadedFile $file): array
+    {
+        return [
+            'name' => $file->getClientOriginalName(),
+            'tmp_name' => $file->getPathname(),
+            'size' => $file->getSize(),
+            'error' => $file->getError(),
+            'type' => $file->getClientMimeType(),
+        ];
     }
 }
