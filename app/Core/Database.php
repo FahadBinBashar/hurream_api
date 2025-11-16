@@ -2,37 +2,66 @@
 
 namespace App\Core;
 
-use App\Support\Env;
 use PDO;
 use PDOException;
+use RuntimeException;
 
 class Database
 {
     protected static ?PDO $connection = null;
-
     public static function connection(): PDO
     {
         if (static::$connection === null) {
-            $driver = Env::get('DB_CONNECTION', 'sqlite');
-            $database = Env::get('DB_DATABASE', __DIR__ . '/../../database/database.sqlite');
-            $username = Env::get('DB_USERNAME');
-            $password = Env::get('DB_PASSWORD');
+            $connectionName = config('database.default', env('DB_CONNECTION', 'mysql'));
+            $config = config("database.connections.{$connectionName}");
+
+            if ($config === null) {
+                throw new RuntimeException("Database connection configuration '{$connectionName}' is not defined.");
+            }
+
+            $driver = $config['driver'] ?? $connectionName;
+            $database = $config['database'] ?? null;
+            $username = $config['username'] ?? null;
+            $password = $config['password'] ?? null;
+            $options = $config['options'] ?? [];
 
             try {
                 if ($driver === 'sqlite') {
                     static::$connection = new PDO('sqlite:' . $database);
-                    static::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 } else {
-                    $host = Env::get('DB_HOST', '127.0.0.1');
-                    $port = Env::get('DB_PORT', '3306');
-                    $dsn = sprintf('%s:host=%s;port=%s;dbname=%s', $driver, $host, $port, $database);
-                    static::$connection = new PDO($dsn, $username, $password, [
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    ]);
+                    $host = $config['host'] ?? '127.0.0.1';
+                    $port = $config['port'] ?? null;
+                    $dsn = sprintf(
+                        '%s:host=%s%s;dbname=%s',
+                        $driver,
+                        $host,
+                        $port ? ";port={$port}" : '',
+                        $database
+                    );
+                    static::$connection = new PDO($dsn, $username, $password, $options);
                 }
+
+                static::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                static::$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             } catch (PDOException $exception) {
-                throw new \RuntimeException('Database connection failed: ' . $exception->getMessage(), 0, $exception);
+                $context = [
+                    'driver' => $driver,
+                    'database' => $database,
+                ];
+
+                if ($driver !== 'sqlite') {
+                    $context['host'] = $host ?? 'unknown';
+                    $context['port'] = $port ?? 'unknown';
+                    $context['username'] = $username ?? 'not-set';
+                }
+
+                $contextMessage = http_build_query($context, '', ', ');
+
+                throw new \RuntimeException(
+                    'Database connection failed: ' . $exception->getMessage() . ' (' . $contextMessage . ')',
+                    0,
+                    $exception
+                );
             }
         }
 
