@@ -71,22 +71,22 @@ class AuthController
             return new Response(['message' => 'Invalid credentials'], 401);
         }
 
-        if ($this->shouldRequireOtp($user)) {
-            $otpCode = (string)random_int(100000, 999999);
-            User::update((int)$user['id'], [
-                'otp_code' => password_hash($otpCode, PASSWORD_BCRYPT),
-                'otp_expires_at' => date('Y-m-d H:i:s', strtotime('+10 minutes')),
-                'two_factor_type' => $user['two_factor_type'] ?? 'email',
-            ]);
+        // if ($this->shouldRequireOtp($user)) {
+        //     $otpCode = (string)random_int(100000, 999999);
+        //     User::update((int)$user['id'], [
+        //         'otp_code' => password_hash($otpCode, PASSWORD_BCRYPT),
+        //         'otp_expires_at' => date('Y-m-d H:i:s', strtotime('+10 minutes')),
+        //         'two_factor_type' => $user['two_factor_type'] ?? 'email',
+        //     ]);
 
-            AuditLogger::log($user, 'otp_requested', 'auth', 'user', (int)$user['id'], ['context' => 'login'], $request->ip(), $request->userAgent());
+        //     AuditLogger::log($user, 'otp_requested', 'auth', 'user', (int)$user['id'], ['context' => 'login'], $request->ip(), $request->userAgent());
 
-            return new Response([
-                'message' => 'OTP required. Please verify to continue.',
-                'requires_otp' => true,
-                'delivery' => $user['two_factor_type'] ?? 'email',
-            ]);
-        }
+        //     return new Response([
+        //         'message' => 'OTP required. Please verify to continue.',
+        //         'requires_otp' => true,
+        //         'delivery' => $user['two_factor_type'] ?? 'email',
+        //     ]);
+        // }
 
         $token = Token::create($user['id']);
         unset($user['password']);

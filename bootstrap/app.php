@@ -10,6 +10,6 @@ Env::load(__DIR__ . '/../.env');
 
 $router = new Router();
 
-(require __DIR__ . '/../routes/api.php')($router);
+(require __DIR__ . '/../routes/core.php')($router);
 
 return new Application($router);

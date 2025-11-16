@@ -1,25 +1,110 @@
 #!/usr/bin/env php
 <?php
 
-require __DIR__ . '/vendor/autoload.php';
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Facade;
 
-use App\Core\Migrator;
-use App\Core\Seeder;
-use App\Support\Env;
+define('LARAVEL_START', microtime(true));
 
-Env::load(__DIR__ . '/.env');
+/*
+|--------------------------------------------------------------------------
+| Register an autoloader instance.
+|--------------------------------------------------------------------------
+*/
 
-$command = $argv[1] ?? null;
+require __DIR__.'/vendor/autoload.php';
 
-switch ($command) {
-    case 'migrate':
-        (new Migrator())->migrate();
-        echo "Migrations executed\n";
-        break;
-    case 'db:seed':
-        (new Seeder())->run();
-        echo "Seeders executed\n";
-        break;
-    default:
-        echo "Available commands: migrate, db:seed\n";
-}
+/*
+|--------------------------------------------------------------------------
+| Create The Application
+|--------------------------------------------------------------------------
+*/
+
+$app = new Application(
+    $_ENV['APP_BASE_PATH'] ?? __DIR__
+);
+
+/*
+|--------------------------------------------------------------------------
+| Bind Important Interfaces
+|--------------------------------------------------------------------------
+ */
+
+$app->singleton(
+    Illuminate\Contracts\Http\Kernel::class,
+    App\Http\Kernel::class
+);
+
+$app->singleton(
+    Illuminate\Contracts\Console\Kernel::class,
+    App\Console\Kernel::class
+);
+
+$app->singleton(
+    Illuminate\Contracts\Debug\ExceptionHandler::class,
+    App\Exceptions\Handler::class
+);
+
+/*
+|--------------------------------------------------------------------------
+| Define Root Binding
+ |--------------------------------------------------------------------------
+*/
+
+$app->instance('path.storage', __DIR__.'/storage');
+
+/*
+|--------------------------------------------------------------------------
+| Register Container Bindings
+ |--------------------------------------------------------------------------
+*/
+
+$app->singleton(
+    Illuminate\Foundation\Bootstrap\LoadConfiguration::class,
+    Illuminate\Foundation\Bootstrap\LoadConfiguration::class
+);
+
+/*
+|--------------------------------------------------------------------------
+| Bootstrapping the Application
+ |--------------------------------------------------------------------------
+*/
+
+$app->bootstrapWith([
+    Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables::class,
+    Illuminate\Foundation\Bootstrap\LoadConfiguration::class,
+    Illuminate\Foundation\Bootstrap\HandleExceptions::class,
+    Illuminate\Foundation\Bootstrap\RegisterFacades::class,
+    Illuminate\Foundation\Bootstrap\SetRequestForConsole::class,
+    Illuminate\Foundation\Bootstrap\RegisterProviders::class,
+    Illuminate\Foundation\Bootstrap\BootProviders::class,
+]);
+
+/*
+|--------------------------------------------------------------------------
+| Resolve the Console Kernel
+|--------------------------------------------------------------------------
+*/
+
+$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+
+/*
+|--------------------------------------------------------------------------
+| Run the console application
+|--------------------------------------------------------------------------
+*/
+
+$status = $kernel->handle(
+    $input = new Symfony\Component\Console\Input\ArgvInput,
+    new Symfony\Component\Console\Output\ConsoleOutput
+);
+
+/*
+|--------------------------------------------------------------------------
+| Shutdown The Application.
+|--------------------------------------------------------------------------
+*/
+
+$kernel->terminate($input, $status);
+
+exit($status);

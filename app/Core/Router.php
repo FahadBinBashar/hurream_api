@@ -25,7 +25,10 @@ class Router
         $this->currentGroupMiddleware = $previousMiddleware;
     }
 
-    public function add(string $method, string $uri, callable $action, array $middleware = []): void
+    /**
+     * @param callable|array{0: class-string, 1: string} $action
+     */
+    public function add(string $method, string $uri, callable|array $action, array $middleware = []): void
     {
         $path = '/' . trim($this->currentPrefix . '/' . ltrim($uri, '/'), '/');
         if ($path !== '/' && str_ends_with($path, '/')) {
