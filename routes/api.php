@@ -7,7 +7,9 @@ use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\InstallmentController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\NotificationTemplateController;
@@ -68,6 +70,13 @@ $router->add('PATCH', '/transactions/{id}', [TransactionController::class, 'upda
 $router->add('DELETE', '/transactions/{id}', [TransactionController::class, 'destroy'], ['auth']);
 
 // HR
+$router->add('GET', '/grades', [GradeController::class, 'index'], ['auth']);
+$router->add('POST', '/grades', [GradeController::class, 'store'], ['auth']);
+$router->add('PUT', '/grades/{id}', [GradeController::class, 'update'], ['auth']);
+$router->add('GET', '/grades/{id}/designations', [DesignationController::class, 'byGrade'], ['auth']);
+$router->add('GET', '/designations', [DesignationController::class, 'index'], ['auth']);
+$router->add('POST', '/designations', [DesignationController::class, 'store'], ['auth']);
+$router->add('PUT', '/designations/{id}', [DesignationController::class, 'update'], ['auth']);
 $router->add('GET', '/employees', [EmployeeController::class, 'index'], ['auth']);
 $router->add('POST', '/employees', [EmployeeController::class, 'store'], ['auth']);
 $router->add('GET', '/employees/{id}', [EmployeeController::class, 'show'], ['auth']);

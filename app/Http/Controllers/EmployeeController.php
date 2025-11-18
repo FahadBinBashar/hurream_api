@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Core\Database;
 use App\Core\Request;
+use App\Core\Response;
 use App\Models\AttendanceRecord;
+use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\EmployeeKpi;
 use App\Models\EmployeeSalary;
+use App\Models\Grade;
 use App\Models\LeaveRequest;
 use App\Support\AuditLogger;
 use App\Support\Auth;
@@ -41,8 +44,8 @@ class EmployeeController extends Controller
             'phone' => 'required|regex:/^01[3-9]\\d{8}$/',
             'email' => 'email',
             'education' => 'required',
-            'grade' => 'required',
-            'position' => 'required',
+            'grade_id' => 'required|numeric|min:1',
+            'designation_id' => 'required|numeric|min:1',
             'join_date' => 'required|date',
             'salary' => 'required|numeric|min:0',
             'documents' => 'array|min:1',
@@ -52,6 +55,11 @@ class EmployeeController extends Controller
         }
 
         $payload = $this->preparePayload($request->all());
+        $gradeResolution = $this->applyGradeSelection($payload);
+        if ($gradeResolution instanceof Response) {
+            return $gradeResolution;
+        }
+        $payload = $gradeResolution;
         try {
             if ($filePayload = $this->handleDocuments($request)) {
                 $payload = array_merge($payload, $filePayload);
@@ -97,8 +105,8 @@ class EmployeeController extends Controller
             'phone' => 'required|regex:/^01[3-9]\\d{8}$/',
             'email' => 'email',
             'education' => 'required',
-            'grade' => 'required',
-            'position' => 'required',
+            'grade_id' => 'required|numeric|min:1',
+            'designation_id' => 'required|numeric|min:1',
             'join_date' => 'required|date',
             'salary' => 'required|numeric|min:0',
             'documents' => 'array|min:1',
@@ -112,6 +120,11 @@ class EmployeeController extends Controller
         }
 
         $payload = $this->preparePayload($merged);
+        $gradeResolution = $this->applyGradeSelection($payload);
+        if ($gradeResolution instanceof Response) {
+            return $gradeResolution;
+        }
+        $payload = $gradeResolution;
         try {
             if ($filePayload = $this->handleDocuments($request)) {
                 $payload = array_merge($payload, $filePayload);
@@ -372,6 +385,48 @@ class EmployeeController extends Controller
         return $this->json(['data' => $updated]);
     }
 
+    private function applyGradeSelection(array $payload): array|Response
+    {
+        $gradeId = (int)($payload['grade_id'] ?? 0);
+        $designationId = (int)($payload['designation_id'] ?? 0);
+        if ($gradeId <= 0 || $designationId <= 0) {
+            return $this->json(['message' => 'Grade and designation are required'], 422);
+        }
+
+        $grade = Grade::find($gradeId);
+        if (!$grade) {
+            return $this->json(['message' => 'Selected grade is invalid'], 422);
+        }
+        if (isset($grade['status']) && strtolower((string)$grade['status']) !== 'active') {
+            return $this->json(['message' => 'Selected grade is inactive'], 422);
+        }
+
+        $designation = Designation::find($designationId);
+        if (!$designation || (int)$designation['grade_id'] !== (int)$grade['id']) {
+            return $this->json(['message' => 'Designation must belong to the selected grade'], 422);
+        }
+        if (isset($designation['status']) && strtolower((string)$designation['status']) !== 'active') {
+            return $this->json(['message' => 'Selected designation is inactive'], 422);
+        }
+
+        $payload['grade_id'] = (int)$grade['id'];
+        $payload['designation_id'] = (int)$designation['id'];
+        $payload['grade'] = $this->formatGradeLabel($grade);
+        $payload['position'] = $designation['designation_name'];
+
+        return $payload;
+    }
+
+    private function formatGradeLabel(array $grade): string
+    {
+        $label = 'Grade ' . ($grade['grade_no'] ?? '');
+        if (!empty($grade['grade_name'])) {
+            $label .= ' - ' . $grade['grade_name'];
+        }
+
+        return trim($label, ' -');
+    }
+
     private function preparePayload(array $input): array
     {
         $allowed = [
@@ -384,8 +439,8 @@ class EmployeeController extends Controller
             'email',
             'education',
             'qualifications',
-            'grade',
-            'position',
+            'grade_id',
+            'designation_id',
             'join_date',
             'salary',
             'documents',
@@ -405,6 +460,9 @@ class EmployeeController extends Controller
             }
             if ($key === 'salary' && $value !== null) {
                 $filtered[$key] = (float)$value;
+            }
+            if (in_array($key, ['grade_id', 'designation_id'], true)) {
+                $filtered[$key] = (int)$value;
             }
         }
 

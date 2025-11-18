@@ -118,6 +118,18 @@ Authentication requirements:
 - Leave Policy (Casual/Sick/Earn)।
 - পারফরম্যান্স রিভিউ ও ইনসেনটিভ।
 
+### 6.4 Grade & Designation Management (Module 11)
+
+- **Grade Master:** Admin panel থেকে Grade 1–6 (Director → Officer) পর্যন্ত ক্রমিক তালিকা তৈরি/এডিট/ডিলিট করা যায়। `grades` টেবিলে `grade_no`, `grade_name`, `description`, `status` ফিল্ড থাকে এবং Dashboard-এ Active/Inactive কাউন্ট ও সাম্প্রতিক পরিবর্তন দেখা যায়।
+- **Designation Master:** প্রত্যেক Grade-এর অধীনে একাধিক Designation (`designations` টেবিল) ম্যাপ করা হয়। একই Grade-এ ডুপ্লিকেট নাম নিষিদ্ধ এবং Inactive পদবি HR ফর্মে দেখানো হয় না। Admin পুরো CRUD করতে পারে; HR Manager শুধুমাত্র Designation create/update করতে পারে; অন্যান্য রোলের জন্য রিড-অনলি।
+- **API Workflow:**
+  - `GET /api/grades` → Grade লিস্ট + স্ট্যাটস।
+  - `POST/PUT /api/grades/{id}` → Admin grade তৈরি/আপডেট।
+  - `GET /api/grades/{id}/designations` → নির্বাচিত grade-এর Active Designation ড্রপডাউন।
+  - `GET /api/designations?grade_id=6` এবং `POST/PUT /api/designations/{id}` → HR/Admin Designation ম্যানেজমেন্ট।
+- **Employee Form Integration:** Add Employee করার সময় প্রথমে Grade নির্বাচন করা বাধ্যতামূলক, তারপর ঐ Grade-এর Active Designation গুলো অটো লোড হয়। Backend ভ্যালিডেশন নিশ্চিত করে যে নির্বাচিত Designation সেই Grade-এর অন্তর্ভুক্ত এবং Inactive নয়।
+- **Promotion / History:** Grade ও Designation `employees` টেবিলে রিলেশন আকারে সংরক্ষণ হওয়ায় ভবিষ্যতে Promotion workflow, Audit log এবং Dashboard মেট্রিক্স একই ডেটা উৎস থেকে পাওয়া যায়।
+
 ## 7) Sales & Marketing Module
 
 ### 7.1 লিড / CRM

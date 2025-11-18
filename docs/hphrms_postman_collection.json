@@ -1104,7 +1104,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Farhan Ahmed\",\n  \"father_name\": \"Mahmud Ahmed\",\n  \"mother_name\": \"Salma Ahmed\",\n  \"nid\": \"1987654321987\",\n  \"address\": \"Sylhet, Bangladesh\",\n  \"phone\": \"01512345678\",\n  \"email\": \"farhan@example.com\",\n  \"education\": \"SSC\",\n  \"qualifications\": \"Sales specialist\",\n  \"grade\": \"6\",\n  \"position\": \"Marketing Officer\",\n  \"join_date\": \"2023-11-01\",\n  \"salary\": 30000,\n  \"documents\": [\"nid\", \"police_verification\", \"photo\"],\n  \"status\": \"active\",\n  \"photo_path\": \"/uploads/employees/farhan_photo.jpg\"\n}"
+              "raw": "{\n  \"name\": \"Farhan Ahmed\",\n  \"father_name\": \"Mahmud Ahmed\",\n  \"mother_name\": \"Salma Ahmed\",\n  \"nid\": \"1987654321987\",\n  \"address\": \"Sylhet, Bangladesh\",\n  \"phone\": \"01512345678\",\n  \"email\": \"farhan@example.com\",\n  \"education\": \"SSC\",\n  \"qualifications\": \"Sales specialist\",\n  \"grade_id\": 6,\n  \"designation_id\": 12,\n  \"join_date\": \"2023-11-01\",\n  \"salary\": 30000,\n  \"documents\": [\"nid\", \"police_verification\", \"photo\"],\n  \"status\": \"active\",\n  \"photo_path\": \"/uploads/employees/farhan_photo.jpg\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/employees",
@@ -1157,7 +1157,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Farhan Ahmed\",\n  \"father_name\": \"Mahmud Ahmed\",\n  \"mother_name\": \"Salma Ahmed\",\n  \"nid\": \"1987654321987\",\n  \"address\": \"Sylhet, Bangladesh\",\n  \"phone\": \"01512345678\",\n  \"email\": \"farhan@example.com\",\n  \"education\": \"SSC\",\n  \"qualifications\": \"Sales specialist\",\n  \"grade\": \"6\",\n  \"position\": \"Marketing Officer\",\n  \"join_date\": \"2023-11-01\",\n  \"salary\": 32000,\n  \"documents\": [\"nid\", \"police_verification\", \"photo\"],\n  \"status\": \"probation\"\n}"
+              "raw": "{\n  \"name\": \"Farhan Ahmed\",\n  \"father_name\": \"Mahmud Ahmed\",\n  \"mother_name\": \"Salma Ahmed\",\n  \"nid\": \"1987654321987\",\n  \"address\": \"Sylhet, Bangladesh\",\n  \"phone\": \"01512345678\",\n  \"email\": \"farhan@example.com\",\n  \"education\": \"SSC\",\n  \"qualifications\": \"Sales specialist\",\n  \"grade_id\": 6,\n  \"designation_id\": 12,\n  \"join_date\": \"2023-11-01\",\n  \"salary\": 32000,\n  \"documents\": [\"nid\", \"police_verification\", \"photo\"],\n  \"status\": \"probation\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/employees/{{employee_id}}",
@@ -1514,6 +1514,207 @@
             "body": {
               "mode": "raw",
               "raw": "{\n  \"nid_verified\": true,\n  \"police_verified\": true\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Grade & Designation Management",
+      "item": [
+        {
+          "name": "List Grades",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "grades"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Grade",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grade_no\": 7,\n  \"grade_name\": \"Assistant Director\",\n  \"description\": \"Deputy leadership role\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/grades",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "grades"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Grade",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grade_name\": \"Assistant Director / Deputy Director\",\n  \"description\": \"Updated scope for grade 7\",\n  \"status\": \"inactive\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/grades/{{grade_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "grades",
+                "{{grade_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Grade Wise Designations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/grades/{{grade_id}}/designations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "grades",
+                "{{grade_id}}",
+                "designations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Designations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/designations?grade_id={{grade_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "designations"
+              ],
+              "query": [
+                {
+                  "key": "grade_id",
+                  "value": "{{grade_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Designation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grade_id\": 6,\n  \"designation_name\": \"Senior Marketing Officer\",\n  \"description\": \"Leads regional marketing\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/designations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "designations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Designation",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grade_id\": 5,\n  \"designation_name\": \"Deputy Manager\",\n  \"status\": \"inactive\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/designations/{{designation_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "designations",
+                "{{designation_id}}"
+              ]
             }
           }
         }
