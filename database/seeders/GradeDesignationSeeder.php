@@ -1,7 +1,13 @@
 <?php
 
-return new class {
-    public function run(\PDO $pdo, callable $seedOnce): void
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class GradeDesignationSeeder extends Seeder
+{
+    public function run(): void
     {
         $grades = [
             [
@@ -42,13 +48,9 @@ return new class {
             ],
         ];
 
-        $seedOnce($pdo, 'grades', $grades, 'grade_no');
+        $this->seedOnce('grades', $grades, 'grade_no');
 
-        $gradeStmt = $pdo->query('SELECT id, grade_no FROM grades');
-        $gradeMap = [];
-        foreach ($gradeStmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-            $gradeMap[(int)$row['grade_no']] = (int)$row['id'];
-        }
+        $gradeMap = DB::table('grades')->pluck('id', 'grade_no');
 
         $designationSeed = [
             ['grade_no' => 1, 'designation_name' => 'Director'],
@@ -82,7 +84,27 @@ return new class {
         }
 
         if (!empty($designations)) {
-            $seedOnce($pdo, 'designations', $designations, ['grade_id', 'designation_name']);
+            $this->seedOnce('designations', $designations, ['grade_id', 'designation_name']);
         }
     }
-};
+
+    protected function seedOnce(string $table, array $rows, string|array|null $uniqueKey): void
+    {
+        foreach ($rows as $row) {
+            if ($uniqueKey) {
+                $keys = (array)$uniqueKey;
+                $query = DB::table($table);
+
+                foreach ($keys as $key) {
+                    $query->where($key, $row[$key]);
+                }
+
+                if ($query->exists()) {
+                    continue;
+                }
+            }
+
+            DB::table($table)->insert($row);
+        }
+    }
+}

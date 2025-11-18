@@ -1,34 +1,36 @@
 <?php
 
-use App\Core\Database;
+namespace Database\Seeders;
 
-return new class {
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Seed the application's database.
+     */
     public function run(): void
     {
-        $pdo = Database::connection();
+        $roles = array_map(fn(string $role): array => [
+            'name' => $role,
+            'permissions' => json_encode(['*']),
+        ], ['admin', 'hr', 'accounts', 'officer', 'investor', 'customer']);
 
-        $roles = array_map(function (string $role): array {
-            return [
-                'name' => $role,
-                'permissions' => json_encode(['*']),
-            ];
-        }, ['admin', 'hr', 'accounts', 'officer', 'investor', 'customer']);
+        $this->seedOnce('roles', $roles, 'name');
 
-        $this->seedOnce($pdo, 'roles', $roles, 'name');
-
-        $adminExists = $pdo->query("SELECT COUNT(*) FROM users WHERE email = 'admin@hphrms.test'")->fetchColumn();
-        if (!$adminExists) {
-            $stmt = $pdo->prepare('INSERT INTO users (name, email, password, role, phone) VALUES (:name, :email, :password, :role, :phone)');
-            $stmt->execute([
+        if (!DB::table('users')->where('email', 'admin@hphrms.test')->exists()) {
+            DB::table('users')->insert([
                 'name' => 'System Admin',
                 'email' => 'admin@hphrms.test',
-                'password' => password_hash('password', PASSWORD_BCRYPT),
+                'password' => Hash::make('password'),
                 'role' => 'admin',
                 'phone' => '01700000000',
             ]);
         }
 
-        $this->seedOnce($pdo, 'customers', [
+        $this->seedOnce('customers', [
             [
                 'name' => 'Rahim Uddin',
                 'NID' => '9876543210000',
@@ -37,14 +39,14 @@ return new class {
                 'email' => 'rahim@example.com',
                 'status' => 'verified',
                 'reference' => 'MD Approval',
-                'verified_at' => '2025-01-05T10:00:00+06:00',
+                'verified_at' => '2025-01-05 10:00:00',
                 'membership_type' => 'gold',
                 'is_investor' => 1,
                 'investor_no' => 'INV-2025-0001',
                 'bank_info' => 'DBBL-12345',
                 'nominee' => 'Rafiq',
-                'otp_verified_at' => '2025-01-04T09:00:00+06:00',
-                'admin_approved_at' => '2025-01-05T12:00:00+06:00',
+                'otp_verified_at' => '2025-01-04 09:00:00',
+                'admin_approved_at' => '2025-01-05 12:00:00',
             ],
             [
                 'name' => 'Karim Ali',
@@ -54,7 +56,7 @@ return new class {
                 'email' => 'karim@example.com',
                 'status' => 'verified',
                 'reference' => 'Referral Program',
-                'verified_at' => '2025-01-10T10:00:00+06:00',
+                'verified_at' => '2025-01-10 10:00:00',
                 'membership_type' => 'platinum',
                 'is_investor' => 1,
                 'investor_no' => 'INV-2025-0002',
@@ -63,7 +65,7 @@ return new class {
             ],
         ], 'NID');
 
-        $this->seedOnce($pdo, 'share_packages', [
+        $this->seedOnce('share_packages', [
             [
                 'package_name' => 'VIP Gold Package',
                 'package_code' => 'VIP-GOLD',
@@ -98,11 +100,11 @@ return new class {
             ],
         ], 'package_code');
 
-        $goldPackageId = (int)$pdo->query("SELECT id FROM share_packages WHERE package_code = 'VIP-GOLD' LIMIT 1")->fetchColumn();
-        $platinumPackageId = (int)$pdo->query("SELECT id FROM share_packages WHERE package_code = 'PLATINUM-INF' LIMIT 1")->fetchColumn();
+        $goldPackageId = DB::table('share_packages')->where('package_code', 'VIP-GOLD')->value('id');
+        $platinumPackageId = DB::table('share_packages')->where('package_code', 'PLATINUM-INF')->value('id');
 
         if ($goldPackageId) {
-            $this->seedOnce($pdo, 'package_benefits', [
+            $this->seedOnce('package_benefits', [
                 ['package_id' => $goldPackageId, 'benefit_type' => 'free_night', 'benefit_value' => '6 nights', 'notes' => null],
                 ['package_id' => $goldPackageId, 'benefit_type' => 'lifetime_discount', 'benefit_value' => '20%', 'notes' => null],
                 ['package_id' => $goldPackageId, 'benefit_type' => 'tour_voucher', 'benefit_value' => 'BDT 40,000', 'notes' => null],
@@ -110,35 +112,17 @@ return new class {
         }
 
         if ($platinumPackageId) {
-            $this->seedOnce($pdo, 'package_benefits', [
+            $this->seedOnce('package_benefits', [
                 ['package_id' => $platinumPackageId, 'benefit_type' => 'free_night', 'benefit_value' => '8 nights', 'notes' => 'Peak season allowed'],
                 ['package_id' => $platinumPackageId, 'benefit_type' => 'vip_services', 'benefit_value' => 'Concierge & Airport pickup', 'notes' => null],
             ], ['package_id', 'benefit_type', 'benefit_value']);
         }
 
-        $goldSnapshot = json_encode([
-            'package' => [
-                'id' => $goldPackageId,
-                'package_name' => 'VIP Gold Package',
-                'package_code' => 'VIP-GOLD',
-                'package_price' => 720000,
-                'duration_months' => 24,
-                'monthly_installment' => 27000,
-                'bonus_share_percent' => 10,
-                'bonus_share_units' => 3,
-                'free_nights' => 6,
-                'lifetime_discount' => 20,
-                'tour_voucher_value' => 40000,
-                'gift_items' => 'Watch, Perfume',
-            ],
-            'benefits' => [
-                ['benefit_type' => 'free_night', 'benefit_value' => '6 nights', 'notes' => null],
-                ['benefit_type' => 'lifetime_discount', 'benefit_value' => '20%', 'notes' => null],
-                ['benefit_type' => 'tour_voucher', 'benefit_value' => 'BDT 40,000', 'notes' => null],
-            ],
-        ], JSON_UNESCAPED_UNICODE);
+        $goldPackage = DB::table('share_packages')->where('id', $goldPackageId)->first();
+        $goldBenefits = DB::table('package_benefits')->where('package_id', $goldPackageId)->get()->toArray();
+        $goldSnapshot = json_encode(['package' => $goldPackage, 'benefits' => $goldBenefits], JSON_UNESCAPED_UNICODE);
 
-        $this->seedOnce($pdo, 'customer_shares', [
+        $this->seedOnce('customer_shares', [
             [
                 'customer_id' => 1,
                 'share_type' => 'single',
@@ -181,33 +165,29 @@ return new class {
             ],
         ], ['customer_id', 'stage']);
 
-        $this->seedOnce($pdo, 'approvals', [
+        $this->seedOnce('approvals', [
             ['module' => 'share_issue', 'record_id' => 2, 'approver_id' => 1, 'status' => 'pending'],
             ['module' => 'share_issue', 'record_id' => 2, 'approver_id' => 2, 'status' => 'pending'],
             ['module' => 'share_issue', 'record_id' => 2, 'approver_id' => 3, 'status' => 'pending'],
         ], ['module', 'record_id', 'approver_id']);
 
-        $this->seedOnce($pdo, 'transactions', [
+        $this->seedOnce('transactions', [
             ['share_id' => 1, 'amount' => 50000, 'payment_type' => 'bank', 'date' => '2025-01-10'],
             ['share_id' => 2, 'amount' => 25000, 'payment_type' => 'cash', 'date' => '2025-02-12'],
         ], ['share_id', 'date']);
 
-        $gradeSeeder = require __DIR__ . '/GradeDesignationSeeder.php';
-        $gradeSeeder->run($pdo, function (\PDO $pdo, string $table, array $rows, string|array|null $uniqueKey = null): void {
-            $this->seedOnce($pdo, $table, $rows, $uniqueKey);
-        });
+        // The other seeders are now standard Laravel seeders, so we call them with `call`.
+        $this->call([
+            GradeDesignationSeeder::class,
+            EmployeeSeeder::class,
+        ]);
 
-        $employeeSeeder = require __DIR__ . '/EmployeeSeeder.php';
-        $employeeSeeder->run($pdo, function (\PDO $pdo, string $table, array $rows, string|array|null $uniqueKey = null): void {
-            $this->seedOnce($pdo, $table, $rows, $uniqueKey);
-        });
-
-        $this->seedOnce($pdo, 'leads', [
+        $this->seedOnce('leads', [
             ['officer_id' => 2, 'name' => 'Corporate Client A', 'contact' => 'clientA@example.com', 'status' => 'prospect'],
             ['officer_id' => 2, 'name' => 'Corporate Client B', 'contact' => 'clientB@example.com', 'status' => 'new'],
         ], 'name');
 
-        $this->seedOnce($pdo, 'bookings', [
+        $this->seedOnce('bookings', [
             [
                 'customer_id' => 1,
                 'room_type' => 'Deluxe',
@@ -232,43 +212,32 @@ return new class {
             ],
         ], ['customer_id', 'check_in']);
 
-        $this->seedOnce($pdo, 'accounts', [
+        $this->seedOnce('accounts', [
             ['type' => 'income', 'description' => 'Room Booking', 'amount' => 40000, 'date' => '2025-02-05'],
             ['type' => 'expense', 'description' => 'Staff Salary', 'amount' => 15000, 'date' => '2025-02-07'],
         ], 'description');
     }
 
-    protected function seedOnce(\PDO $pdo, string $table, array $rows, string|array|null $uniqueKey): void
+    /**
+     * Seed a table only if the unique key doesn't exist.
+     */
+    protected function seedOnce(string $table, array $rows, string|array|null $uniqueKey): void
     {
         foreach ($rows as $row) {
             if ($uniqueKey) {
                 $keys = (array)$uniqueKey;
-                $conditions = [];
-                $params = [];
-                $skip = false;
-                foreach ($keys as $index => $key) {
-                    if (!array_key_exists($key, $row)) {
-                        $skip = true;
-                        break;
-                    }
-                    $placeholder = ':value' . $index;
-                    $conditions[] = "{$key} = {$placeholder}";
-                    $params[$placeholder] = $row[$key];
+                $query = DB::table($table);
+
+                foreach ($keys as $key) {
+                    $query->where($key, $row[$key]);
                 }
-                if ($skip === false) {
-                    $query = "SELECT COUNT(*) FROM {$table} WHERE " . implode(' AND ', $conditions);
-                    $stmt = $pdo->prepare($query);
-                    $stmt->execute($params);
-                    if ($stmt->fetchColumn()) {
-                        continue;
-                    }
+
+                if ($query->exists()) {
+                    continue;
                 }
             }
 
-            $columns = implode(', ', array_keys($row));
-            $placeholders = ':' . implode(', :', array_keys($row));
-            $stmt = $pdo->prepare("INSERT INTO {$table} ({$columns}) VALUES ({$placeholders})");
-            $stmt->execute($row);
+            DB::table($table)->insert($row);
         }
     }
-};
+}
