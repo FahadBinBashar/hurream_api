@@ -9,7 +9,6 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\InstallmentController;
-use App\Http\Controllers\InvestorController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\NotificationTemplateController;
 use App\Http\Controllers\PayrollController;
@@ -40,12 +39,13 @@ $router->add('GET', '/users/{id}', [UserController::class, 'show'], ['auth', 'ro
 $router->add('PATCH', '/users/{id}', [UserController::class, 'update'], ['auth', 'role:admin']);
 $router->add('DELETE', '/users/{id}', [UserController::class, 'destroy'], ['auth', 'role:admin']);
 
-// Customers
+// Customers / Members
 $router->add('GET', '/customers', [CustomerController::class, 'index'], ['auth']);
 $router->add('POST', '/customers', [CustomerController::class, 'store'], ['auth']);
 $router->add('GET', '/customers/{id}', [CustomerController::class, 'show'], ['auth']);
 $router->add('PATCH', '/customers/{id}', [CustomerController::class, 'update'], ['auth']);
 $router->add('DELETE', '/customers/{id}', [CustomerController::class, 'destroy'], ['auth']);
+$router->add('POST', '/customers/{id}/verify-documents', [CustomerController::class, 'verifyDocuments'], ['auth']);
 
 // Bookings
 $router->add('GET', '/bookings', [BookingController::class, 'index'], ['auth']);
@@ -54,14 +54,6 @@ $router->add('GET', '/bookings/{id}', [BookingController::class, 'show'], ['auth
 $router->add('PATCH', '/bookings/{id}', [BookingController::class, 'update'], ['auth']);
 $router->add('DELETE', '/bookings/{id}', [BookingController::class, 'destroy'], ['auth']);
 $router->add('POST', '/bookings/{id}/cancel', [BookingController::class, 'cancel'], ['auth']);
-
-// Investors & related
-$router->add('GET', '/investors', [InvestorController::class, 'index'], ['auth']);
-$router->add('POST', '/investors', [InvestorController::class, 'store'], ['auth']);
-$router->add('GET', '/investors/{id}', [InvestorController::class, 'show'], ['auth']);
-$router->add('PATCH', '/investors/{id}', [InvestorController::class, 'update'], ['auth']);
-$router->add('DELETE', '/investors/{id}', [InvestorController::class, 'destroy'], ['auth']);
-$router->add('POST', '/investors/{id}/verify-documents', [InvestorController::class, 'verifyDocuments'], ['auth']);
 
 $router->add('GET', '/shares', [ShareController::class, 'index'], ['auth']);
 $router->add('POST', '/shares', [ShareController::class, 'store'], ['auth']);
@@ -132,8 +124,8 @@ $router->add('GET', '/payroll/runs', [PayrollController::class, 'index'], ['auth
 $router->add('POST', '/payroll/runs', [PayrollController::class, 'store'], ['auth']);
 
 $router->add('POST', '/stages/close-period', [StageController::class, 'closePeriod'], ['auth']);
-$router->add('GET', '/investors/{id}/stages', [StageController::class, 'investorStages'], ['auth']);
-$router->add('PATCH', '/investors/{id}/stage', [StageController::class, 'upgrade'], ['auth']);
+$router->add('GET', '/customers/{id}/stages', [StageController::class, 'customerStages'], ['auth']);
+$router->add('PATCH', '/customers/{id}/stage', [StageController::class, 'upgrade'], ['auth']);
 $router->add('GET', '/stages/report', [StageController::class, 'report'], ['auth']);
 
 // Reports

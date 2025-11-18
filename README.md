@@ -38,6 +38,8 @@ This document consolidates the functional scope, validation rules, approval flow
 - **Portal (Private):** Admin, Director/MD, Manager, Officer (Sales/Marketing), HR, Accounts, Investor, Customer।
 - **Modules:** Admin & Policy, Customer/Booking, HR/Employee, Sales/Share, Investment/Profit, Accounts/Finance, Reports।
 
+> **Design Update (Feb 2025):** Customer = Investor = Member. আলাদা `investors` টেবিল নেই; যে Customer শেয়ার কেনে তাকে `customers.is_investor = 1` হিসেবে ফ্ল্যাগ করা হয় এবং `investor_no` স্বয়ংক্রিয়ভাবে জেনারেট হয়। Shares, installments, stage-tracking সব জায়গায় এখন `customer_id` ব্যবহৃত হয়। ফলে একক প্রোফাইল থেকেই বুকিং + ইনভেস্টমেন্ট + ডিভিডেন্ড ট্র্যাক করা যায়।
+
 ## 3) User Roles & Authentication
 
 | Role | Core Responsibilities |

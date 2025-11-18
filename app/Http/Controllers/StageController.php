@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Core\Database;
 use App\Core\Request;
-use App\Models\InvestorStage;
+use App\Models\CustomerStage;
 use App\Models\Stage;
 use App\Models\StagePeriod;
 use App\Support\AuditLogger;
@@ -16,7 +16,7 @@ class StageController extends Controller
     public function closePeriod(Request $request)
     {
         if ($response = $this->validate($request, [
-            'investor_id' => 'required|numeric',
+            'customer_id' => 'required|numeric',
             'profit_amount' => 'required|numeric',
             'period_start' => 'required|date',
             'period_end' => 'required|date',
@@ -26,18 +26,18 @@ class StageController extends Controller
 
         $data = $request->all();
         $pdo = Database::connection();
-        $stmt = $pdo->prepare('SELECT * FROM investor_stages WHERE investor_id = :investor_id LIMIT 1');
-        $stmt->execute(['investor_id' => $data['investor_id']]);
-        $investorStage = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $stmt = $pdo->prepare('SELECT * FROM customer_stages WHERE customer_id = :customer_id LIMIT 1');
+        $stmt->execute(['customer_id' => $data['customer_id']]);
+        $customerStage = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        if (!$investorStage) {
-            return $this->json(['message' => 'Investor stage not found'], 404);
+        if (!$customerStage) {
+            return $this->json(['message' => 'Customer stage not found'], 404);
         }
 
-        $capital = (float)$investorStage['capital_amount'];
+        $capital = (float)$customerStage['capital_amount'];
         $profit = (float)$data['profit_amount'];
 
-        if ((int)$investorStage['reinvest_enabled']) {
+        if ((int)$customerStage['reinvest_enabled']) {
             $reinvest = round($profit * 0.5, 2);
             $cashout = round($profit - $reinvest, 2);
             $nextCapital = $capital + $reinvest;
@@ -48,7 +48,7 @@ class StageController extends Controller
         }
 
         $period = StagePeriod::create([
-            'investor_stage_id' => $investorStage['id'],
+            'customer_stage_id' => $customerStage['id'],
             'period_start' => $data['period_start'],
             'period_end' => $data['period_end'],
             'profit_amount' => $profit,
@@ -57,12 +57,12 @@ class StageController extends Controller
             'next_capital_amount' => $nextCapital,
         ]);
 
-        InvestorStage::update((int)$investorStage['id'], [
+        CustomerStage::update((int)$customerStage['id'], [
             'capital_amount' => $nextCapital,
             'last_closed_at' => date('Y-m-d H:i:s'),
         ]);
 
-        AuditLogger::log(Auth::user(), 'close_period', 'stages', 'investor_stage', (int)$investorStage['id'], $data, $request->ip(), $request->userAgent());
+        AuditLogger::log(Auth::user(), 'close_period', 'stages', 'customer_stage', (int)$customerStage['id'], $data, $request->ip(), $request->userAgent());
 
         return $this->json([
             'data' => [
@@ -74,23 +74,23 @@ class StageController extends Controller
         ]);
     }
 
-    public function investorStages(Request $request, array $params)
+    public function customerStages(Request $request, array $params)
     {
         $pdo = Database::connection();
-        $stmt = $pdo->prepare('SELECT * FROM investor_stages WHERE investor_id = :id LIMIT 1');
+        $stmt = $pdo->prepare('SELECT * FROM customer_stages WHERE customer_id = :id LIMIT 1');
         $stmt->execute(['id' => (int)$params['id']]);
-        $investorStage = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $customerStage = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        if (!$investorStage) {
-            return $this->json(['message' => 'Investor stage not found'], 404);
+        if (!$customerStage) {
+            return $this->json(['message' => 'Customer stage not found'], 404);
         }
 
-        $historyStmt = $pdo->prepare('SELECT * FROM stage_periods WHERE investor_stage_id = :id ORDER BY period_start DESC');
-        $historyStmt->execute(['id' => $investorStage['id']]);
+        $historyStmt = $pdo->prepare('SELECT * FROM stage_periods WHERE customer_stage_id = :id ORDER BY period_start DESC');
+        $historyStmt->execute(['id' => $customerStage['id']]);
 
         return $this->json([
             'data' => [
-                'current' => $investorStage,
+                'current' => $customerStage,
                 'history' => $historyStmt->fetchAll(\PDO::FETCH_ASSOC),
             ],
         ]);
@@ -99,7 +99,7 @@ class StageController extends Controller
     public function report(): array
     {
         $pdo = Database::connection();
-        $sql = 'SELECT s.code, s.name, COUNT(isg.id) as investor_count, IFNULL(SUM(isg.capital_amount),0) as total_capital FROM stages s LEFT JOIN investor_stages isg ON isg.current_stage_id = s.id GROUP BY s.id ORDER BY s.sequence ASC';
+        $sql = 'SELECT s.code, s.name, COUNT(isg.id) as investor_count, IFNULL(SUM(isg.capital_amount),0) as total_capital FROM stages s LEFT JOIN customer_stages isg ON isg.current_stage_id = s.id GROUP BY s.id ORDER BY s.sequence ASC';
         $rows = $pdo->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
 
         return ['data' => $rows];
@@ -114,11 +114,11 @@ class StageController extends Controller
         }
 
         $pdo = Database::connection();
-        $stmt = $pdo->prepare('SELECT * FROM investor_stages WHERE investor_id = :investor_id LIMIT 1');
-        $stmt->execute(['investor_id' => (int)$params['id']]);
-        $investorStage = $stmt->fetch(\PDO::FETCH_ASSOC);
-        if (!$investorStage) {
-            return $this->json(['message' => 'Investor stage not found'], 404);
+        $stmt = $pdo->prepare('SELECT * FROM customer_stages WHERE customer_id = :customer_id LIMIT 1');
+        $stmt->execute(['customer_id' => (int)$params['id']]);
+        $customerStage = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if (!$customerStage) {
+            return $this->json(['message' => 'Customer stage not found'], 404);
         }
 
         $stage = Stage::find((int)$request->input('stage_id'));
@@ -126,11 +126,11 @@ class StageController extends Controller
             return $this->json(['message' => 'Stage not found'], 404);
         }
 
-        InvestorStage::update((int)$investorStage['id'], [
+        CustomerStage::update((int)$customerStage['id'], [
             'current_stage_id' => $stage['id'],
         ]);
 
-        AuditLogger::log(Auth::user(), 'upgrade_stage', 'stages', 'investor_stage', (int)$investorStage['id'], ['stage_id' => $stage['id']], $request->ip(), $request->userAgent());
+        AuditLogger::log(Auth::user(), 'upgrade_stage', 'stages', 'customer_stage', (int)$customerStage['id'], ['stage_id' => $stage['id']], $request->ip(), $request->userAgent());
 
         return $this->json(['message' => 'Stage upgraded']);
     }

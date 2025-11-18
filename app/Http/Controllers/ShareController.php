@@ -6,6 +6,7 @@ use App\Core\Database;
 use App\Core\Request;
 use App\Core\Response;
 use App\Models\Approval;
+use App\Models\Customer;
 use App\Models\Share;
 use App\Support\AuditLogger;
 use App\Support\Auth;
@@ -34,7 +35,7 @@ class ShareController extends Controller
     public function store(Request $request)
     {
         if ($response = $this->validate($request, [
-            'investor_id' => 'required|numeric|min:1',
+            'customer_id' => 'required|numeric|min:1',
             'unit_price' => 'numeric|min:1',
             'quantity' => 'required|numeric|min:1',
             'payment_mode' => 'required|in:' . implode(',', self::PAYMENT_MODES),
@@ -47,6 +48,11 @@ class ShareController extends Controller
         $payload = $this->prepareShareData($request->all(), false);
         if ($payload instanceof Response) {
             return $payload;
+        }
+
+        $customerCheck = $this->resolveInvestorCustomer((int)$payload['data']['customer_id']);
+        if ($customerCheck instanceof Response) {
+            return $customerCheck;
         }
 
         $share = Share::create($payload['data']);
@@ -78,7 +84,7 @@ class ShareController extends Controller
 
         $merged = array_merge($share, $request->all());
         $rules = [
-            'investor_id' => 'required|numeric|min:1',
+            'customer_id' => 'required|numeric|min:1',
             'unit_price' => 'required|numeric|min:1',
             'quantity' => 'required|numeric|min:1',
             'payment_mode' => 'required|in:' . implode(',', self::PAYMENT_MODES),
@@ -95,6 +101,11 @@ class ShareController extends Controller
         $payload = $this->prepareShareData($merged, true, (int)$share['id']);
         if ($payload instanceof Response) {
             return $payload;
+        }
+
+        $customerCheck = $this->resolveInvestorCustomer((int)$payload['data']['customer_id']);
+        if ($customerCheck instanceof Response) {
+            return $customerCheck;
         }
 
         $updated = Share::update((int)$params['id'], $payload['data']);
@@ -140,7 +151,7 @@ class ShareController extends Controller
         $amount = $unitPrice * $quantity;
 
         $data = [
-            'investor_id' => (int)$input['investor_id'],
+            'customer_id' => (int)$input['customer_id'],
             'unit_price' => $unitPrice,
             'quantity' => $quantity,
             'amount' => $amount,
@@ -186,6 +197,20 @@ class ShareController extends Controller
             'needs_approval' => $needsApproval,
             'approvers' => $approvers,
         ];
+    }
+
+    private function resolveInvestorCustomer(int $customerId)
+    {
+        $customer = Customer::find($customerId);
+        if (!$customer) {
+            return $this->json(['message' => 'Customer not found for share'], 422);
+        }
+
+        if (empty($customer['is_investor'])) {
+            return $this->json(['message' => 'Selected customer is not flagged as an investor'], 422);
+        }
+
+        return $customer;
     }
 
     private function normalizePaymentMode(?string $mode): string

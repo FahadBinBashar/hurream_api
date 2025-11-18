@@ -26,7 +26,7 @@ class ReportController extends Controller
     public function investmentSummary(): array
     {
         $pdo = Database::connection();
-        $investorCount = $pdo->query('SELECT COUNT(*) FROM investors')->fetchColumn();
+        $investorCount = $pdo->query('SELECT COUNT(*) FROM customers WHERE is_investor = 1')->fetchColumn();
         $shares = $pdo->query('SELECT IFNULL(SUM(amount),0) FROM shares')->fetchColumn();
         $transactions = $pdo->query('SELECT IFNULL(SUM(amount),0) FROM transactions')->fetchColumn();
 
