@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('share_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('share_id')->constrained('customer_shares')->cascadeOnUpdate()->cascadeOnDelete();
             $table->decimal('amount', 12, 2);
             $table->string('payment_type');
             $table->dateTime('date');

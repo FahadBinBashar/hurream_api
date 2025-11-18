@@ -38,7 +38,7 @@ class InstallmentController extends Controller
     public function store(Request $request)
     {
         if ($response = $this->validate($request, [
-            'related_type' => 'required|in:share,booking',
+            'related_type' => 'required|in:customer_share,booking',
             'related_id' => 'required|numeric',
             'due_date' => 'required|date',
             'amount' => 'required|numeric|min:0',
