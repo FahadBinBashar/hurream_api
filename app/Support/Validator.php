@@ -67,7 +67,7 @@ class Validator
                         $errors[$field][] = 'The ' . $field . ' must have at least ' . $min . ' items.';
                     } elseif (is_numeric($value) && (float)$value < $min) {
                         $errors[$field][] = 'The ' . $field . ' must be at least ' . $min . '.';
-                    } elseif (!is_numeric($value) && strlen((string)$value) < $min) {
+                    } elseif (!is_array($value) && !is_numeric($value) && strlen((string)$value) < $min) {
                         $errors[$field][] = 'The ' . $field . ' must be at least ' . $min . ' characters.';
                     }
                 }
