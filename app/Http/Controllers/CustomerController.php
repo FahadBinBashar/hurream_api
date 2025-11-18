@@ -8,6 +8,9 @@ use App\Support\AuditLogger;
 use App\Support\Auth;
 use App\Support\DocumentUpload;
 use App\Support\Validator;
+use DateTime;
+use DateTimeInterface;
+use InvalidArgumentException;
 
 use function array_flip;
 use function array_intersect_key;
@@ -37,7 +40,11 @@ class CustomerController extends Controller
             return $response;
         }
 
-        $payload = $this->preparePayload($request->all());
+        try {
+            $payload = $this->preparePayload($request->all());
+        } catch (InvalidArgumentException $exception) {
+            return $this->json(['message' => $exception->getMessage()], 422);
+        }
         try {
             if ($filePayload = $this->handleDocuments($request)) {
                 $payload = array_merge($payload, $filePayload);
@@ -47,7 +54,7 @@ class CustomerController extends Controller
         }
         $payload['status'] = $payload['status'] ?? 'new';
         if (($payload['status'] ?? null) === 'verified' && empty($payload['verified_at'])) {
-            $payload['verified_at'] = date('c');
+            $payload['verified_at'] = date('Y-m-d H:i:s');
         }
 
         $customer = Customer::create($payload);
@@ -87,7 +94,11 @@ class CustomerController extends Controller
             return $this->json(['message' => 'Validation failed', 'errors' => $errors], 422);
         }
 
-        $payload = $this->preparePayload($merged);
+        try {
+            $payload = $this->preparePayload($merged);
+        } catch (InvalidArgumentException $exception) {
+            return $this->json(['message' => $exception->getMessage()], 422);
+        }
         try {
             if ($filePayload = $this->handleDocuments($request)) {
                 $payload = array_merge($payload, $filePayload);
@@ -96,7 +107,7 @@ class CustomerController extends Controller
             return $this->json(['message' => $exception->getMessage()], 422);
         }
         if (($payload['status'] ?? null) === 'verified' && empty($payload['verified_at'])) {
-            $payload['verified_at'] = date('c');
+            $payload['verified_at'] = date('Y-m-d H:i:s');
         }
         if (($payload['status'] ?? null) !== 'verified') {
             $payload['verified_at'] = $payload['verified_at'] ?? null;
@@ -118,6 +129,8 @@ class CustomerController extends Controller
         return $this->json(['message' => 'Customer deleted']);
     }
 
+    private const DATETIME_FIELDS = ['verified_at', 'police_verified_at'];
+
     private function preparePayload(array $input): array
     {
         $allowed = ['name', 'NID', 'address', 'phone', 'email', 'reference', 'status', 'nid_document_path', 'photo_path', 'verified_at', 'police_verification_path', 'police_verified_at'];
@@ -129,11 +142,38 @@ class CustomerController extends Controller
             }
         }
 
+        foreach (self::DATETIME_FIELDS as $field) {
+            if (array_key_exists($field, $filtered)) {
+                $filtered[$field] = $this->normalizeDateTime($filtered[$field], $field);
+            }
+        }
+
         if (isset($filtered['status']) && !in_array($filtered['status'], self::STATUSES, true)) {
             unset($filtered['status']);
         }
 
         return $filtered;
+    }
+
+    private function normalizeDateTime($value, string $field): ?string
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        if ($value instanceof DateTimeInterface) {
+            return $value->format('Y-m-d H:i:s');
+        }
+
+        if (is_string($value)) {
+            try {
+                return (new DateTime($value))->format('Y-m-d H:i:s');
+            } catch (\Exception $exception) {
+                throw new InvalidArgumentException('Invalid datetime value for ' . $field . '.');
+            }
+        }
+
+        throw new InvalidArgumentException('Invalid datetime value for ' . $field . '.');
     }
 
     private function handleDocuments(Request $request): array
