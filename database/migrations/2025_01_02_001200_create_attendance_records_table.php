@@ -1,36 +1,26 @@
 <?php
 
-return new class {
-    public function up(\PDO $pdo): void
-    {
-        $driver = $pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
-        if ($driver === 'mysql') {
-            $sql = <<<SQL
-CREATE TABLE IF NOT EXISTS attendance_records (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    employee_id BIGINT UNSIGNED NOT NULL,
-    check_in_at TIMESTAMP NULL,
-    check_out_at TIMESTAMP NULL,
-    source VARCHAR(50) NOT NULL DEFAULT 'manual',
-    status VARCHAR(50) NOT NULL DEFAULT 'present',
-    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_attendance_employee FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-SQL;
-        } else {
-            $sql = <<<SQL
-CREATE TABLE IF NOT EXISTS attendance_records (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    employee_id INTEGER NOT NULL,
-    check_in_at TEXT NULL,
-    check_out_at TEXT NULL,
-    source TEXT NOT NULL DEFAULT 'manual',
-    status TEXT NOT NULL DEFAULT 'present',
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP
-)
-SQL;
-        }
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-        $pdo->exec($sql);
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('attendance_records', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('employee_id')->constrained('employees')->cascadeOnDelete();
+            $table->timestamp('check_in_at')->nullable();
+            $table->timestamp('check_out_at')->nullable();
+            $table->string('source', 50)->default('manual');
+            $table->string('status', 50)->default('present');
+            $table->timestamp('created_at')->useCurrent();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('attendance_records');
     }
 };

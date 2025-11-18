@@ -1,32 +1,30 @@
 <?php
 
-return new class {
-    public function up(\PDO $pdo): void
-    {
-        $driver = $pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
-        if ($driver === 'mysql') {
-            $queries = [
-                "ALTER TABLE leads ADD COLUMN next_follow_up_at TIMESTAMP NULL",
-                "ALTER TABLE leads ADD COLUMN last_contacted_at TIMESTAMP NULL",
-                "ALTER TABLE leads ADD COLUMN status VARCHAR(50) NOT NULL DEFAULT 'lead'",
-                "ALTER TABLE leads ADD COLUMN source VARCHAR(100) NULL",
-                "ALTER TABLE leads ADD COLUMN interest_level VARCHAR(50) NULL"
-            ];
-        } else {
-            $queries = [
-                "ALTER TABLE leads ADD COLUMN next_follow_up_at TEXT NULL",
-                "ALTER TABLE leads ADD COLUMN last_contacted_at TEXT NULL",
-                "ALTER TABLE leads ADD COLUMN status TEXT NOT NULL DEFAULT 'lead'",
-                "ALTER TABLE leads ADD COLUMN source TEXT NULL",
-                "ALTER TABLE leads ADD COLUMN interest_level TEXT NULL"
-            ];
-        }
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-        foreach ($queries as $sql) {
-            try {
-                $pdo->exec($sql);
-            } catch (\PDOException $e) {
-            }
-        }
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('leads', function (Blueprint $table) {
+            $table->timestamp('next_follow_up_at')->nullable();
+            $table->timestamp('last_contacted_at')->nullable();
+            $table->string('source', 100)->nullable();
+            $table->string('interest_level', 50)->nullable();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('leads', function (Blueprint $table) {
+            $table->dropColumn([
+                'next_follow_up_at',
+                'last_contacted_at',
+                'source',
+                'interest_level',
+            ]);
+        });
     }
 };

@@ -1,36 +1,25 @@
 <?php
 
-return new class {
-    public function up(\PDO $pdo): void
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
     {
-        $driver = $pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        Schema::create('accounts', function (Blueprint $table) {
+            $table->id();
+            $table->string('type');
+            $table->text('description');
+            $table->decimal('amount', 12, 2);
+            $table->date('date');
+            $table->timestamps();
+        });
+    }
 
-        if ($driver === 'mysql') {
-            $sql = <<<SQL
-CREATE TABLE IF NOT EXISTS accounts (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    type VARCHAR(100) NOT NULL,
-    description TEXT NOT NULL,
-    amount DECIMAL(12, 2) NOT NULL,
-    date DATE NOT NULL,
-    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-SQL;
-        } else {
-            $sql = <<<SQL
-CREATE TABLE IF NOT EXISTS accounts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    type TEXT NOT NULL,
-    description TEXT NOT NULL,
-    amount REAL NOT NULL,
-    date TEXT NOT NULL,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
-)
-SQL;
-        }
-
-        $pdo->exec($sql);
+    public function down(): void
+    {
+        Schema::dropIfExists('accounts');
     }
 };

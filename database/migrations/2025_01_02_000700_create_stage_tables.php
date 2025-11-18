@@ -1,90 +1,50 @@
 <?php
 
-return new class {
-    public function up(\PDO $pdo): void
-    {
-        $driver = $pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
-        if ($driver === 'mysql') {
-            $stagesSql = <<<SQL
-CREATE TABLE IF NOT EXISTS stages (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    code VARCHAR(50) NOT NULL UNIQUE,
-    name VARCHAR(255) NOT NULL,
-    description TEXT NULL,
-    sequence INT NOT NULL,
-    is_active TINYINT(1) NOT NULL DEFAULT 1,
-    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-SQL;
-            $investorStagesSql = <<<SQL
-CREATE TABLE IF NOT EXISTS customer_stages (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    customer_id BIGINT UNSIGNED NOT NULL,
-    current_stage_id BIGINT UNSIGNED NOT NULL,
-    capital_amount DECIMAL(15,2) NOT NULL DEFAULT 0,
-    reinvest_enabled TINYINT(1) NOT NULL DEFAULT 1,
-    last_closed_at TIMESTAMP NULL,
-    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_customer_stage_customer FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE,
-    CONSTRAINT fk_investor_stage_stage FOREIGN KEY (current_stage_id) REFERENCES stages(id) ON DELETE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-SQL;
-            $stagePeriodsSql = <<<SQL
-CREATE TABLE IF NOT EXISTS stage_periods (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    customer_stage_id BIGINT UNSIGNED NOT NULL,
-    period_start DATE NOT NULL,
-    period_end DATE NOT NULL,
-    profit_amount DECIMAL(15,2) NOT NULL DEFAULT 0,
-    reinvest_amount DECIMAL(15,2) NOT NULL DEFAULT 0,
-    cashout_amount DECIMAL(15,2) NOT NULL DEFAULT 0,
-    next_capital_amount DECIMAL(15,2) NOT NULL DEFAULT 0,
-    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_stage_period_investor_stage FOREIGN KEY (customer_stage_id) REFERENCES customer_stages(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-SQL;
-        } else {
-            $stagesSql = <<<SQL
-CREATE TABLE IF NOT EXISTS stages (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    code TEXT NOT NULL UNIQUE,
-    name TEXT NOT NULL,
-    description TEXT NULL,
-    sequence INTEGER NOT NULL,
-    is_active INTEGER NOT NULL DEFAULT 1,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP
-)
-SQL;
-            $investorStagesSql = <<<SQL
-CREATE TABLE IF NOT EXISTS customer_stages (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    customer_id INTEGER NOT NULL,
-    current_stage_id INTEGER NOT NULL,
-    capital_amount REAL NOT NULL DEFAULT 0,
-    reinvest_enabled INTEGER NOT NULL DEFAULT 1,
-    last_closed_at TEXT NULL,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
-)
-SQL;
-            $stagePeriodsSql = <<<SQL
-CREATE TABLE IF NOT EXISTS stage_periods (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    customer_stage_id INTEGER NOT NULL,
-    period_start TEXT NOT NULL,
-    period_end TEXT NOT NULL,
-    profit_amount REAL NOT NULL DEFAULT 0,
-    reinvest_amount REAL NOT NULL DEFAULT 0,
-    cashout_amount REAL NOT NULL DEFAULT 0,
-    next_capital_amount REAL NOT NULL DEFAULT 0,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP
-)
-SQL;
-        }
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-        $pdo->exec($stagesSql);
-        $pdo->exec($investorStagesSql);
-        $pdo->exec($stagePeriodsSql);
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('stages', function (Blueprint $table) {
+            $table->id();
+            $table->string('code', 50)->unique();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->unsignedInteger('sequence');
+            $table->boolean('is_active')->default(true);
+            $table->timestamp('created_at')->useCurrent();
+        });
+
+        Schema::create('customer_stages', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('customer_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('current_stage_id')->constrained('stages');
+            $table->decimal('capital_amount', 15, 2)->default(0);
+            $table->boolean('reinvest_enabled')->default(true);
+            $table->timestamp('last_closed_at')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('stage_periods', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('customer_stage_id')->constrained('customer_stages')->cascadeOnDelete();
+            $table->date('period_start');
+            $table->date('period_end');
+            $table->decimal('profit_amount', 15, 2)->default(0);
+            $table->decimal('reinvest_amount', 15, 2)->default(0);
+            $table->decimal('cashout_amount', 15, 2)->default(0);
+            $table->decimal('next_capital_amount', 15, 2)->default(0);
+            $table->timestamp('created_at')->useCurrent();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('stage_periods');
+        Schema::dropIfExists('customer_stages');
+        Schema::dropIfExists('stages');
     }
 };
