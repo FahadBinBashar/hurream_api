@@ -99,6 +99,11 @@ return new class {
             ['share_id' => 2, 'amount' => 25000, 'payment_type' => 'cash', 'date' => '2025-02-12'],
         ], ['share_id', 'date']);
 
+        $gradeSeeder = require __DIR__ . '/GradeDesignationSeeder.php';
+        $gradeSeeder->run($pdo, function (\PDO $pdo, string $table, array $rows, string|array|null $uniqueKey = null): void {
+            $this->seedOnce($pdo, $table, $rows, $uniqueKey);
+        });
+
         $employeeSeeder = require __DIR__ . '/EmployeeSeeder.php';
         $employeeSeeder->run($pdo, function (\PDO $pdo, string $table, array $rows, string|array|null $uniqueKey = null): void {
             $this->seedOnce($pdo, $table, $rows, $uniqueKey);
