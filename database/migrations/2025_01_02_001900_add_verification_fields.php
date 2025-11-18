@@ -1,38 +1,39 @@
 <?php
 
-return new class {
-    public function up(\PDO $pdo): void
-    {
-        $driver = $pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
-        if ($driver === 'mysql') {
-            $customerQueries = [
-                "ALTER TABLE customers ADD COLUMN police_verification_path VARCHAR(255) NULL",
-                "ALTER TABLE customers ADD COLUMN police_verified_at TIMESTAMP NULL"
-            ];
-            $employeeQueries = [
-                "ALTER TABLE employees ADD COLUMN nid_document_path VARCHAR(255) NULL",
-                "ALTER TABLE employees ADD COLUMN police_verification_path VARCHAR(255) NULL",
-                "ALTER TABLE employees ADD COLUMN nid_verified_at TIMESTAMP NULL",
-                "ALTER TABLE employees ADD COLUMN police_verified_at TIMESTAMP NULL"
-            ];
-        } else {
-            $customerQueries = [
-                "ALTER TABLE customers ADD COLUMN police_verification_path TEXT NULL",
-                "ALTER TABLE customers ADD COLUMN police_verified_at TEXT NULL"
-            ];
-            $employeeQueries = [
-                "ALTER TABLE employees ADD COLUMN nid_document_path TEXT NULL",
-                "ALTER TABLE employees ADD COLUMN police_verification_path TEXT NULL",
-                "ALTER TABLE employees ADD COLUMN nid_verified_at TEXT NULL",
-                "ALTER TABLE employees ADD COLUMN police_verified_at TEXT NULL"
-            ];
-        }
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-        foreach (array_merge($customerQueries, $employeeQueries) as $sql) {
-            try {
-                $pdo->exec($sql);
-            } catch (\PDOException $e) {
-            }
-        }
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('customers', function (Blueprint $table) {
+            $table->string('police_verification_path')->nullable();
+            $table->timestamp('police_verified_at')->nullable();
+        });
+
+        Schema::table('employees', function (Blueprint $table) {
+            $table->string('nid_document_path')->nullable();
+            $table->string('police_verification_path')->nullable();
+            $table->timestamp('nid_verified_at')->nullable();
+            $table->timestamp('police_verified_at')->nullable();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('customers', function (Blueprint $table) {
+            $table->dropColumn(['police_verification_path', 'police_verified_at']);
+        });
+
+        Schema::table('employees', function (Blueprint $table) {
+            $table->dropColumn([
+                'nid_document_path',
+                'police_verification_path',
+                'nid_verified_at',
+                'police_verified_at',
+            ]);
+        });
     }
 };
