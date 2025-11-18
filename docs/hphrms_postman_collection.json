@@ -643,7 +643,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/investors",
+              "raw": "{{base_url}}/api/customers",
               "host": [
                 "{{base_url}}"
               ],
@@ -673,7 +673,7 @@
               "raw": "{\n  \"name\": \"Ayesha Akter\",\n  \"NID\": \"1990123456789\",\n  \"phone\": \"01912345678\",\n  \"email\": \"ayesha@example.com\",\n  \"address\": \"Chattogram, Bangladesh\",\n  \"bank_info\": \"AB Bank - 1234567890\",\n  \"nominee\": \"Mahmud Hasan\",\n  \"status\": \"pending\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/investors",
+              "raw": "{{base_url}}/api/customers",
               "host": [
                 "{{base_url}}"
               ],
@@ -695,14 +695,14 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/investors/{{investor_id}}",
+              "raw": "{{base_url}}/api/customers/{{customer_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "investors",
-                "{{investor_id}}"
+                "{{customer_id}}"
               ]
             }
           }
@@ -726,14 +726,14 @@
               "raw": "{\n  \"name\": \"Ayesha Akter\",\n  \"NID\": \"1990123456789\",\n  \"phone\": \"01912345678\",\n  \"email\": \"ayesha@example.com\",\n  \"address\": \"Chattogram, Bangladesh\",\n  \"bank_info\": \"AB Bank - 1234567890\",\n  \"nominee\": \"Mahmud Hasan\",\n  \"status\": \"active\",\n  \"otp_verified_at\": \"2024-01-05T10:00:00+06:00\",\n  \"admin_approved_at\": \"2024-01-06T09:30:00+06:00\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/investors/{{investor_id}}",
+              "raw": "{{base_url}}/api/customers/{{customer_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "investors",
-                "{{investor_id}}"
+                "{{customer_id}}"
               ]
             }
           }
@@ -749,14 +749,14 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/investors/{{investor_id}}",
+              "raw": "{{base_url}}/api/customers/{{customer_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "investors",
-                "{{investor_id}}"
+                "{{customer_id}}"
               ]
             }
           }
@@ -776,14 +776,14 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/investors/{{investor_id}}/verify-documents",
+              "raw": "{{base_url}}/api/customers/{{customer_id}}/verify-documents",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "investors",
-                "{{investor_id}}",
+                "{{customer_id}}",
                 "verify-documents"
               ]
             },
@@ -836,7 +836,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"investor_id\": {{investor_id}},\n  \"unit_price\": 25000,\n  \"quantity\": 30,\n  \"payment_mode\": \"installment\",\n  \"stage\": \"M\u00d6W-5\",\n  \"reinvest_flag\": 1,\n  \"approvers\": [1, 2, 3]\n}"
+              "raw": "{\n  \"customer_id\": {{customer_id}},\n  \"unit_price\": 25000,\n  \"quantity\": 30,\n  \"payment_mode\": \"installment\",\n  \"stage\": \"M\u00d6W-5\",\n  \"reinvest_flag\": 1,\n  \"approvers\": [1, 2, 3]\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/shares",
@@ -889,7 +889,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"investor_id\": {{investor_id}},\n  \"unit_price\": 26000,\n  \"quantity\": 35,\n  \"payment_mode\": \"installment\",\n  \"stage\": \"M\u00d6W-5\",\n  \"reinvest_flag\": 1,\n  \"approvers\": [1, 2, 3],\n  \"approval_status\": \"approved\"\n}"
+              "raw": "{\n  \"customer_id\": {{customer_id}},\n  \"unit_price\": 26000,\n  \"quantity\": 35,\n  \"payment_mode\": \"installment\",\n  \"stage\": \"M\u00d6W-5\",\n  \"reinvest_flag\": 1,\n  \"approvers\": [1, 2, 3],\n  \"approval_status\": \"approved\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/shares/{{share_id}}",
@@ -1711,7 +1711,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"investor_id\": 101,\n  \"status\": \"investor\"\n}"
+              "raw": "{\n  \"customer_id\": 101,\n  \"status\": \"investor\"\n}"
             }
           }
         },
@@ -2629,7 +2629,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"investor_id\": 501,\n  \"profit_amount\": 15000,\n  \"period_start\": \"2024-12-01\",\n  \"period_end\": \"2024-12-31\"\n}"
+              "raw": "{\n  \"customer_id\": 501,\n  \"profit_amount\": 15000,\n  \"period_start\": \"2024-12-01\",\n  \"period_end\": \"2024-12-31\"\n}"
             }
           }
         },
@@ -2644,14 +2644,14 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/investors/{{investor_id}}/stages",
+              "raw": "{{base_url}}/api/customers/{{customer_id}}/stages",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "investors",
-                "{{investor_id}}",
+                "{{customer_id}}",
                 "stages"
               ]
             }
@@ -2672,14 +2672,14 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/investors/{{investor_id}}/stage",
+              "raw": "{{base_url}}/api/customers/{{customer_id}}/stage",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "investors",
-                "{{investor_id}}",
+                "{{customer_id}}",
                 "stage"
               ]
             },
@@ -3180,7 +3180,7 @@
       "value": "1"
     },
     {
-      "key": "investor_id",
+      "key": "customer_id",
       "value": "1"
     },
     {

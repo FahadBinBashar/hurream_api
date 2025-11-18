@@ -38,6 +38,13 @@ return new class {
                 'status' => 'verified',
                 'reference' => 'MD Approval',
                 'verified_at' => '2025-01-05T10:00:00+06:00',
+                'membership_type' => 'gold',
+                'is_investor' => 1,
+                'investor_no' => 'INV-2025-0001',
+                'bank_info' => 'DBBL-12345',
+                'nominee' => 'Rafiq',
+                'otp_verified_at' => '2025-01-04T09:00:00+06:00',
+                'admin_approved_at' => '2025-01-05T12:00:00+06:00',
             ],
             [
                 'name' => 'Karim Ali',
@@ -48,37 +55,17 @@ return new class {
                 'status' => 'verified',
                 'reference' => 'Referral Program',
                 'verified_at' => '2025-01-10T10:00:00+06:00',
-            ],
-        ], 'NID');
-
-        $this->seedOnce($pdo, 'investors', [
-            [
-                'name' => 'Nazmul Hasan',
-                'NID' => '3216549870123',
-                'phone' => '01733333333',
-                'email' => 'nazmul@invest.com',
-                'address' => 'Banani, Dhaka',
-                'bank_info' => 'DBBL-12345',
-                'nominee' => 'Rafiq',
-                'status' => 'active',
-                'otp_verified_at' => '2025-01-08T09:30:00+06:00',
-                'admin_approved_at' => '2025-01-09T11:15:00+06:00',
-            ],
-            [
-                'name' => 'Farhana Akter',
-                'NID' => '9876543210987',
-                'phone' => '01844444444',
-                'email' => 'farhana@invest.com',
-                'address' => 'Agrabad, Chattogram',
+                'membership_type' => 'platinum',
+                'is_investor' => 1,
+                'investor_no' => 'INV-2025-0002',
                 'bank_info' => 'EBL-54321',
                 'nominee' => 'Shila',
-                'status' => 'pending',
             ],
         ], 'NID');
 
         $this->seedOnce($pdo, 'shares', [
             [
-                'investor_id' => 1,
+                'customer_id' => 1,
                 'unit_price' => 25000,
                 'quantity' => 4,
                 'amount' => 100000,
@@ -89,7 +76,7 @@ return new class {
                 'approver_gate_triggered' => 0,
             ],
             [
-                'investor_id' => 2,
+                'customer_id' => 2,
                 'unit_price' => 25000,
                 'quantity' => 25,
                 'amount' => 625000,
@@ -99,7 +86,7 @@ return new class {
                 'approval_status' => 'pending',
                 'approver_gate_triggered' => 1,
             ],
-        ], ['investor_id', 'stage']);
+        ], ['customer_id', 'stage']);
 
         $this->seedOnce($pdo, 'approvals', [
             ['module' => 'share_issue', 'record_id' => 2, 'approver_id' => 1, 'status' => 'pending'],

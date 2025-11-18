@@ -3,15 +3,15 @@
 namespace App\Console\Commands;
 
 use App\Core\Database;
-use App\Models\InvestorStage;
+use App\Models\CustomerStage;
 use App\Models\StagePeriod;
 
-class CloseInvestorStagesCommand
+class CloseCustomerStagesCommand
 {
     public function __invoke(float $defaultProfitRate = 0.02): void
     {
         $pdo = Database::connection();
-        $stmt = $pdo->query('SELECT * FROM investor_stages WHERE reinvest_enabled = 1');
+        $stmt = $pdo->query('SELECT * FROM customer_stages WHERE reinvest_enabled = 1');
         $stages = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         foreach ($stages as $stage) {
@@ -22,7 +22,7 @@ class CloseInvestorStagesCommand
             $nextCapital = $capital + $reinvest;
 
             StagePeriod::create([
-                'investor_stage_id' => $stage['id'],
+                'customer_stage_id' => $stage['id'],
                 'period_start' => date('Y-m-01'),
                 'period_end' => date('Y-m-t'),
                 'profit_amount' => $profit,
@@ -31,7 +31,7 @@ class CloseInvestorStagesCommand
                 'next_capital_amount' => $nextCapital,
             ]);
 
-            InvestorStage::update((int)$stage['id'], [
+            CustomerStage::update((int)$stage['id'], [
                 'capital_amount' => $nextCapital,
                 'last_closed_at' => date('Y-m-d H:i:s'),
             ]);

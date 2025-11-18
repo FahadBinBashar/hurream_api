@@ -89,8 +89,9 @@ class LeadController extends Controller
         }
 
         $payload = ['status' => 'investor', 'last_contacted_at' => date('Y-m-d H:i:s')];
-        if ($request->input('investor_id')) {
-            $payload['investor_id'] = $request->input('investor_id');
+        $customerId = $request->input('customer_id') ?? $request->input('investor_id');
+        if ($customerId) {
+            $payload['customer_id'] = (int)$customerId;
         }
 
         $updated = Lead::update((int)$lead['id'], $payload);
