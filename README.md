@@ -158,7 +158,62 @@ Authentication requirements:
 - লাভ বা টপ-আপ যুক্ত হলে নতুন ধাপের মূলধন অটো হিসাব।
 - লাভের ৫০% পুনঃবিনিয়োগ (On/Off) পরবর্তী ধাপ/ছয় মাসে অটো প্রয়োগ।
 
-### 8.4 Profit Distribution (Dividend)
+### 8.4 Share Product & Package Management Module
+
+> **Why this matters:** Brochure-এ ঘোষিত শেয়ার অফার, কিস্তি প্ল্যান, ফ্রি স্টে, ডিসকাউন্ট, বোনাস শেয়ার, ট্যুর ভাউচার ইত্যাদি বিক্রয় টিমের জন্য প্রি-কনফিগার না থাকলে প্রতিবার হাতে হিসাব করতে হয়। তাই ERP-এ একটি সম্পূর্ণ Share Product & Package Module আবশ্যক।
+
+#### 8.4.1 Single Share Product
+
+- Admin `share_products` টেবিলে একটি সক্রিয় রেকর্ড মেইনটেইন করবে যেখানে `share_unit_price` (ডিফল্ট ২৫,০০০ টাকা) ও স্ট্যাটাস থাকবে।
+- সিস্টেমে একক শেয়ার স্টকের সীমাবদ্ধতা নেই; Sales Officer যেকোনো সময় ১× ইউনিট মূল্য দিয়ে সেল প্রসেস করতে পারবে।
+- ভবিষ্যতে যদি ইউনিট মূল্য পরিবর্তন হয়, কার্যকর তারিখ ধরে ইতিহাস রাখা হবে যাতে পুরোনো সেল রেকর্ড সঠিক থাকে।
+
+#### 8.4.2 Share Packages (Predefined Bundles)
+
+- Admin ড্যাশবোর্ডে প্যাকেজ বিল্ডার থাকবে যেখানে নিচের ফিল্ডগুলো বাধ্যতামূলক:
+  - `package_name` (Silver, Gold, Platinum ইত্যাদি)।
+  - `base_price` (যেমন ৭,২০,০০০ টাকা)।
+  - `total_shares` বা Auto-calculated = `base_price ÷ share_unit_price`।
+  - `monthly_installment`, `duration_months`, `down_payment` (ঐচ্ছিক)।
+  - `bonus_share_qty` (% বা qty), `package_upgrade_policy`।
+  - সুবিধাসমূহ: `free_nights`, `lifetime_discount`, `international_tour_voucher`, `gift_items`, `service_voucher`, ইত্যাদি।
+- Admin `package_benefits` সাব-টেবিলের মাধ্যমে অতিরিক্ত বেনিফিট টাইপ/ভ্যালু অ্যাটাচ করতে পারবে (যেমন `benefit_type = "restaurant_discount"`, `benefit_value = "30%"`).
+- প্যাকেজ স্টেটাস Active/Inactive; inactive প্যাকেজ সেলস ফর্মে দেখাবে না।
+
+#### 8.4.3 Installment & Bonus Logic
+
+- প্রতিটি প্যাকেজে কিস্তি কনফিগারেশন প্রি-ডিফাইনড থাকবে (`duration_months`, `monthly_installment`, `grace_period_days`).
+- সিস্টেম `base_price` থেকে ডাউনপেমেন্ট বাদ দিয়ে বাকি অঙ্ককে কিস্তিতে ভাগ করে ইনভয়েস শিডিউল জেনারেট করবে।
+- `bonus_share_qty` বা `%` এর ভিত্তিতে মোট শেয়ার গণনায় `total_shares = base_share_qty + bonus_share_qty` হিসেবে সংরক্ষণ হবে।
+
+#### 8.4.4 Sales Officer Workflow
+
+1. Sales Officer গ্রাহক নির্বাচন করবে (Existing Customer অথবা নতুন রেজিস্ট্রেশন + KYC)।
+2. `Single Share` অথবা `Share Package` সিলেক্ট করবে; প্যাকেজ লিস্টে বেস প্রাইস, মোট শেয়ার, কিস্তি, সুবিধা দেখাবে।
+3. সিস্টেম অটো-ক্যালকুলেশন:
+   - মোট শেয়ার, বোনাস শেয়ারসহ।
+   - মোট পে-যোগ্য (ডাউনপেমেন্ট + বাকি)।
+   - কিস্তি শিডিউল ও পরবর্তী কিস্তির তারিখ।
+   - সুবিধার সারাংশ (ফ্রি স্টে, ডিসকাউন্ট, ভাউচার, গিফট বক্স, মেম্বার কার্ড)।
+4. বিক্রয় কনফার্ম করলে `customer_shares` টেবিলে এন্ট্রি হবে (`customer_id`, `package_id` nullable, `single_share_qty`, `bonus_share_qty`, `total_shares`, `payment_plan`).
+5. সিস্টেম ইনভয়েস + শেয়ার সার্টিফিকেট (QR সহ) জেনারেট করবে এবং Customer Portal-এ প্যাকেজের ডিটেইল দেখাবে।
+
+#### 8.4.5 Backend Data Model
+
+| Table | Key Fields | Purpose |
+|-------|------------|---------|
+| `share_products` | `unit_price`, `effective_from`, `status` | বর্তমান একক শেয়ার প্যারামস ও ইতিহাস। |
+| `share_packages` | `package_name`, `base_price`, `total_shares`, `monthly_installment`, `duration_months`, `bonus_share_qty`, `benefit_summary` | প্যাকেজের মূল কনফিগারেশন। |
+| `package_benefits` | `package_id`, `benefit_type`, `benefit_value`, `notes` | বহুবিধ সুবিধা ম্যাপিং (ফ্রি নাইট, ডিসকাউন্ট, ট্যুর ভাউচার ইত্যাদি)। |
+| `customer_shares` | `customer_id`, `package_id`, `single_share_qty`, `bonus_share_qty`, `total_shares`, `down_payment`, `installment_plan`, `status` | বিক্রয় রেকর্ড; প্যাকেজ বা সিঙ্গেল শেয়ার উভয় ট্র্যাক করবে। |
+
+#### 8.4.6 Customer & Reporting Views
+
+- Customer Portal-এ Package Card গুলোতে `remaining_installments`, `benefits_claimed`, `certificate_download` অপশন থাকবে।
+- Sales Dashboard-এ `Package-wise Sales`, `Bonus Share Liability`, `Upcoming Installments` রিপোর্ট প্রয়োজন।
+- প্যাকেজ সুবিধা যেমন ফ্রি স্টে/ট্যুর ভাউচার রিডিম হলে অডিট লগ আপডেট হবে যাতে Accounts ও Operations টিম ক্লেইম যাচাই করতে পারে।
+
+### 8.5 Profit Distribution (Dividend)
 
 - Periodic disbursement (Monthly/Quarterly/Yearly)।
 - Share proportion অনুযায়ী লাভ বণ্টন।
