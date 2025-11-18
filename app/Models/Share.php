@@ -4,5 +4,5 @@ namespace App\Models;
 
 class Share extends BaseModel
 {
-    protected static string $table = 'shares';
+    protected static string $table = 'customer_shares';
 }

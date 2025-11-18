@@ -63,28 +63,121 @@ return new class {
             ],
         ], 'NID');
 
-        $this->seedOnce($pdo, 'shares', [
+        $this->seedOnce($pdo, 'share_packages', [
+            [
+                'package_name' => 'VIP Gold Package',
+                'package_code' => 'VIP-GOLD',
+                'package_price' => 720000,
+                'down_payment' => 72000,
+                'duration_months' => 24,
+                'monthly_installment' => 27000,
+                'auto_share_units' => 28,
+                'bonus_share_percent' => 10,
+                'bonus_share_units' => 3,
+                'free_nights' => 6,
+                'lifetime_discount' => 20,
+                'tour_voucher_value' => 40000,
+                'gift_items' => 'Watch, Perfume',
+                'status' => 'active',
+            ],
+            [
+                'package_name' => 'Platinum Infinity',
+                'package_code' => 'PLATINUM-INF',
+                'package_price' => 1250000,
+                'down_payment' => 125000,
+                'duration_months' => 30,
+                'monthly_installment' => 37500,
+                'auto_share_units' => 50,
+                'bonus_share_percent' => 20,
+                'bonus_share_units' => 10,
+                'free_nights' => 8,
+                'lifetime_discount' => 25,
+                'tour_voucher_value' => 60000,
+                'gift_items' => 'Smart Watch, Travel Bag',
+                'status' => 'active',
+            ],
+        ], 'package_code');
+
+        $goldPackageId = (int)$pdo->query("SELECT id FROM share_packages WHERE package_code = 'VIP-GOLD' LIMIT 1")->fetchColumn();
+        $platinumPackageId = (int)$pdo->query("SELECT id FROM share_packages WHERE package_code = 'PLATINUM-INF' LIMIT 1")->fetchColumn();
+
+        if ($goldPackageId) {
+            $this->seedOnce($pdo, 'package_benefits', [
+                ['package_id' => $goldPackageId, 'benefit_type' => 'free_night', 'benefit_value' => '6 nights', 'notes' => null],
+                ['package_id' => $goldPackageId, 'benefit_type' => 'lifetime_discount', 'benefit_value' => '20%', 'notes' => null],
+                ['package_id' => $goldPackageId, 'benefit_type' => 'tour_voucher', 'benefit_value' => 'BDT 40,000', 'notes' => null],
+            ], ['package_id', 'benefit_type', 'benefit_value']);
+        }
+
+        if ($platinumPackageId) {
+            $this->seedOnce($pdo, 'package_benefits', [
+                ['package_id' => $platinumPackageId, 'benefit_type' => 'free_night', 'benefit_value' => '8 nights', 'notes' => 'Peak season allowed'],
+                ['package_id' => $platinumPackageId, 'benefit_type' => 'vip_services', 'benefit_value' => 'Concierge & Airport pickup', 'notes' => null],
+            ], ['package_id', 'benefit_type', 'benefit_value']);
+        }
+
+        $goldSnapshot = json_encode([
+            'package' => [
+                'id' => $goldPackageId,
+                'package_name' => 'VIP Gold Package',
+                'package_code' => 'VIP-GOLD',
+                'package_price' => 720000,
+                'duration_months' => 24,
+                'monthly_installment' => 27000,
+                'bonus_share_percent' => 10,
+                'bonus_share_units' => 3,
+                'free_nights' => 6,
+                'lifetime_discount' => 20,
+                'tour_voucher_value' => 40000,
+                'gift_items' => 'Watch, Perfume',
+            ],
+            'benefits' => [
+                ['benefit_type' => 'free_night', 'benefit_value' => '6 nights', 'notes' => null],
+                ['benefit_type' => 'lifetime_discount', 'benefit_value' => '20%', 'notes' => null],
+                ['benefit_type' => 'tour_voucher', 'benefit_value' => 'BDT 40,000', 'notes' => null],
+            ],
+        ], JSON_UNESCAPED_UNICODE);
+
+        $this->seedOnce($pdo, 'customer_shares', [
             [
                 'customer_id' => 1,
+                'share_type' => 'single',
+                'package_id' => null,
                 'unit_price' => 25000,
-                'quantity' => 4,
+                'share_units' => 4,
+                'bonus_units' => 0,
+                'total_units' => 4,
                 'amount' => 100000,
+                'down_payment' => 100000,
+                'monthly_installment' => null,
+                'installment_months' => null,
                 'payment_mode' => 'one_time',
                 'stage' => 'MÖW-5',
                 'reinvest_flag' => 1,
+                'status' => 'active',
                 'approval_status' => 'approved',
                 'approver_gate_triggered' => 0,
+                'benefits_snapshot' => null,
             ],
             [
                 'customer_id' => 2,
+                'share_type' => 'package',
+                'package_id' => $goldPackageId ?: null,
                 'unit_price' => 25000,
-                'quantity' => 25,
-                'amount' => 625000,
+                'share_units' => 28,
+                'bonus_units' => 3,
+                'total_units' => 31,
+                'amount' => 720000,
+                'down_payment' => 72000,
+                'monthly_installment' => 27000,
+                'installment_months' => 24,
                 'payment_mode' => 'installment',
                 'stage' => 'MÖW-6',
                 'reinvest_flag' => 0,
+                'status' => 'active',
                 'approval_status' => 'pending',
                 'approver_gate_triggered' => 1,
+                'benefits_snapshot' => $goldSnapshot,
             ],
         ], ['customer_id', 'stage']);
 

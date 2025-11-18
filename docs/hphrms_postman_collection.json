@@ -796,6 +796,117 @@
       ]
     },
     {
+      "name": "Share Packages",
+      "item": [
+        {
+          "name": "List Share Packages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/share-packages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "share-packages"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Share Package",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"package_name\": \"VIP Gold Package\",\n  \"package_code\": \"VIP-GOLD\",\n  \"package_price\": 720000,\n  \"down_payment\": 72000,\n  \"duration_months\": 24,\n  \"monthly_installment\": 27000,\n  \"bonus_share_percent\": 10,\n  \"free_nights\": 6,\n  \"lifetime_discount\": 20,\n  \"tour_voucher_value\": 40000,\n  \"gift_items\": \"Watch, Perfume\",\n  \"benefits\": [\n    {\n      \"benefit_type\": \"free_night\",\n      \"benefit_value\": \"6 nights\"\n    },\n    {\n      \"benefit_type\": \"lifetime_discount\",\n      \"benefit_value\": \"20%\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/share-packages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "share-packages"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Share Package",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"package_name\": \"VIP Gold Package\",\n  \"package_code\": \"VIP-GOLD\",\n  \"package_price\": 730000,\n  \"duration_months\": 24,\n  \"monthly_installment\": 27500,\n  \"bonus_share_percent\": 12,\n  \"free_nights\": 7,\n  \"status\": \"active\",\n  \"benefits\": [\n    {\n      \"benefit_type\": \"free_night\",\n      \"benefit_value\": \"7 nights\"\n    },\n    {\n      \"benefit_type\": \"tour_voucher\",\n      \"benefit_value\": \"BDT 45,000\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/share-packages/{{share_package_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "share-packages",
+                "{{share_package_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Show Share Package",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/share-packages/{{share_package_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "share-packages",
+                "{{share_package_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "Shares",
       "item": [
         {
@@ -836,7 +947,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"customer_id\": {{customer_id}},\n  \"unit_price\": 25000,\n  \"quantity\": 30,\n  \"payment_mode\": \"installment\",\n  \"stage\": \"M\u00d6W-5\",\n  \"reinvest_flag\": 1,\n  \"approvers\": [1, 2, 3]\n}"
+              "raw": "{\n  \"customer_id\": \"{{customer_id}}\",\n  \"share_type\": \"package\",\n  \"package_id\": \"{{share_package_id}}\",\n  \"payment_mode\": \"installment\",\n  \"stage\": \"MÖW-5\",\n  \"reinvest_flag\": 1,\n  \"down_payment\": 72000,\n  \"installment_months\": 24,\n  \"approvers\": [\n    1,\n    2,\n    3\n  ]\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/shares",
@@ -889,7 +1000,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"customer_id\": {{customer_id}},\n  \"unit_price\": 26000,\n  \"quantity\": 35,\n  \"payment_mode\": \"installment\",\n  \"stage\": \"M\u00d6W-5\",\n  \"reinvest_flag\": 1,\n  \"approvers\": [1, 2, 3],\n  \"approval_status\": \"approved\"\n}"
+              "raw": "{\n  \"customer_id\": \"{{customer_id}}\",\n  \"share_type\": \"single\",\n  \"quantity\": 40,\n  \"unit_price\": 25000,\n  \"bonus_units\": 2,\n  \"payment_mode\": \"one_time\",\n  \"stage\": \"MÖW-6\",\n  \"reinvest_flag\": 0,\n  \"approval_status\": \"approved\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/shares/{{share_id}}",
@@ -3406,6 +3517,10 @@
     },
     {
       "key": "account_id",
+      "value": "1"
+    },
+    {
+      "key": "share_package_id",
       "value": "1"
     }
   ]

@@ -18,6 +18,7 @@ use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ShareController;
+use App\Http\Controllers\SharePackageController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
@@ -62,6 +63,11 @@ $router->add('POST', '/shares', [ShareController::class, 'store'], ['auth']);
 $router->add('GET', '/shares/{id}', [ShareController::class, 'show'], ['auth']);
 $router->add('PATCH', '/shares/{id}', [ShareController::class, 'update'], ['auth']);
 $router->add('DELETE', '/shares/{id}', [ShareController::class, 'destroy'], ['auth']);
+
+$router->add('GET', '/share-packages', [SharePackageController::class, 'index'], ['auth']);
+$router->add('POST', '/share-packages', [SharePackageController::class, 'store'], ['auth']);
+$router->add('GET', '/share-packages/{id}', [SharePackageController::class, 'show'], ['auth']);
+$router->add('PUT', '/share-packages/{id}', [SharePackageController::class, 'update'], ['auth']);
 
 $router->add('GET', '/transactions', [TransactionController::class, 'index'], ['auth']);
 $router->add('POST', '/transactions', [TransactionController::class, 'store'], ['auth']);
