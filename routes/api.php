@@ -15,10 +15,13 @@ use App\Http\Controllers\LeadController;
 use App\Http\Controllers\NotificationTemplateController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PolicyController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ShareBatchController;
 use App\Http\Controllers\ShareController;
 use App\Http\Controllers\SharePackageController;
+use App\Http\Controllers\ShareSalesController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
@@ -68,6 +71,17 @@ $router->add('GET', '/share-packages', [SharePackageController::class, 'index'],
 $router->add('POST', '/share-packages', [SharePackageController::class, 'store'], ['auth']);
 $router->add('GET', '/share-packages/{id}', [SharePackageController::class, 'show'], ['auth']);
 $router->add('PUT', '/share-packages/{id}', [SharePackageController::class, 'update'], ['auth']);
+$router->add('GET', '/projects', [ProjectController::class, 'index'], ['auth']);
+$router->add('POST', '/projects', [ProjectController::class, 'store'], ['auth', 'role:admin']);
+$router->add('GET', '/projects/{id}', [ProjectController::class, 'show'], ['auth']);
+$router->add('PATCH', '/projects/{id}', [ProjectController::class, 'update'], ['auth', 'role:admin']);
+$router->add('DELETE', '/projects/{id}', [ProjectController::class, 'destroy'], ['auth', 'role:admin']);
+$router->add('GET', '/share-batches', [ShareBatchController::class, 'index'], ['auth']);
+$router->add('POST', '/share-batches', [ShareBatchController::class, 'store'], ['auth', 'role:admin']);
+$router->add('PATCH', '/share-batches/{id}', [ShareBatchController::class, 'update'], ['auth', 'role:admin']);
+$router->add('DELETE', '/share-batches/{id}', [ShareBatchController::class, 'destroy'], ['auth', 'role:admin']);
+$router->add('POST', '/sales/single', [ShareSalesController::class, 'sellSingle'], ['auth']);
+$router->add('POST', '/sales/package', [ShareSalesController::class, 'sellPackage'], ['auth']);
 
 $router->add('GET', '/transactions', [TransactionController::class, 'index'], ['auth']);
 $router->add('POST', '/transactions', [TransactionController::class, 'store'], ['auth']);
@@ -132,7 +146,10 @@ $router->add('POST', '/vouchers', [VoucherController::class, 'store'], ['auth'])
 $router->add('GET', '/vouchers/{id}', [VoucherController::class, 'show'], ['auth']);
 
 $router->add('GET', '/installments', [InstallmentController::class, 'index'], ['auth']);
+$router->add('GET', '/installments/due', [InstallmentController::class, 'due'], ['auth']);
+$router->add('GET', '/installments/schedule', [InstallmentController::class, 'schedule'], ['auth']);
 $router->add('POST', '/installments', [InstallmentController::class, 'store'], ['auth']);
+$router->add('POST', '/installments/pay', [InstallmentController::class, 'pay'], ['auth']);
 $router->add('POST', '/installments/{id}/mark-paid', [InstallmentController::class, 'markPaid'], ['auth']);
 
 $router->add('GET', '/payroll/runs', [PayrollController::class, 'index'], ['auth']);

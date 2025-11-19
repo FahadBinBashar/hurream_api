@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Core\Database;
 use App\Core\Request;
 use App\Models\PackageBenefit;
+use App\Models\Project;
 use App\Models\SharePackage;
+use App\Services\PackageBenefitService;
 use App\Support\AuditLogger;
 use App\Support\Auth;
 use App\Support\Env;
@@ -15,6 +17,10 @@ use PDO;
 class SharePackageController extends Controller
 {
     private const STATUSES = ['active', 'inactive'];
+
+    public function __construct(private readonly PackageBenefitService $benefitService = new PackageBenefitService())
+    {
+    }
 
     public function index(Request $request)
     {
@@ -35,11 +41,12 @@ class SharePackageController extends Controller
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
         $packages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $packageMap = $this->mapBenefits($packages);
+        $benefitItems = $this->mapBenefitItems($packages);
 
         return $this->json([
-            'data' => array_map(function (array $package) use ($packageMap) {
-                $package['benefits'] = $packageMap[$package['id']] ?? [];
+            'data' => array_map(function (array $package) use ($benefitItems) {
+                $package['benefit_items'] = $benefitItems[$package['id']] ?? [];
+                $package['benefits'] = $this->decodeBenefits($package['benefits'] ?? null);
                 return $package;
             }, $packages),
             'meta' => [
@@ -60,9 +67,9 @@ class SharePackageController extends Controller
             return $response;
         }
 
-        [$payload, $benefits] = $this->preparePayload($request->all());
+        [$payload, $benefitItems] = $this->preparePayload($request->all());
         $package = SharePackage::create($payload);
-        $this->syncBenefits((int)$package['id'], $benefits);
+        $this->syncBenefits((int)$package['id'], $benefitItems);
 
         AuditLogger::log(Auth::user(), 'create', 'share_packages', 'share_package', (int)$package['id'], $payload, $request->ip(), $request->userAgent());
 
@@ -96,10 +103,10 @@ class SharePackageController extends Controller
             return $response;
         }
 
-        [$payload, $benefits] = $this->preparePayload(array_merge($package, $request->all()));
+        [$payload, $benefitItems] = $this->preparePayload(array_merge($package, $request->all()));
         $updated = SharePackage::update((int)$package['id'], $payload);
-        if ($benefits !== null) {
-            $this->syncBenefits((int)$package['id'], $benefits);
+        if ($benefitItems !== null) {
+            $this->syncBenefits((int)$package['id'], $benefitItems);
         }
 
         AuditLogger::log(Auth::user(), 'update', 'share_packages', 'share_package', (int)$package['id'], $payload, $request->ip(), $request->userAgent());
@@ -110,19 +117,17 @@ class SharePackageController extends Controller
     private function validatePackage(array $input, ?int $ignoreId)
     {
         $rules = [
+            'project_id' => 'required|numeric|min:1',
             'package_name' => 'required',
             'package_code' => 'required|unique:share_packages,package_code' . ($ignoreId ? ',' . $ignoreId : ''),
             'package_price' => 'required|numeric|min:1',
             'down_payment' => 'numeric|min:0',
-            'duration_months' => 'required|numeric|min:1',
-            'monthly_installment' => 'numeric|min:0',
-            'bonus_share_percent' => 'numeric|min:0',
-            'bonus_share_units' => 'numeric|min:0',
-            'free_nights' => 'numeric|min:0',
-            'lifetime_discount' => 'numeric|min:0',
-            'tour_voucher_value' => 'numeric|min:0',
+            'total_shares_included' => 'numeric|min:1',
+            'bonus_shares' => 'numeric|min:0',
+            'installment_months' => 'numeric|min:0',
             'status' => 'in:' . implode(',', self::STATUSES),
             'benefits' => 'array',
+            'benefit_items' => 'array',
         ];
 
         $errors = Validator::make($input, $rules);
@@ -134,8 +139,9 @@ class SharePackageController extends Controller
             return $this->json(['message' => 'Down payment cannot exceed package price'], 422);
         }
 
-        if (isset($input['benefits']) && !is_array($input['benefits'])) {
-            return $this->json(['message' => 'Benefits must be an array'], 422);
+        $project = Project::find((int)$input['project_id']);
+        if (!$project) {
+            return $this->json(['message' => 'Project not found'], 404);
         }
 
         return null;
@@ -145,40 +151,29 @@ class SharePackageController extends Controller
     {
         $unitPrice = (float)Env::get('SHARE_DEFAULT_UNIT_PRICE', 25000);
         $payload = [
+            'project_id' => (int)$input['project_id'],
             'package_name' => trim((string)$input['package_name']),
             'package_code' => trim((string)$input['package_code']),
             'package_price' => (float)$input['package_price'],
             'down_payment' => isset($input['down_payment']) ? (float)$input['down_payment'] : 0,
-            'duration_months' => (int)$input['duration_months'],
-            'monthly_installment' => isset($input['monthly_installment']) ? (float)$input['monthly_installment'] : 0,
-            'auto_share_units' => (int)max(1, floor(((float)$input['package_price']) / max(1, $unitPrice))),
-            'bonus_share_percent' => isset($input['bonus_share_percent']) ? (float)$input['bonus_share_percent'] : 0,
-            'bonus_share_units' => isset($input['bonus_share_units']) ? (int)$input['bonus_share_units'] : 0,
-            'free_nights' => isset($input['free_nights']) ? (int)$input['free_nights'] : 0,
-            'lifetime_discount' => isset($input['lifetime_discount']) ? (float)$input['lifetime_discount'] : 0,
-            'tour_voucher_value' => isset($input['tour_voucher_value']) ? (float)$input['tour_voucher_value'] : 0,
-            'gift_items' => $input['gift_items'] ?? null,
+            'total_shares_included' => isset($input['total_shares_included'])
+                ? (int)$input['total_shares_included']
+                : (int)max(1, floor(((float)$input['package_price']) / max(1, $unitPrice))),
+            'bonus_shares' => isset($input['bonus_shares']) ? (int)$input['bonus_shares'] : 0,
+            'installment_months' => isset($input['installment_months']) ? (int)$input['installment_months'] : 0,
+            'benefits' => isset($input['benefits']) ? json_encode($this->benefitService->normalize((array)$input['benefits'])) : ($input['benefits'] ?? null),
             'status' => $input['status'] ?? 'active',
             'description' => $input['description'] ?? null,
         ];
 
-        if (!$payload['bonus_share_units'] && $payload['bonus_share_percent']) {
-            $payload['bonus_share_units'] = (int)round($payload['auto_share_units'] * ($payload['bonus_share_percent'] / 100));
-        }
-
-        if ($payload['monthly_installment'] <= 0 && $payload['duration_months'] > 0) {
-            $remaining = max($payload['package_price'] - $payload['down_payment'], 0);
-            $payload['monthly_installment'] = round($remaining / $payload['duration_months'], 2);
-        }
-
-        $benefits = null;
-        if (array_key_exists('benefits', $input)) {
-            $benefits = [];
-            foreach ((array)$input['benefits'] as $benefit) {
+        $benefitItems = null;
+        if (array_key_exists('benefit_items', $input)) {
+            $benefitItems = [];
+            foreach ((array)$input['benefit_items'] as $benefit) {
                 if (empty($benefit['benefit_type']) || empty($benefit['benefit_value'])) {
                     continue;
                 }
-                $benefits[] = [
+                $benefitItems[] = [
                     'benefit_type' => trim((string)$benefit['benefit_type']),
                     'benefit_value' => trim((string)$benefit['benefit_value']),
                     'notes' => $benefit['notes'] ?? null,
@@ -186,12 +181,12 @@ class SharePackageController extends Controller
             }
         }
 
-        return [$payload, $benefits];
+        return [$payload, $benefitItems];
     }
 
-    private function syncBenefits(int $packageId, ?array $benefits): void
+    private function syncBenefits(int $packageId, ?array $benefitItems): void
     {
-        if ($benefits === null) {
+        if ($benefitItems === null) {
             return;
         }
 
@@ -199,7 +194,7 @@ class SharePackageController extends Controller
         $stmt = $pdo->prepare('DELETE FROM package_benefits WHERE package_id = :id');
         $stmt->execute(['id' => $packageId]);
 
-        foreach ($benefits as $benefit) {
+        foreach ($benefitItems as $benefit) {
             PackageBenefit::create(array_merge($benefit, ['package_id' => $packageId]));
         }
     }
@@ -214,12 +209,23 @@ class SharePackageController extends Controller
         $pdo = Database::connection();
         $stmt = $pdo->prepare('SELECT * FROM package_benefits WHERE package_id = :id ORDER BY id');
         $stmt->execute(['id' => $id]);
-        $package['benefits'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $package['benefit_items'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $package['benefits'] = $this->decodeBenefits($package['benefits'] ?? null);
 
         return $package;
     }
 
-    private function mapBenefits(array $packages): array
+    private function decodeBenefits(?string $benefits): array
+    {
+        if (!$benefits) {
+            return [];
+        }
+
+        $decoded = json_decode($benefits, true);
+        return is_array($decoded) ? $decoded : [];
+    }
+
+    private function mapBenefitItems(array $packages): array
     {
         if (!$packages) {
             return [];
