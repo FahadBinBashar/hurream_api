@@ -374,7 +374,7 @@ Authentication requirements:
 - Customers, bookings, investors, employees, leads, approvals, accounts, shares এবং transactions এর জন্য CRUD API।
 - বুকিং cancellation/refund ফ্লো এবং sales, investment ও finance-এর জন্য aggregated রিপোর্ট।
 - সহজ সেটআপের জন্য SQLite-সমর্থিত মাইগ্রেশন ও সিডিং টুলিং (`php artisan migrate`, `php artisan db:seed`)।
-- Postman collection: `hphrms_api/docs/hphrms_postman_collection.json`।
+- Postman collection (now including the Share & Investment Suite endpoints): `hphrms_api/docs/hphrms_postman_collection.json`।
 
 ### Quick Start
 
