@@ -22,6 +22,20 @@ This document consolidates the functional scope, validation rules, approval flow
 16. [Traceability Matrix](#16-traceability-matrix)
 17. [Backend API Implementation Notes](#17-backend-api-implementation-notes)
 
+## Implementation Snapshot (Feb 2025)
+
+- **Module A – Projects:** `/api/projects` exposes CRUD for project_id/code/name/location/status. Each project carries certificate prefixes and sequencing for automated certificate generation.
+- **Module B – Share Batches:** `/api/share-batches` lets admin seed inventory per project with certificate ranges and FIFO-aware availability tracking.
+- **Module C – Package Builder:** Updated `/api/share-packages` accepts `project_id`, `total_shares_included`, `bonus_shares`, `installment_months`, and structured benefits.
+- **Module D – Share Sales:** `/api/sales/single` & `/api/sales/package` orchestrate project validation, FIFO inventory deduction, certificate/invoice generation, benefit snapshots, and share ledger entries.
+- **Module E – Customers:** Unified `customers` table remains the anchor for investments, bookings, and dividends.
+- **Module F – Installments:** `/api/installments/*` delivers due lists, schedules, and payments with voucher generation.
+- **Module G – Booking System:** Existing booking endpoints continue to honour membership perks; discounts/free nights stored on share packages are available to booking flows.
+- **Module H – HR:** Grades, designations, and employee endpoints backed by dedicated migrations/seeders.
+- **Module I – Accounts:** Vouchers, ledger, cashbook/bankbook & stage reporting endpoints remain unchanged while receiving data from new share sales.
+- **Module J – Dividend/Reinvest:** Stage tables continue to be updated via `/api/stages/*` with reinvest-flag carried from share issues.
+- **Module K – Authentication & Roles:** JWT + OTP flow plus RBAC middleware wires every endpoint listed above.
+
 ---
 
 ## 1) Purpose
@@ -360,7 +374,7 @@ Authentication requirements:
 - Customers, bookings, investors, employees, leads, approvals, accounts, shares এবং transactions এর জন্য CRUD API।
 - বুকিং cancellation/refund ফ্লো এবং sales, investment ও finance-এর জন্য aggregated রিপোর্ট।
 - সহজ সেটআপের জন্য SQLite-সমর্থিত মাইগ্রেশন ও সিডিং টুলিং (`php artisan migrate`, `php artisan db:seed`)।
-- Postman collection: `hphrms_api/docs/hphrms_postman_collection.json`।
+- Postman collection (now including the Share & Investment Suite endpoints): `hphrms_api/docs/hphrms_postman_collection.json`।
 
 ### Quick Start
 
