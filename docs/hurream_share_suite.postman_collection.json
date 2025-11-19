@@ -1,0 +1,174 @@
+{
+  "info": {
+    "name": "Hurream Share & Investment Suite",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection covering share projects, inventory, packages, sales and installments."
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@hphrms.test\",\n  \"password\": \"password\"\n}"
+            },
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects & Inventory",
+      "item": [
+        {
+          "name": "List Projects",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/projects",
+              "host": ["{{base_url}}"],
+              "path": ["api", "projects"]
+            },
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}]
+          }
+        },
+        {
+          "name": "Create Batch",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/share-batches",
+              "host": ["{{base_url}}"],
+              "path": ["api", "share-batches"]
+            },
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_id\": 1,\n  \"batch_name\": \"Q1 2025\",\n  \"share_price\": 25000,\n  \"total_shares\": 100,\n  \"certificate_start_no\": 300000,\n  \"certificate_end_no\": 300099\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Package Builder",
+      "item": [
+        {
+          "name": "Create Package",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/share-packages",
+              "host": ["{{base_url}}"],
+              "path": ["api", "share-packages"]
+            },
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_id\": 1,\n  \"package_name\": \"Royal Membership\",\n  \"package_code\": \"ROYAL-001\",\n  \"package_price\": 900000,\n  \"down_payment\": 90000,\n  \"total_shares_included\": 30,\n  \"bonus_shares\": 4,\n  \"installment_months\": 24,\n  \"benefits\": {\n    \"free_nights\": 6,\n    \"discount_percent\": 18,\n    \"voucher_value\": 50000,\n    \"gifts\": \"Travel Bag\"\n  }\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Share Sales",
+      "item": [
+        {
+          "name": "Sell Single Share",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/sales/single",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sales", "single"]
+            },
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"project_id\": 1,\n  \"share_units\": 2,\n  \"payment_mode\": \"one_time\",\n  \"share_price\": 25000\n}"
+            }
+          }
+        },
+        {
+          "name": "Sell Package",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/sales/package",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sales", "package"]
+            },
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 2,\n  \"package_id\": 1,\n  \"payment_mode\": \"installment\",\n  \"down_payment\": 50000\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Installments",
+      "item": [
+        {
+          "name": "View Schedule",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/installments/schedule?sale_id=1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "installments", "schedule"],
+              "query": [
+                {"key": "sale_id", "value": "1"}
+              ]
+            },
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}]
+          }
+        },
+        {
+          "name": "Pay Installment",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/installments/pay",
+              "host": ["{{base_url}}"],
+              "path": ["api", "installments", "pay"]
+            },
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"installment_id\": 1\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

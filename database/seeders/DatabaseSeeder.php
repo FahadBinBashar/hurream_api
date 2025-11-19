@@ -30,6 +30,28 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        $this->seedOnce('projects', [
+            [
+                'project_code' => 'BAY-VIEW',
+                'project_name' => 'Bay View Resort',
+                'location' => 'Cox’s Bazar',
+                'description' => 'Luxury seaside investment property.',
+                'status' => 'active',
+                'certificate_prefix' => 'BAY',
+            ],
+            [
+                'project_code' => 'HILL-RETREAT',
+                'project_name' => 'Hilltop Retreat',
+                'location' => 'Bandarban',
+                'description' => 'Eco-friendly hillside villas.',
+                'status' => 'active',
+                'certificate_prefix' => 'HILL',
+            ],
+        ], 'project_code');
+
+        $bayViewId = DB::table('projects')->where('project_code', 'BAY-VIEW')->value('id');
+        $hillRetreatId = DB::table('projects')->where('project_code', 'HILL-RETREAT')->value('id');
+
         $this->seedOnce('customers', [
             [
                 'name' => 'Rahim Uddin',
@@ -65,37 +87,66 @@ class DatabaseSeeder extends Seeder
             ],
         ], 'NID');
 
+        $shareBatches = [];
+        if ($bayViewId) {
+            $shareBatches[] = [
+                'project_id' => $bayViewId,
+                'batch_name' => 'Bay View Launch',
+                'share_price' => 25000,
+                'total_shares' => 500,
+                'available_shares' => 500,
+                'certificate_start_no' => 100000,
+                'certificate_end_no' => 100499,
+                'status' => 'active',
+            ];
+        }
+        if ($hillRetreatId) {
+            $shareBatches[] = [
+                'project_id' => $hillRetreatId,
+                'batch_name' => 'Hilltop Founder Batch',
+                'share_price' => 30000,
+                'total_shares' => 300,
+                'available_shares' => 300,
+                'certificate_start_no' => 200000,
+                'certificate_end_no' => 200299,
+                'status' => 'active',
+            ];
+        }
+        $this->seedOnce('share_batches', $shareBatches, ['project_id', 'batch_name']);
+
         $this->seedOnce('share_packages', [
             [
+                'project_id' => $bayViewId,
                 'package_name' => 'VIP Gold Package',
                 'package_code' => 'VIP-GOLD',
                 'package_price' => 720000,
                 'down_payment' => 72000,
-                'duration_months' => 24,
-                'monthly_installment' => 27000,
-                'auto_share_units' => 28,
-                'bonus_share_percent' => 10,
-                'bonus_share_units' => 3,
-                'free_nights' => 6,
-                'lifetime_discount' => 20,
-                'tour_voucher_value' => 40000,
-                'gift_items' => 'Watch, Perfume',
+                'total_shares_included' => 28,
+                'bonus_shares' => 3,
+                'installment_months' => 24,
+                'benefits' => json_encode([
+                    'free_nights' => 6,
+                    'discount_percent' => 20,
+                    'voucher_value' => 40000,
+                    'gifts' => 'Watch, Perfume',
+                ]),
                 'status' => 'active',
             ],
             [
+                'project_id' => $hillRetreatId,
                 'package_name' => 'Platinum Infinity',
                 'package_code' => 'PLATINUM-INF',
                 'package_price' => 1250000,
                 'down_payment' => 125000,
-                'duration_months' => 30,
-                'monthly_installment' => 37500,
-                'auto_share_units' => 50,
-                'bonus_share_percent' => 20,
-                'bonus_share_units' => 10,
-                'free_nights' => 8,
-                'lifetime_discount' => 25,
-                'tour_voucher_value' => 60000,
-                'gift_items' => 'Smart Watch, Travel Bag',
+                'total_shares_included' => 50,
+                'bonus_shares' => 10,
+                'installment_months' => 30,
+                'benefits' => json_encode([
+                    'free_nights' => 8,
+                    'discount_percent' => 25,
+                    'voucher_value' => 60000,
+                    'gifts' => 'Smart Watch, Travel Bag',
+                ]),
                 'status' => 'active',
             ],
         ], 'package_code');
@@ -118,13 +169,10 @@ class DatabaseSeeder extends Seeder
             ], ['package_id', 'benefit_type', 'benefit_value']);
         }
 
-        $goldPackage = DB::table('share_packages')->where('id', $goldPackageId)->first();
-        $goldBenefits = DB::table('package_benefits')->where('package_id', $goldPackageId)->get()->toArray();
-        $goldSnapshot = json_encode(['package' => $goldPackage, 'benefits' => $goldBenefits], JSON_UNESCAPED_UNICODE);
-
         $this->seedOnce('customer_shares', [
             [
                 'customer_id' => 1,
+                'project_id' => $bayViewId,
                 'share_type' => 'single',
                 'package_id' => null,
                 'unit_price' => 25000,
@@ -142,9 +190,12 @@ class DatabaseSeeder extends Seeder
                 'approval_status' => 'approved',
                 'approver_gate_triggered' => 0,
                 'benefits_snapshot' => null,
+                'certificate_no' => 'BAY-000001',
+                'invoice_no' => 'BAY-202501010101',
             ],
             [
                 'customer_id' => 2,
+                'project_id' => $bayViewId,
                 'share_type' => 'package',
                 'package_id' => $goldPackageId ?: null,
                 'unit_price' => 25000,
@@ -161,9 +212,57 @@ class DatabaseSeeder extends Seeder
                 'status' => 'active',
                 'approval_status' => 'pending',
                 'approver_gate_triggered' => 1,
-                'benefits_snapshot' => $goldSnapshot,
+                'benefits_snapshot' => json_encode([
+                    'free_nights' => 6,
+                    'discount_percent' => 20,
+                    'voucher_value' => 40000,
+                ]),
+                'certificate_no' => 'BAY-000100',
+                'invoice_no' => 'BAY-202501010102',
             ],
         ], ['customer_id', 'stage']);
+
+        if ($bayViewId) {
+            $saleId = DB::table('share_sales')->insertGetId([
+                'customer_id' => 1,
+                'project_id' => $bayViewId,
+                'package_id' => null,
+                'sale_type' => 'single',
+                'total_shares' => 4,
+                'bonus_shares' => 0,
+                'share_price' => 25000,
+                'total_amount' => 100000,
+                'down_payment' => 100000,
+                'installment_months' => 0,
+                'installment_amount' => 0,
+                'payment_mode' => 'one_time',
+                'invoice_no' => 'BAY-202501010101',
+                'certificate_no' => 'BAY-000001',
+                'certificate_start' => 1,
+                'certificate_end' => 4,
+                'status' => 'completed',
+                'sale_source' => 'seeder',
+                'metadata' => json_encode([]),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $primaryBatchId = DB::table('share_batches')->where('project_id', $bayViewId)->value('id');
+            if ($primaryBatchId) {
+                DB::table('share_sale_batches')->insert([
+                    'share_sale_id' => $saleId,
+                    'batch_id' => $primaryBatchId,
+                    'shares_deducted' => 4,
+                    'certificate_from' => 100000,
+                    'certificate_to' => 100003,
+                    'share_price' => 25000,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                DB::table('share_batches')->where('id', $primaryBatchId)->decrement('available_shares', 4);
+            }
+        }
 
         $this->seedOnce('approvals', [
             ['module' => 'share_issue', 'record_id' => 2, 'approver_id' => 1, 'status' => 'pending'],
