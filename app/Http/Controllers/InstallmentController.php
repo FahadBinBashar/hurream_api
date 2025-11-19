@@ -27,10 +27,34 @@ class InstallmentController extends Controller
             $conditions[] = 'due_date <= :to';
             $params['to'] = $filters['to'];
         }
+        if (!empty($filters['customer_id'])) {
+            $conditions[] = 'customer_id = :customer_id';
+            $params['customer_id'] = $filters['customer_id'];
+        }
 
         $sql = 'SELECT * FROM installments WHERE ' . implode(' AND ', $conditions) . ' ORDER BY due_date ASC';
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
+
+        return $this->json(['data' => $stmt->fetchAll(\PDO::FETCH_ASSOC)]);
+    }
+
+    public function due(Request $request)
+    {
+        return $this->index($request);
+    }
+
+    public function schedule(Request $request)
+    {
+        if ($response = $this->validate($request, [
+            'sale_id' => 'required|numeric|min:1',
+        ])) {
+            return $response;
+        }
+
+        $pdo = Database::connection();
+        $stmt = $pdo->prepare('SELECT * FROM installments WHERE related_type = :type AND related_id = :id ORDER BY due_date');
+        $stmt->execute(['type' => 'share_sale', 'id' => $request->input('sale_id')]);
 
         return $this->json(['data' => $stmt->fetchAll(\PDO::FETCH_ASSOC)]);
     }
@@ -62,6 +86,27 @@ class InstallmentController extends Controller
             return $this->json(['message' => 'Installment not found'], 404);
         }
 
+        return $this->completePayment($installment, $request);
+    }
+
+    public function pay(Request $request)
+    {
+        if ($response = $this->validate($request, [
+            'installment_id' => 'required|numeric|min:1',
+        ])) {
+            return $response;
+        }
+
+        $installment = Installment::find((int)$request->input('installment_id'));
+        if (!$installment) {
+            return $this->json(['message' => 'Installment not found'], 404);
+        }
+
+        return $this->completePayment($installment, $request);
+    }
+
+    private function completePayment(array $installment, Request $request)
+    {
         if ($installment['status'] === 'paid') {
             return $this->json(['message' => 'Installment already paid'], 400);
         }
