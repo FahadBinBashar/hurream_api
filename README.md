@@ -27,7 +27,7 @@ This document consolidates the functional scope, validation rules, approval flow
 - **Module A – Projects:** `/api/projects` exposes CRUD for project_id/code/name/location/status. Each project carries certificate prefixes and sequencing for automated certificate generation.
 - **Module B – Share Batches:** `/api/share-batches` lets admin seed inventory per project with certificate ranges and FIFO-aware availability tracking.
 - **Module C – Package Builder:** Updated `/api/share-packages` accepts `project_id`, `total_shares_included`, `bonus_shares`, `installment_months`, and structured benefits.
-- **Module D – Share Sales:** `/api/sales/single` & `/api/sales/package` orchestrate project validation, FIFO inventory deduction, certificate/invoice generation, benefit snapshots, and share ledger entries.
+- **Module D – Share Sales:** `/api/projects/{project_id}/sales/single`, `/api/projects/{project_id}/sales/package`, `/api/self/sales/*`, and `/api/sales` (index/show/delete) now bundle project-aware requests, FIFO deductions, certificate ranges per batch, self-service purchases, and lifecycle management for invoices, certificates, installments, and reversals.
 - **Module E – Customers:** Unified `customers` table remains the anchor for investments, bookings, and dividends.
 - **Module F – Installments:** `/api/installments/*` delivers due lists, schedules, and payments with voucher generation.
 - **Module G – Booking System:** Existing booking endpoints continue to honour membership perks; discounts/free nights stored on share packages are available to booking flows.

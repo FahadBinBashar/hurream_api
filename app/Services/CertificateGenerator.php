@@ -2,32 +2,37 @@
 
 namespace App\Services;
 
-use PDO;
 use RuntimeException;
 
 class CertificateGenerator
 {
-    public function generate(PDO $pdo, int $projectId, int $units): array
+    public function fromAllocations(array $allocations, string $prefix = 'HRM'): array
     {
-        if ($units <= 0) {
-            throw new RuntimeException('Certificate generation requires at least one unit.');
+        if (empty($allocations)) {
+            throw new RuntimeException('Certificate generation requires share allocations.');
         }
 
-        $stmt = $pdo->prepare('SELECT certificate_prefix, next_certificate_no FROM projects WHERE id = :id FOR UPDATE');
-        $stmt->execute(['id' => $projectId]);
-        $project = $stmt->fetch(PDO::FETCH_ASSOC);
+        $start = null;
+        $end = null;
 
-        if (!$project) {
-            throw new RuntimeException('Project not found for certificate generation.');
+        foreach ($allocations as $allocation) {
+            $allocationStart = isset($allocation['certificate_from']) ? (int)$allocation['certificate_from'] : null;
+            $allocationEnd = isset($allocation['certificate_to']) ? (int)$allocation['certificate_to'] : null;
+
+            if ($allocationStart === null || $allocationEnd === null) {
+                continue;
+            }
+
+            $start = $start === null ? $allocationStart : min($start, $allocationStart);
+            $end = $end === null ? $allocationEnd : max($end, $allocationEnd);
         }
 
-        $start = (int)$project['next_certificate_no'];
-        $end = $start + $units - 1;
-        $prefix = strtoupper($project['certificate_prefix'] ?? 'HRM');
+        if ($start === null || $end === null) {
+            throw new RuntimeException('Unable to determine certificate range from allocations.');
+        }
+
+        $prefix = strtoupper($prefix ?: 'HRM');
         $certificateNo = sprintf('%s-%06d', $prefix, $start);
-
-        $update = $pdo->prepare('UPDATE projects SET next_certificate_no = :next WHERE id = :id');
-        $update->execute(['next' => $end + 1, 'id' => $projectId]);
 
         return [
             'certificate_no' => $certificateNo,

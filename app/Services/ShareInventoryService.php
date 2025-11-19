@@ -60,4 +60,18 @@ class ShareInventoryService
 
         return $allocations;
     }
+
+    public function release(PDO $pdo, array $allocations): void
+    {
+        foreach ($allocations as $allocation) {
+            $batchId = (int)($allocation['batch_id'] ?? 0);
+            $shares = (int)($allocation['shares'] ?? $allocation['shares_deducted'] ?? 0);
+            if ($batchId <= 0 || $shares <= 0) {
+                continue;
+            }
+
+            $stmt = $pdo->prepare('UPDATE share_batches SET available_shares = LEAST(total_shares, available_shares + :qty), updated_at = NOW() WHERE id = :id');
+            $stmt->execute(['qty' => $shares, 'id' => $batchId]);
+        }
+    }
 }

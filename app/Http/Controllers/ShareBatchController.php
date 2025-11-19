@@ -39,6 +39,25 @@ class ShareBatchController extends Controller
         return $this->json(['data' => $stmt->fetchAll(PDO::FETCH_ASSOC)]);
     }
 
+    public function show(Request $request, array $params)
+    {
+        $batch = ShareBatch::find((int)$params['id']);
+        if (!$batch) {
+            return $this->json(['message' => 'Batch not found'], 404);
+        }
+
+        return $this->json(['data' => $batch]);
+    }
+
+    public function projectBatches(Request $request, array $params)
+    {
+        $pdo = Database::connection();
+        $stmt = $pdo->prepare('SELECT * FROM share_batches WHERE project_id = :project ORDER BY certificate_start_no');
+        $stmt->execute(['project' => (int)$params['id']]);
+
+        return $this->json(['data' => $stmt->fetchAll(PDO::FETCH_ASSOC)]);
+    }
+
     public function store(Request $request)
     {
         if ($response = $this->ensureRole(['admin'])) {

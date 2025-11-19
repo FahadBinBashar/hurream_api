@@ -114,6 +114,49 @@ class SharePackageController extends Controller
         return $this->json(['data' => $this->packageWithBenefits((int)$package['id'])]);
     }
 
+    public function destroy(Request $request, array $params)
+    {
+        if ($response = $this->ensureRole(['admin'])) {
+            return $response;
+        }
+
+        $package = SharePackage::find((int)$params['id']);
+        if (!$package) {
+            return $this->json(['message' => 'Package not found'], 404);
+        }
+
+        $this->syncBenefits((int)$package['id'], []);
+        SharePackage::delete((int)$package['id']);
+
+        AuditLogger::log(Auth::user(), 'delete', 'share_packages', 'share_package', (int)$package['id'], [], $request->ip(), $request->userAgent());
+
+        return $this->json(['message' => 'Package deleted']);
+    }
+
+    public function updateStatus(Request $request, array $params)
+    {
+        if ($response = $this->ensureRole(['admin'])) {
+            return $response;
+        }
+
+        if ($response = $this->validate($request, [
+            'status' => 'required|in:' . implode(',', self::STATUSES),
+        ])) {
+            return $response;
+        }
+
+        $package = SharePackage::find((int)$params['id']);
+        if (!$package) {
+            return $this->json(['message' => 'Package not found'], 404);
+        }
+
+        $updated = SharePackage::update((int)$package['id'], ['status' => $request->input('status')]);
+
+        AuditLogger::log(Auth::user(), 'update', 'share_packages', 'share_package_status', (int)$package['id'], ['status' => $request->input('status')], $request->ip(), $request->userAgent());
+
+        return $this->json(['data' => $updated]);
+    }
+
     private function validatePackage(array $input, ?int $ignoreId)
     {
         $rules = [

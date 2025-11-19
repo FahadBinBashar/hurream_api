@@ -903,138 +903,59 @@
               ]
             }
           }
-        }
-      ]
-    },
-    {
-      "name": "Shares",
-      "item": [
-        {
-          "name": "List Shares",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/shares",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "shares"
-              ]
-            }
-          }
         },
         {
-          "name": "Create Share Issue",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customer_id\": \"{{customer_id}}\",\n  \"share_type\": \"package\",\n  \"package_id\": \"{{share_package_id}}\",\n  \"payment_mode\": \"installment\",\n  \"stage\": \"M\u00d6W-5\",\n  \"reinvest_flag\": 1,\n  \"down_payment\": 72000,\n  \"installment_months\": 24,\n  \"approvers\": [\n    1,\n    2,\n    3\n  ]\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/api/shares",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "shares"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Show Share Issue",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/shares/{{share_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "shares",
-                "{{share_id}}"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Update Share Issue",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customer_id\": \"{{customer_id}}\",\n  \"share_type\": \"single\",\n  \"quantity\": 40,\n  \"unit_price\": 25000,\n  \"bonus_units\": 2,\n  \"payment_mode\": \"one_time\",\n  \"stage\": \"M\u00d6W-6\",\n  \"reinvest_flag\": 0,\n  \"approval_status\": \"approved\"\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/api/shares/{{share_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "shares",
-                "{{share_id}}"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Delete Share Issue",
+          "name": "Delete Share Package",
           "request": {
             "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
             "url": {
-              "raw": "{{base_url}}/api/shares/{{share_id}}",
+              "raw": "{{base_url}}/api/share-packages/{{share_package_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
-                "shares",
-                "{{share_id}}"
+                "share-packages",
+                "{{share_package_id}}"
               ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update Package Status",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{base_url}}/api/share-packages/{{share_package_id}}/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "share-packages",
+                "{{share_package_id}}",
+                "status"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"status\": \"inactive\"}"
             }
           }
         }
@@ -3559,6 +3480,53 @@
                   "raw": "{\n  \"project_id\": 1,\n  \"batch_name\": \"Q1 2025\",\n  \"share_price\": 25000,\n  \"total_shares\": 100,\n  \"certificate_start_no\": 300000,\n  \"certificate_end_no\": 300099\n}"
                 }
               }
+            },
+            {
+              "name": "Show Share Batch",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/api/share-batches/{{share_batch_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "share-batches",
+                    "{{share_batch_id}}"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "List Project Batches",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/api/projects/{{project_id}}/share-batches",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "projects",
+                    "{{project_id}}",
+                    "share-batches"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ]
+              }
             }
           ]
         },
@@ -3605,12 +3573,14 @@
               "request": {
                 "method": "POST",
                 "url": {
-                  "raw": "{{base_url}}/api/sales/single",
+                  "raw": "{{base_url}}/api/projects/{{project_id}}/sales/single",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
+                    "projects",
+                    "{{project_id}}",
                     "sales",
                     "single"
                   ]
@@ -3627,7 +3597,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"customer_id\": 1,\n  \"project_id\": 1,\n  \"share_units\": 2,\n  \"payment_mode\": \"one_time\",\n  \"share_price\": 25000\n}"
+                  "raw": "{\n  \"project_id\": {{project_id}},\n  \"customer_id\": 1,\n  \"share_units\": 2,\n  \"share_price\": 25000,\n  \"payment_mode\": \"one_time\",\n  \"down_payment\": 50000,\n  \"stage\": \"M\u00d6W-1\"\n}"
                 }
               }
             },
@@ -3636,12 +3606,14 @@
               "request": {
                 "method": "POST",
                 "url": {
-                  "raw": "{{base_url}}/api/sales/package",
+                  "raw": "{{base_url}}/api/projects/{{project_id}}/sales/package",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
+                    "projects",
+                    "{{project_id}}",
                     "sales",
                     "package"
                   ]
@@ -3658,7 +3630,139 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"customer_id\": 2,\n  \"package_id\": 1,\n  \"payment_mode\": \"installment\",\n  \"down_payment\": 50000\n}"
+                  "raw": "{\n  \"project_id\": {{project_id}},\n  \"customer_id\": 1,\n  \"package_id\": 2,\n  \"payment_mode\": \"installment\",\n  \"down_payment\": 100000,\n  \"stage\": \"M\u00d6W-2\"\n}"
+                }
+              }
+            },
+            {
+              "name": "List Sales",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/api/sales",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "sales"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "Show Sale",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/api/sales/{{sale_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "sales",
+                    "{{sale_id}}"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "Delete Sale",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{base_url}}/api/sales/{{sale_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "sales",
+                    "{{sale_id}}"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "Self Purchase Single",
+              "request": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{base_url}}/api/self/sales/single",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "self",
+                    "sales",
+                    "single"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"project_id\": 1, \"share_units\": 1, \"payment_mode\": \"installment\", \"installment_months\": 6, \"down_payment\": 10000, \"stage\": \"M\u00d6W-1\"}"
+                }
+              }
+            },
+            {
+              "name": "Self Purchase Package",
+              "request": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{base_url}}/api/self/sales/package",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "self",
+                    "sales",
+                    "package"
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"project_id\": 1, \"package_id\": 2, \"payment_mode\": \"one_time\", \"stage\": \"M\u00d6W-1\"}"
                 }
               }
             }
