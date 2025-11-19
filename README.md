@@ -375,6 +375,7 @@ Authentication requirements:
 - বুকিং cancellation/refund ফ্লো এবং sales, investment ও finance-এর জন্য aggregated রিপোর্ট।
 - সহজ সেটআপের জন্য SQLite-সমর্থিত মাইগ্রেশন ও সিডিং টুলিং (`php artisan migrate`, `php artisan db:seed`)।
 - Postman collection (auto-generated from `routes/api.php`): `hphrms_api/docs/hurream_erp_api.postman_collection.json` (regenerate with `php docs/generate_postman_collection.php`)।
+- Sample request bodies live in `docs/postman_samples.php`; update this file whenever you add or change request payload structures so the generator can embed realistic data.
 
 ### Quick Start
 

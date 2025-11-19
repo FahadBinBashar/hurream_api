@@ -1,6 +1,7 @@
 <?php
 $routesFile = __DIR__ . '/../routes/api.php';
 $outputFile = __DIR__ . '/hurream_erp_api.postman_collection.json';
+$samplesFile = __DIR__ . '/postman_samples.php';
 if (!file_exists($routesFile)) {
     fwrite(STDERR, "Unable to locate routes file at {$routesFile}\n");
     exit(1);
@@ -11,6 +12,8 @@ if (!preg_match_all($pattern, $contents, $matches, PREG_SET_ORDER)) {
     fwrite(STDERR, "No routes matched in {$routesFile}\n");
     exit(1);
 }
+$samplePayloads = file_exists($samplesFile) ? require $samplesFile : [];
+
 $groups = [];
 $order = [];
 foreach ($matches as $match) {
@@ -75,7 +78,7 @@ $collection = [
 foreach ($order as $groupName) {
     $requests = [];
     foreach ($groups[$groupName] as $route) {
-        $request = buildRequestItem($route);
+        $request = buildRequestItem($route, $samplePayloads);
         $requests[] = $request;
     }
     $collection['item'][] = [
@@ -87,7 +90,7 @@ file_put_contents($outputFile, json_encode($collection, JSON_PRETTY_PRINT | JSON
 
 echo "Postman collection written to {$outputFile}\n";
 
-function buildRequestItem(array $route): array
+function buildRequestItem(array $route, array $samplePayloads): array
 {
     $method = $route['method'];
     $path = $route['path'];
@@ -125,9 +128,16 @@ function buildRequestItem(array $route): array
             'key' => 'Content-Type',
             'value' => 'application/json',
         ];
+        $payload = resolveSamplePayload($route, $samplePayloads);
+        if ($payload === null) {
+            $payload = ['note' => 'Add request payload here'];
+        }
         $body = [
             'mode' => 'raw',
-            'raw' => "{\n  \"example\": \"value\"\n}",
+            'raw' => json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+            'options' => [
+                'raw' => ['language' => 'json'],
+            ],
         ];
     }
     $description = $route['controller'] . '::' . $route['action'];
@@ -148,4 +158,19 @@ function buildRequestItem(array $route): array
         $request['request']['body'] = $body;
     }
     return $request;
+}
+
+function resolveSamplePayload(array $route, array $samplePayloads): ?array
+{
+    $controllerKey = $route['controller'] . '@' . $route['action'];
+    if (array_key_exists($controllerKey, $samplePayloads)) {
+        return $samplePayloads[$controllerKey];
+    }
+
+    $methodPathKey = $route['method'] . ' ' . $route['path'];
+    if (array_key_exists($methodPathKey, $samplePayloads)) {
+        return $samplePayloads[$methodPathKey];
+    }
+
+    return null;
 }

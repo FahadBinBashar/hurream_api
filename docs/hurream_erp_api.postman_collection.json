@@ -58,7 +58,12 @@
                         "description": "AuthController::register",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"name\": \"Imran Hossain\",\n    \"email\": \"imran@example.com\",\n    \"password\": \"secret123\",\n    \"role\": \"admin\",\n    \"phone\": \"+8801712345678\",\n    \"grade_id\": 1\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -91,7 +96,12 @@
                         "description": "AuthController::login",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"email\": \"imran@example.com\",\n    \"password\": \"secret123\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -124,7 +134,12 @@
                         "description": "AuthController::requestOtp",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"email\": \"imran@example.com\",\n    \"type\": \"email\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -157,7 +172,12 @@
                         "description": "AuthController::verifyOtp",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"email\": \"imran@example.com\",\n    \"otp\": \"123456\",\n    \"two_factor_type\": \"email\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -190,7 +210,12 @@
                         "description": "AuthController::forgotPassword",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"email\": \"imran@example.com\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -223,7 +248,12 @@
                         "description": "AuthController::resetPassword",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"email\": \"imran@example.com\",\n    \"otp\": \"123456\",\n    \"password\": \"newStrongPassword!1\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -256,7 +286,12 @@
                         "description": "AuthController::logout\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"note\": \"Add request payload here\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -317,7 +352,12 @@
                         "description": "UserController::store\nMiddleware: auth, role:admin",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"name\": \"Afsana Karim\",\n    \"email\": \"afsana@example.com\",\n    \"password\": \"tempPass!23\",\n    \"role\": \"manager\",\n    \"phone\": \"+8801812345678\",\n    \"grade_id\": 2\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -387,7 +427,12 @@
                         "description": "UserController::update\nMiddleware: auth, role:admin",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"name\": \"Afsana Rahman\",\n    \"phone\": \"+8801812348888\",\n    \"role\": \"manager\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -479,7 +524,12 @@
                         "description": "CustomerController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"name\": \"Md. Farhan Islam\",\n    \"NID\": \"1999123412345\",\n    \"phone\": \"01712345678\",\n    \"address\": \"House 12, Road 3, Dhanmondi, Dhaka\",\n    \"email\": \"farhan@example.com\",\n    \"status\": \"new\",\n    \"membership_type\": \"general\",\n    \"is_investor\": 1,\n    \"bank_info\": \"BRAC Bank, A/C 123456789\",\n    \"nominee\": \"Sharmin Akter\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -549,7 +599,12 @@
                         "description": "CustomerController::update\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"name\": \"Farhan Islam\",\n    \"NID\": \"1999123412345\",\n    \"phone\": \"01798765432\",\n    \"address\": \"Apartment 5B, Mirpur DOHS, Dhaka\",\n    \"email\": \"investor.farhan@example.com\",\n    \"status\": \"verified\",\n    \"is_investor\": 1,\n    \"investor_no\": \"INV-2045\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -620,7 +675,12 @@
                         "description": "CustomerController::verifyDocuments\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"nid_verified\": true,\n    \"police_verified\": true\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -681,7 +741,12 @@
                         "description": "BookingController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"customer_id\": 42,\n    \"room_type\": \"Deluxe Suite\",\n    \"guest_count\": 2,\n    \"check_in\": \"2024-08-01\",\n    \"check_out\": \"2024-08-05\",\n    \"price_plan\": \"Corporate\",\n    \"payment_method\": \"card\",\n    \"amount\": 48000,\n    \"payment_status\": \"pending\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -751,7 +816,12 @@
                         "description": "BookingController::update\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"customer_id\": 42,\n    \"room_type\": \"Executive Suite\",\n    \"guest_count\": 3,\n    \"check_in\": \"2024-08-02\",\n    \"check_out\": \"2024-08-06\",\n    \"price_plan\": \"Corporate\",\n    \"payment_method\": \"card\",\n    \"amount\": 52000,\n    \"payment_status\": \"paid\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -822,7 +892,12 @@
                         "description": "BookingController::cancel\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"refund_amount\": 12000\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -883,7 +958,12 @@
                         "description": "SharePackageController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"project_id\": 7,\n    \"package_name\": \"Gold Growth Plan\",\n    \"package_code\": \"GOLD-500\",\n    \"package_price\": 500000,\n    \"down_payment\": 150000,\n    \"total_shares_included\": 50,\n    \"bonus_shares\": 5,\n    \"installment_months\": 12,\n    \"status\": \"active\",\n    \"benefits\": {\n        \"priority_allocation\": true,\n        \"vip_support\": true\n    },\n    \"benefit_items\": [\n        {\n            \"label\": \"Free annual audit\",\n            \"value\": \"Included\"\n        },\n        {\n            \"label\": \"Dividend booster\",\n            \"value\": \"1.5x\"\n        }\n    ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -953,7 +1033,12 @@
                         "description": "SharePackageController::update\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"project_id\": 7,\n    \"package_name\": \"Gold Growth Plan+\",\n    \"package_code\": \"GOLD-500\",\n    \"package_price\": 520000,\n    \"down_payment\": 180000,\n    \"total_shares_included\": 55,\n    \"bonus_shares\": 7,\n    \"installment_months\": 10,\n    \"status\": \"active\",\n    \"benefits\": {\n        \"priority_allocation\": true,\n        \"vip_support\": true,\n        \"dedicated_rm\": true\n    },\n    \"benefit_items\": [\n        {\n            \"label\": \"Priority payout\",\n            \"value\": \"Quarterly\"\n        }\n    ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1024,7 +1109,12 @@
                         "description": "SharePackageController::updateStatus\nMiddleware: auth, role:admin",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"status\": \"inactive\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1085,7 +1175,12 @@
                         "description": "ProjectController::store\nMiddleware: auth, role:admin",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"project_code\": \"PRJ-OCN-01\",\n    \"project_name\": \"Oceanview Residency\",\n    \"location\": \"Cox's Bazar\",\n    \"description\": \"Premium seaside condominium project.\",\n    \"status\": \"active\",\n    \"certificate_prefix\": \"OCN\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1155,7 +1250,12 @@
                         "description": "ProjectController::update\nMiddleware: auth, role:admin",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"project_code\": \"PRJ-OCN-01\",\n    \"project_name\": \"Oceanview Residency Phase 2\",\n    \"location\": \"Cox's Bazar\",\n    \"description\": \"Expanded tower with rooftop amenities.\",\n    \"status\": \"active\",\n    \"certificate_prefix\": \"OCN\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1310,7 +1410,12 @@
                         "description": "ShareBatchController::store\nMiddleware: auth, role:admin",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"project_id\": 7,\n    \"batch_name\": \"Batch A-2024\",\n    \"share_price\": 25000,\n    \"total_shares\": 500,\n    \"available_shares\": 500,\n    \"certificate_start_no\": 1001,\n    \"certificate_end_no\": 1500,\n    \"status\": \"active\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1349,7 +1454,12 @@
                         "description": "ShareBatchController::update\nMiddleware: auth, role:admin",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"project_id\": 7,\n    \"batch_name\": \"Batch A-2024 Rev-1\",\n    \"share_price\": 26000,\n    \"total_shares\": 520,\n    \"available_shares\": 400,\n    \"certificate_start_no\": 1001,\n    \"certificate_end_no\": 1520,\n    \"status\": \"inactive\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1512,7 +1622,12 @@
                         "description": "ShareSalesController::sellSingle\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"customer_id\": 12,\n    \"project_id\": 3,\n    \"share_units\": 10,\n    \"share_price\": 25000,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 75000,\n    \"installment_months\": 12,\n    \"stage\": \"M\u00d6W-101\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1553,7 +1668,12 @@
                         "description": "ShareSalesController::sellPackage\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"customer_id\": 12,\n    \"project_id\": 3,\n    \"package_id\": 5,\n    \"payment_mode\": \"one_time\",\n    \"down_payment\": 500000,\n    \"installment_months\": 1,\n    \"stage\": \"M\u00d6W-101\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1587,7 +1707,12 @@
                         "description": "ShareSalesController::sellSingleSelf\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"project_id\": 3,\n    \"share_units\": 5,\n    \"share_price\": 25000,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 50000,\n    \"installment_months\": 6,\n    \"stage\": \"M\u00d6W-201\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1621,7 +1746,12 @@
                         "description": "ShareSalesController::sellPackageSelf\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"project_id\": 3,\n    \"package_id\": 5,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 200000,\n    \"installment_months\": 8,\n    \"stage\": \"M\u00d6W-201\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1682,7 +1812,12 @@
                         "description": "TransactionController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"share_id\": 88,\n    \"amount\": 125000,\n    \"payment_type\": \"bank_transfer\",\n    \"date\": \"2024-07-15\",\n    \"note\": \"Initial investment payment\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1752,7 +1887,12 @@
                         "description": "TransactionController::update\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"amount\": 130000,\n    \"payment_type\": \"cash\",\n    \"date\": \"2024-07-18\",\n    \"note\": \"Adjusted after reconciliation\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1844,7 +1984,12 @@
                         "description": "GradeController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"grade_no\": 3,\n    \"grade_name\": \"Senior Executive\",\n    \"description\": \"Leadership level for experienced managers.\",\n    \"status\": \"active\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1883,7 +2028,12 @@
                         "description": "GradeController::update\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"grade_no\": 3,\n    \"grade_name\": \"Senior Executive II\",\n    \"description\": \"Eligible for stock grants.\",\n    \"status\": \"active\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -1976,7 +2126,12 @@
                         "description": "DesignationController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"grade_id\": 3,\n    \"designation_name\": \"Regional Sales Lead\",\n    \"description\": \"Leads divisional sales teams.\",\n    \"status\": \"active\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2015,7 +2170,12 @@
                         "description": "DesignationController::update\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"grade_id\": 3,\n    \"designation_name\": \"Regional Sales Director\",\n    \"description\": \"Oversees all regional operations.\",\n    \"status\": \"active\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2076,7 +2236,12 @@
                         "description": "EmployeeController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"name\": \"Sonia Akter\",\n    \"father_name\": \"Rezaul Karim\",\n    \"mother_name\": \"Hosne Ara\",\n    \"nid\": \"1988123412345\",\n    \"address\": \"Nikunja 2, Dhaka\",\n    \"phone\": \"01755667788\",\n    \"email\": \"sonia.akter@example.com\",\n    \"education\": \"MBA in Finance\",\n    \"grade_id\": 3,\n    \"designation_id\": 4,\n    \"join_date\": \"2022-04-01\",\n    \"salary\": 85000,\n    \"documents\": [\n        \"nid_copy\",\n        \"photo\",\n        \"appointment_letter\"\n    ],\n    \"status\": \"active\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2146,7 +2311,12 @@
                         "description": "EmployeeController::update\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"name\": \"Sonia Akter Khan\",\n    \"father_name\": \"Rezaul Karim\",\n    \"mother_name\": \"Hosne Ara\",\n    \"nid\": \"1988123412345\",\n    \"address\": \"Gulshan 1, Dhaka\",\n    \"phone\": \"01755660000\",\n    \"email\": \"sonia.khan@example.com\",\n    \"education\": \"MBA in Finance\",\n    \"grade_id\": 3,\n    \"designation_id\": 5,\n    \"join_date\": \"2022-04-01\",\n    \"salary\": 95000,\n    \"documents\": [\n        \"nid_copy\",\n        \"photo\",\n        \"promotion_letter\"\n    ],\n    \"status\": \"probation\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2218,7 +2388,12 @@
                         "description": "EmployeeController::checkIn\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"check_in_at\": \"2024-07-18 09:15:00\",\n    \"source\": \"mobile_app\",\n    \"status\": \"present\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2259,7 +2434,12 @@
                         "description": "EmployeeController::checkOut\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"check_out_at\": \"2024-07-18 18:05:00\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2363,7 +2543,12 @@
                         "description": "EmployeeController::leaveStore\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"type\": \"sick\",\n    \"from_date\": \"2024-07-20\",\n    \"to_date\": \"2024-07-22\",\n    \"reason\": \"Seasonal flu\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2402,7 +2587,12 @@
                         "description": "EmployeeController::leaveUpdate\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"type\": \"sick\",\n    \"from_date\": \"2024-07-20\",\n    \"to_date\": \"2024-07-23\",\n    \"status\": \"pending\",\n    \"reason\": \"Doctor advised extra rest\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2442,7 +2632,12 @@
                         "description": "EmployeeController::leaveApprove\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"status\": \"approved\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2545,7 +2740,12 @@
                         "description": "EmployeeController::kpiStore\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"period_start\": \"2024-07-01\",\n    \"period_end\": \"2024-07-31\",\n    \"target\": 30,\n    \"achieved\": 27,\n    \"score\": 90,\n    \"remarks\": \"Strong close rate\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2585,7 +2785,12 @@
                         "description": "EmployeeController::verifyDocuments\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"nid_verified\": true,\n    \"police_verified\": false\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2646,7 +2851,12 @@
                         "description": "LeadController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"officer_id\": 9,\n    \"name\": \"Tanvir Hasan\",\n    \"contact\": \"+8801912345678\",\n    \"email\": \"tanvir.lead@example.com\",\n    \"source\": \"Expo booth\",\n    \"status\": \"lead\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2716,7 +2926,12 @@
                         "description": "LeadController::update\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"officer_id\": 9,\n    \"name\": \"Tanvir Hasan\",\n    \"contact\": \"+8801999988888\",\n    \"status\": \"prospect\",\n    \"notes\": \"Interested in premium package\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2787,7 +3002,12 @@
                         "description": "LeadController::convertToProspect\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"notes\": \"Attended onsite visit\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2827,7 +3047,12 @@
                         "description": "LeadController::convertToInvestor\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"customer_id\": 12,\n    \"notes\": \"Invested in Oceanview project\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -2867,7 +3092,12 @@
                         "description": "LeadController::storeReminder\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"remind_at\": \"2024-07-25 10:00:00\",\n    \"note\": \"Follow-up call on share allocation\",\n    \"status\": \"pending\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -3006,7 +3236,12 @@
                         "description": "ApprovalController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"module\": \"share_sales\",\n    \"record_id\": 51,\n    \"approver_id\": 3,\n    \"status\": \"pending\",\n    \"remarks\": \"Awaiting finance review\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -3076,7 +3311,12 @@
                         "description": "ApprovalController::update\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"status\": \"approved\",\n    \"approved_at\": \"2024-07-18 14:45:00\",\n    \"remarks\": \"All documents verified\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -3168,7 +3408,12 @@
                         "description": "AccountController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"code\": \"1010\",\n    \"name\": \"Cash in Hand\",\n    \"category\": \"asset\",\n    \"type\": \"current_asset\",\n    \"parent_id\": null,\n    \"is_active\": 1,\n    \"description\": \"Cash kept at head office\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -3238,7 +3483,12 @@
                         "description": "AccountController::update\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"name\": \"Cash & Equivalents\",\n    \"is_active\": 1,\n    \"description\": \"Petty cash and equivalents\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -3330,7 +3580,12 @@
                         "description": "VoucherController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"voucher_no\": \"RV-2024-0718\",\n    \"voucher_type\": \"receipt\",\n    \"date\": \"2024-07-18\",\n    \"description\": \"Installment collection\",\n    \"status\": \"draft\",\n    \"lines\": [\n        {\n            \"account_id\": 1,\n            \"debit\": 150000,\n            \"credit\": 0,\n            \"description\": \"Cash received\"\n        },\n        {\n            \"account_id\": 55,\n            \"debit\": 0,\n            \"credit\": 150000,\n            \"description\": \"Installment income\"\n        }\n    ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -3472,7 +3727,12 @@
                         "description": "InstallmentController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"related_type\": \"customer_share\",\n    \"related_id\": 10,\n    \"due_date\": \"2024-09-01\",\n    \"amount\": 25000,\n    \"status\": \"pending\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -3505,7 +3765,12 @@
                         "description": "InstallmentController::pay\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"installment_id\": 44,\n    \"payment_channel\": \"bkash\",\n    \"reference\": \"BKASH-998877\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -3545,7 +3810,12 @@
                         "description": "InstallmentController::markPaid\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"payment_reference\": \"MANUAL-2024-0718\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -3608,7 +3878,12 @@
                         "description": "PayrollController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"period_start\": \"2024-07-01\",\n    \"period_end\": \"2024-07-31\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -3646,7 +3921,12 @@
                         "description": "StageController::closePeriod\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"customer_id\": 15,\n    \"profit_amount\": 42000,\n    \"period_start\": \"2024-06-01\",\n    \"period_end\": \"2024-06-30\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -3718,7 +3998,12 @@
                         "description": "StageController::upgrade\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"stage_id\": 4\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -4063,7 +4348,12 @@
                         "description": "PolicyController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"code\": \"HR-POL-001\",\n    \"title\": \"Remote Work Policy\",\n    \"description\": \"Guidelines for hybrid and remote work.\",\n    \"version\": \"1.0\",\n    \"effective_from\": \"2024-07-01\",\n    \"status\": \"active\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -4133,7 +4423,12 @@
                         "description": "PolicyController::update\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"code\": \"HR-POL-001\",\n    \"title\": \"Remote Work Policy\",\n    \"description\": \"Updated policy with security clause.\",\n    \"version\": \"1.1\",\n    \"effective_from\": \"2024-07-01\",\n    \"effective_to\": \"2025-06-30\",\n    \"status\": \"active\",\n    \"change_summary\": \"Added VPN requirements\",\n    \"approved_by\": [\n        \"COO\",\n        \"CTO\"\n    ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -4264,7 +4559,12 @@
                         "description": "SettingController::update\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"value\": \"noreply@hurream.com\",\n    \"type\": \"string\",\n    \"description\": \"Default sender for transactional emails\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -4325,7 +4625,12 @@
                         "description": "NotificationTemplateController::store\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"code\": \"WELCOME_MAIL\",\n    \"channel\": \"email\",\n    \"subject\": \"Welcome to Hurream ERP\",\n    \"body\": \"Hello {{name}}, your account is live.\",\n    \"placeholders\": [\n        \"name\",\n        \"login_url\"\n    ],\n    \"status\": \"active\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -4395,7 +4700,12 @@
                         "description": "NotificationTemplateController::update\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"code\": \"WELCOME_MAIL\",\n    \"channel\": \"email\",\n    \"subject\": \"Welcome to Hurream ERP\",\n    \"body\": \"Hi {{name}}, you can login at {{login_url}}\",\n    \"placeholders\": [\n        \"name\",\n        \"login_url\"\n    ],\n    \"status\": \"inactive\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
@@ -4466,7 +4776,12 @@
                         "description": "NotificationTemplateController::render\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"example\": \"value\"\n}"
+                            "raw": "{\n    \"data\": {\n        \"name\": \"Imran\",\n        \"login_url\": \"https://erp.hurream.com/login\"\n    }\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
                         }
                     },
                     "response": []
