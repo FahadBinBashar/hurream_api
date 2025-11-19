@@ -1,0 +1,4477 @@
+{
+    "info": {
+        "name": "Hurream ERP API (Auto-generated)",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": "Postman collection generated directly from routes/api.php. Regenerate whenever new routes are added using php docs/generate_postman_collection.php."
+    },
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{access_token}}",
+                "type": "string"
+            }
+        ]
+    },
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8000",
+            "type": "string"
+        },
+        {
+            "key": "access_token",
+            "value": "",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "POST /auth/register",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/register",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "register"
+                            ]
+                        },
+                        "description": "AuthController::register",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /auth/login",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "login"
+                            ]
+                        },
+                        "description": "AuthController::login",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /auth/request-otp",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/request-otp",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "request-otp"
+                            ]
+                        },
+                        "description": "AuthController::requestOtp",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /auth/verify-otp",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/verify-otp",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "verify-otp"
+                            ]
+                        },
+                        "description": "AuthController::verifyOtp",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /auth/forgot-password",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/forgot-password",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "forgot-password"
+                            ]
+                        },
+                        "description": "AuthController::forgotPassword",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /auth/reset-password",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/reset-password",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "reset-password"
+                            ]
+                        },
+                        "description": "AuthController::resetPassword",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /auth/logout",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/logout",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "logout"
+                            ]
+                        },
+                        "description": "AuthController::logout\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "User",
+            "item": [
+                {
+                    "name": "GET /users",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/users",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "users"
+                            ]
+                        },
+                        "description": "UserController::index\nMiddleware: auth, role:admin"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /users",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/users",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "users"
+                            ]
+                        },
+                        "description": "UserController::store\nMiddleware: auth, role:admin",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /users/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/users/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "users",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "UserController::show\nMiddleware: auth, role:admin"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /users/{id}",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/users/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "users",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "UserController::update\nMiddleware: auth, role:admin",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /users/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/users/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "users",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "UserController::destroy\nMiddleware: auth, role:admin"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Customer",
+            "item": [
+                {
+                    "name": "GET /customers",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/customers",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "customers"
+                            ]
+                        },
+                        "description": "CustomerController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /customers",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/customers",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "customers"
+                            ]
+                        },
+                        "description": "CustomerController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /customers/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/customers/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "customers",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "CustomerController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /customers/{id}",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/customers/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "customers",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "CustomerController::update\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /customers/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/customers/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "customers",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "CustomerController::destroy\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /customers/{id}/verify-documents",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/customers/{id}/verify-documents",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "customers",
+                                ":id",
+                                "verify-documents"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "CustomerController::verifyDocuments\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Booking",
+            "item": [
+                {
+                    "name": "GET /bookings",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/bookings",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "bookings"
+                            ]
+                        },
+                        "description": "BookingController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /bookings",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/bookings",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "bookings"
+                            ]
+                        },
+                        "description": "BookingController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /bookings/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/bookings/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "bookings",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "BookingController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /bookings/{id}",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/bookings/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "bookings",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "BookingController::update\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /bookings/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/bookings/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "bookings",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "BookingController::destroy\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /bookings/{id}/cancel",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/bookings/{id}/cancel",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "bookings",
+                                ":id",
+                                "cancel"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "BookingController::cancel\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "SharePackage",
+            "item": [
+                {
+                    "name": "GET /share-packages",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/share-packages",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "share-packages"
+                            ]
+                        },
+                        "description": "SharePackageController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /share-packages",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/share-packages",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "share-packages"
+                            ]
+                        },
+                        "description": "SharePackageController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /share-packages/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/share-packages/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "share-packages",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "SharePackageController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PUT /share-packages/{id}",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/share-packages/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "share-packages",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "SharePackageController::update\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /share-packages/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/share-packages/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "share-packages",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "SharePackageController::destroy\nMiddleware: auth, role:admin"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /share-packages/{id}/status",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/share-packages/{id}/status",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "share-packages",
+                                ":id",
+                                "status"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "SharePackageController::updateStatus\nMiddleware: auth, role:admin",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Project",
+            "item": [
+                {
+                    "name": "GET /projects",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/projects",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "projects"
+                            ]
+                        },
+                        "description": "ProjectController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /projects",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/projects",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "projects"
+                            ]
+                        },
+                        "description": "ProjectController::store\nMiddleware: auth, role:admin",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /projects/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/projects/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "projects",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ProjectController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /projects/{id}",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/projects/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "projects",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ProjectController::update\nMiddleware: auth, role:admin",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /projects/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/projects/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "projects",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ProjectController::destroy\nMiddleware: auth, role:admin"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "ShareBatch",
+            "item": [
+                {
+                    "name": "GET /share-batches",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/share-batches",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "share-batches"
+                            ]
+                        },
+                        "description": "ShareBatchController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /share-batches/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/share-batches/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "share-batches",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ShareBatchController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /projects/{id}/share-batches",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/projects/{id}/share-batches",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "projects",
+                                ":id",
+                                "share-batches"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ShareBatchController::projectBatches\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /share-batches",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/share-batches",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "share-batches"
+                            ]
+                        },
+                        "description": "ShareBatchController::store\nMiddleware: auth, role:admin",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /share-batches/{id}",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/share-batches/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "share-batches",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ShareBatchController::update\nMiddleware: auth, role:admin",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /share-batches/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/share-batches/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "share-batches",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ShareBatchController::destroy\nMiddleware: auth, role:admin"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "ShareSales",
+            "item": [
+                {
+                    "name": "GET /sales",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/sales",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "sales"
+                            ]
+                        },
+                        "description": "ShareSalesController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /sales/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/sales/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "sales",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ShareSalesController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /sales/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/sales/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "sales",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ShareSalesController::destroy\nMiddleware: auth, role:admin"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /projects/{project_id}/sales/single",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/projects/{project_id}/sales/single",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "projects",
+                                ":project_id",
+                                "sales",
+                                "single"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "project_id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ShareSalesController::sellSingle\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /projects/{project_id}/sales/package",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/projects/{project_id}/sales/package",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "projects",
+                                ":project_id",
+                                "sales",
+                                "package"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "project_id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ShareSalesController::sellPackage\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /self/sales/single",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/self/sales/single",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "self",
+                                "sales",
+                                "single"
+                            ]
+                        },
+                        "description": "ShareSalesController::sellSingleSelf\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /self/sales/package",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/self/sales/package",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "self",
+                                "sales",
+                                "package"
+                            ]
+                        },
+                        "description": "ShareSalesController::sellPackageSelf\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Transaction",
+            "item": [
+                {
+                    "name": "GET /transactions",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/transactions",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "transactions"
+                            ]
+                        },
+                        "description": "TransactionController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /transactions",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/transactions",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "transactions"
+                            ]
+                        },
+                        "description": "TransactionController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /transactions/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/transactions/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "transactions",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "TransactionController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /transactions/{id}",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/transactions/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "transactions",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "TransactionController::update\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /transactions/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/transactions/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "transactions",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "TransactionController::destroy\nMiddleware: auth"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Grade",
+            "item": [
+                {
+                    "name": "GET /grades",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/grades",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "grades"
+                            ]
+                        },
+                        "description": "GradeController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /grades",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/grades",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "grades"
+                            ]
+                        },
+                        "description": "GradeController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PUT /grades/{id}",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/grades/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "grades",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "GradeController::update\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Designation",
+            "item": [
+                {
+                    "name": "GET /grades/{id}/designations",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/grades/{id}/designations",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "grades",
+                                ":id",
+                                "designations"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "DesignationController::byGrade\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /designations",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/designations",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "designations"
+                            ]
+                        },
+                        "description": "DesignationController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /designations",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/designations",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "designations"
+                            ]
+                        },
+                        "description": "DesignationController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PUT /designations/{id}",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/designations/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "designations",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "DesignationController::update\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Employee",
+            "item": [
+                {
+                    "name": "GET /employees",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/employees",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "employees"
+                            ]
+                        },
+                        "description": "EmployeeController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /employees",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/employees",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "employees"
+                            ]
+                        },
+                        "description": "EmployeeController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /employees/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/employees/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "employees",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /employees/{id}",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/employees/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "employees",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::update\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /employees/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/employees/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "employees",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::destroy\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /employees/{id}/attendance/check-in",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/employees/{id}/attendance/check-in",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "employees",
+                                ":id",
+                                "attendance",
+                                "check-in"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::checkIn\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /employees/{id}/attendance/check-out",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/employees/{id}/attendance/check-out",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "employees",
+                                ":id",
+                                "attendance",
+                                "check-out"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::checkOut\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /employees/{id}/attendance",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/employees/{id}/attendance",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "employees",
+                                ":id",
+                                "attendance"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::attendance\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /employees/{id}/leave-requests",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/employees/{id}/leave-requests",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "employees",
+                                ":id",
+                                "leave-requests"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::leaveIndex\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /employees/{id}/leave-requests",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/employees/{id}/leave-requests",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "employees",
+                                ":id",
+                                "leave-requests"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::leaveStore\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /leave-requests/{leave_id}",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leave-requests/{leave_id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leave-requests",
+                                ":leave_id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "leave_id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::leaveUpdate\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /leave-requests/{leave_id}/approve",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leave-requests/{leave_id}/approve",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leave-requests",
+                                ":leave_id",
+                                "approve"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "leave_id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::leaveApprove\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /leave-requests/{leave_id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leave-requests/{leave_id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leave-requests",
+                                ":leave_id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "leave_id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::leaveDestroy\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /employees/{id}/kpis",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/employees/{id}/kpis",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "employees",
+                                ":id",
+                                "kpis"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::kpiIndex\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /employees/{id}/kpis",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/employees/{id}/kpis",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "employees",
+                                ":id",
+                                "kpis"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::kpiStore\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /employees/{id}/verify-documents",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/employees/{id}/verify-documents",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "employees",
+                                ":id",
+                                "verify-documents"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "EmployeeController::verifyDocuments\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Lead",
+            "item": [
+                {
+                    "name": "GET /leads",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leads",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leads"
+                            ]
+                        },
+                        "description": "LeadController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /leads",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leads",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leads"
+                            ]
+                        },
+                        "description": "LeadController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /leads/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leads/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leads",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "LeadController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /leads/{id}",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leads/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leads",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "LeadController::update\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /leads/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leads/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leads",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "LeadController::destroy\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PUT /leads/{id}/convert-to-prospect",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leads/{id}/convert-to-prospect",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leads",
+                                ":id",
+                                "convert-to-prospect"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "LeadController::convertToProspect\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PUT /leads/{id}/convert-to-investor",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leads/{id}/convert-to-investor",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leads",
+                                ":id",
+                                "convert-to-investor"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "LeadController::convertToInvestor\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /leads/{id}/reminders",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leads/{id}/reminders",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leads",
+                                ":id",
+                                "reminders"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "LeadController::storeReminder\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /leads/reminders/upcoming",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leads/reminders/upcoming",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leads",
+                                "reminders",
+                                "upcoming"
+                            ]
+                        },
+                        "description": "LeadController::upcomingReminders\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /leads/reports/conversion",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leads/reports/conversion",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leads",
+                                "reports",
+                                "conversion"
+                            ]
+                        },
+                        "description": "LeadController::conversionReport\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /leads/reports/officer-summary",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/leads/reports/officer-summary",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "leads",
+                                "reports",
+                                "officer-summary"
+                            ]
+                        },
+                        "description": "LeadController::officerSummary\nMiddleware: auth"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Approval",
+            "item": [
+                {
+                    "name": "GET /approvals",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/approvals",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "approvals"
+                            ]
+                        },
+                        "description": "ApprovalController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /approvals",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/approvals",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "approvals"
+                            ]
+                        },
+                        "description": "ApprovalController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /approvals/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/approvals/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "approvals",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ApprovalController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /approvals/{id}",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/approvals/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "approvals",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ApprovalController::update\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /approvals/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/approvals/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "approvals",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ApprovalController::destroy\nMiddleware: auth"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Account",
+            "item": [
+                {
+                    "name": "GET /accounts",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/accounts",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "accounts"
+                            ]
+                        },
+                        "description": "AccountController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /accounts",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/accounts",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "accounts"
+                            ]
+                        },
+                        "description": "AccountController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /accounts/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/accounts/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "accounts",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "AccountController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /accounts/{id}",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/accounts/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "accounts",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "AccountController::update\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /accounts/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/accounts/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "accounts",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "AccountController::destroy\nMiddleware: auth"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Voucher",
+            "item": [
+                {
+                    "name": "GET /vouchers",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/vouchers",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "vouchers"
+                            ]
+                        },
+                        "description": "VoucherController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /vouchers",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/vouchers",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "vouchers"
+                            ]
+                        },
+                        "description": "VoucherController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /vouchers/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/vouchers/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "vouchers",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "VoucherController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Installment",
+            "item": [
+                {
+                    "name": "GET /installments",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/installments",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "installments"
+                            ]
+                        },
+                        "description": "InstallmentController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /installments/due",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/installments/due",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "installments",
+                                "due"
+                            ]
+                        },
+                        "description": "InstallmentController::due\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /installments/schedule",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/installments/schedule",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "installments",
+                                "schedule"
+                            ]
+                        },
+                        "description": "InstallmentController::schedule\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /installments",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/installments",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "installments"
+                            ]
+                        },
+                        "description": "InstallmentController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /installments/pay",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/installments/pay",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "installments",
+                                "pay"
+                            ]
+                        },
+                        "description": "InstallmentController::pay\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /installments/{id}/mark-paid",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/installments/{id}/mark-paid",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "installments",
+                                ":id",
+                                "mark-paid"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "InstallmentController::markPaid\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Payroll",
+            "item": [
+                {
+                    "name": "GET /payroll/runs",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/payroll/runs",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "payroll",
+                                "runs"
+                            ]
+                        },
+                        "description": "PayrollController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /payroll/runs",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/payroll/runs",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "payroll",
+                                "runs"
+                            ]
+                        },
+                        "description": "PayrollController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Stage",
+            "item": [
+                {
+                    "name": "POST /stages/close-period",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/stages/close-period",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "stages",
+                                "close-period"
+                            ]
+                        },
+                        "description": "StageController::closePeriod\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /customers/{id}/stages",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/customers/{id}/stages",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "customers",
+                                ":id",
+                                "stages"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "StageController::customerStages\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /customers/{id}/stage",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/customers/{id}/stage",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "customers",
+                                ":id",
+                                "stage"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "StageController::upgrade\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /stages/report",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/stages/report",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "stages",
+                                "report"
+                            ]
+                        },
+                        "description": "StageController::report\nMiddleware: auth"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Report",
+            "item": [
+                {
+                    "name": "GET /reports/sales-summary",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/reports/sales-summary",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "reports",
+                                "sales-summary"
+                            ]
+                        },
+                        "description": "ReportController::salesSummary\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /reports/investment-summary",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/reports/investment-summary",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "reports",
+                                "investment-summary"
+                            ]
+                        },
+                        "description": "ReportController::investmentSummary\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /reports/finance-statement",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/reports/finance-statement",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "reports",
+                                "finance-statement"
+                            ]
+                        },
+                        "description": "ReportController::financeStatement\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /reports/cash-book",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/reports/cash-book",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "reports",
+                                "cash-book"
+                            ]
+                        },
+                        "description": "ReportController::cashBook\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /reports/bank-book",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/reports/bank-book",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "reports",
+                                "bank-book"
+                            ]
+                        },
+                        "description": "ReportController::bankBook\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /reports/ledger",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/reports/ledger",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "reports",
+                                "ledger"
+                            ]
+                        },
+                        "description": "ReportController::ledger\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /reports/trial-balance",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/reports/trial-balance",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "reports",
+                                "trial-balance"
+                            ]
+                        },
+                        "description": "ReportController::trialBalance\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /reports/income-statement",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/reports/income-statement",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "reports",
+                                "income-statement"
+                            ]
+                        },
+                        "description": "ReportController::incomeStatement\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /reports/balance-sheet",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/reports/balance-sheet",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "reports",
+                                "balance-sheet"
+                            ]
+                        },
+                        "description": "ReportController::balanceSheet\nMiddleware: auth"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "AuditLog",
+            "item": [
+                {
+                    "name": "GET /audit-logs",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/audit-logs",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "audit-logs"
+                            ]
+                        },
+                        "description": "AuditLogController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Policy",
+            "item": [
+                {
+                    "name": "GET /policies",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/policies",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "policies"
+                            ]
+                        },
+                        "description": "PolicyController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /policies",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/policies",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "policies"
+                            ]
+                        },
+                        "description": "PolicyController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /policies/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/policies/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "policies",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "PolicyController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /policies/{id}",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/policies/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "policies",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "PolicyController::update\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /policies/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/policies/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "policies",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "PolicyController::destroy\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /policies/{id}/history",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/policies/{id}/history",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "policies",
+                                ":id",
+                                "history"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "PolicyController::history\nMiddleware: auth"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Setting",
+            "item": [
+                {
+                    "name": "GET /settings",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/settings",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "settings"
+                            ]
+                        },
+                        "description": "SettingController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PUT /settings/{key}",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/settings/{key}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "settings",
+                                ":key"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "key",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "SettingController::update\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "NotificationTemplate",
+            "item": [
+                {
+                    "name": "GET /notification-templates",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/notification-templates",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notification-templates"
+                            ]
+                        },
+                        "description": "NotificationTemplateController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /notification-templates",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/notification-templates",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notification-templates"
+                            ]
+                        },
+                        "description": "NotificationTemplateController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /notification-templates/{id}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/notification-templates/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notification-templates",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "NotificationTemplateController::show\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "PATCH /notification-templates/{id}",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/notification-templates/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notification-templates",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "NotificationTemplateController::update\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE /notification-templates/{id}",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/notification-templates/{id}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notification-templates",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "NotificationTemplateController::destroy\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /notification-templates/{id}/render",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/notification-templates/{id}/render",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "notification-templates",
+                                ":id",
+                                "render"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "NotificationTemplateController::render\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"example\": \"value\"\n}"
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ]
+}
