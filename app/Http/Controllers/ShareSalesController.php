@@ -88,6 +88,40 @@ class ShareSalesController extends Controller
         return $this->json(['data' => $sale]);
     }
 
+    public function payments(Request $request, array $params)
+    {
+        $sale = ShareSale::find((int)$params['id']);
+        if (!$sale) {
+            return $this->json(['message' => 'Sale not found'], 404);
+        }
+
+        $pdo = Database::connection();
+        $stmt = $pdo->prepare('SELECT * FROM share_sale_payments WHERE share_sale_id = :sale ORDER BY received_at DESC');
+        $stmt->execute(['sale' => $sale['id']]);
+        $payments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $totalPaid = array_sum(array_map(fn ($payment) => (float)($payment['amount'] ?? 0), $payments));
+        $remaining = max(0, (float)$sale['total_amount'] - $totalPaid);
+
+        return $this->json([
+            'data' => [
+                'sale' => [
+                    'id' => $sale['id'],
+                    'customer_id' => $sale['customer_id'],
+                    'project_id' => $sale['project_id'],
+                    'total_amount' => (float)$sale['total_amount'],
+                    'down_payment' => (float)$sale['down_payment'],
+                    'payment_mode' => $sale['payment_mode'],
+                ],
+                'totals' => [
+                    'paid' => $totalPaid,
+                    'remaining' => $remaining,
+                ],
+                'payments' => $payments,
+            ],
+        ]);
+    }
+
     public function destroy(Request $request, array $params)
     {
         if ($response = $this->ensureRole(['admin'])) {

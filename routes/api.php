@@ -81,6 +81,7 @@ $router->add('DELETE', '/share-batches/{id}', [ShareBatchController::class, 'des
 $router->add('GET', '/sales', [ShareSalesController::class, 'index'], ['auth']);
 $router->add('GET', '/sales/{id}', [ShareSalesController::class, 'show'], ['auth']);
 $router->add('DELETE', '/sales/{id}', [ShareSalesController::class, 'destroy'], ['auth', 'role:admin']);
+$router->add('GET', '/sales/{id}/payments', [ShareSalesController::class, 'payments'], ['auth']);
 $router->add('POST', '/sales/{id}/payments', [ShareSalesController::class, 'addPayment'], ['auth']);
 $router->add('GET', '/sales/{id}/installments', [InstallmentController::class, 'shareSaleInstallments'], ['auth']);
 $router->add('POST', '/sales/{sale_id}/installments/{installment_id}/pay', [InstallmentController::class, 'payShareSaleInstallment'], ['auth']);
