@@ -10,6 +10,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GradeController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\InstallmentController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\NotificationTemplateController;
@@ -185,6 +186,9 @@ $router->add('GET', '/policies/{id}/history', [PolicyController::class, 'history
 
 $router->add('GET', '/settings', [SettingController::class, 'index'], ['auth']);
 $router->add('PUT', '/settings/{key}', [SettingController::class, 'update'], ['auth']);
+
+$router->add('GET', '/receipt/{receipt_no}', [DocumentController::class, 'receipt']);
+$router->add('GET', '/invoice/{invoice_no}', [DocumentController::class, 'invoice']);
 
 $router->add('GET', '/notification-templates', [NotificationTemplateController::class, 'index'], ['auth']);
 $router->add('POST', '/notification-templates', [NotificationTemplateController::class, 'store'], ['auth']);

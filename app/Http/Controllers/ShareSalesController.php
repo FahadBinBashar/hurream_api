@@ -18,6 +18,7 @@ use App\Services\CertificateGenerator;
 use App\Services\InstallmentScheduleService;
 use App\Services\NotificationService;
 use App\Services\PackageBenefitService;
+use App\Services\ReceiptInvoiceService;
 use App\Services\ShareInventoryService;
 use App\Support\AuditLogger;
 use App\Support\Auth;
@@ -34,7 +35,8 @@ class ShareSalesController extends Controller
         private readonly CertificateGenerator $certificateGenerator = new CertificateGenerator(),
         private readonly PackageBenefitService $benefitService = new PackageBenefitService(),
         private readonly InstallmentScheduleService $installmentService = new InstallmentScheduleService(),
-        private readonly NotificationService $notificationService = new NotificationService()
+        private readonly NotificationService $notificationService = new NotificationService(),
+        private readonly ReceiptInvoiceService $documentService = new ReceiptInvoiceService()
     ) {
     }
 
@@ -709,6 +711,23 @@ class ShareSalesController extends Controller
             throw $exception;
         }
 
-        return array_merge($paymentRecord, ['voucher_id' => $voucher['id']]);
+        $receiptData = $this->documentService->getReceiptData($receiptNo);
+        $pdfPath = $receiptData ? $this->documentService->generateReceiptPdf($receiptData) : null;
+
+        $customer = Customer::find((int)$sale['customer_id']);
+        $this->notificationService->sendReceiptNotification(
+            $customer ?? [],
+            $receiptNo,
+            $receiptData['receipt_url'] ?? $this->buildReceiptUrl($receiptNo)
+        );
+
+        return array_merge($paymentRecord, ['voucher_id' => $voucher['id'], 'pdf_path' => $pdfPath]);
+    }
+
+    private function buildReceiptUrl(string $receiptNo): string
+    {
+        $base = rtrim(config('app.url', Env::get('APP_URL', 'http://localhost')), '/');
+
+        return $base . '/receipt/' . $receiptNo;
     }
 }

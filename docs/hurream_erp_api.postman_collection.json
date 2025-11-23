@@ -4832,6 +4832,61 @@
                     "response": []
                 }
             ]
+        },
+        {
+            "name": "Documents",
+            "item": [
+                {
+                    "name": "GET /receipt/{receipt_no}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "text/html"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/receipt/:receipt_no",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "receipt",
+                                ":receipt_no"
+                            ]
+                        },
+                        "description": "Public receipt view with optional ?format=pdf or &download=1"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /invoice/{invoice_no}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "text/html"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/invoice/:invoice_no",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "invoice",
+                                ":invoice_no"
+                            ]
+                        },
+                        "description": "Public invoice view with optional ?format=pdf or &download=1"
+                    },
+                    "response": []
+                }
+            ]
         }
     ]
 }
