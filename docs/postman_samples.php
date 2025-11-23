@@ -384,11 +384,33 @@ return [
     ],
     'InstallmentController@pay' => [
         'installment_id' => 44,
-        'payment_channel' => 'bkash',
-        'reference' => 'BKASH-998877',
+        'payment' => [
+            'amount' => 25000,
+            'channel' => 'bank_transfer',
+            'reference_no' => 'TRX-2024-0001',
+            'bank_name' => 'BRAC Bank',
+            'transaction_id' => 'NEFT9988',
+            'note' => 'July installment collection',
+            'received_at' => '2024-07-18 10:30:00',
+        ],
     ],
     'InstallmentController@markPaid' => [
-        'payment_reference' => 'MANUAL-2024-0718',
+        'payment' => [
+            'channel' => 'cash',
+            'note' => 'Paid at counter',
+            'received_at' => '2024-07-18 09:15:00',
+        ],
+    ],
+    'InstallmentController@payShareSaleInstallment' => [
+        'payment' => [
+            'amount' => 30000,
+            'channel' => 'sslcommerz',
+            'gateway' => 'sslcommerz',
+            'transaction_id' => 'SSL-449922',
+            'reference_no' => 'RCPT-2024-300',
+            'note' => 'Installment for Oceanview sale',
+            'received_at' => '2024-07-19 12:05:00',
+        ],
     ],
     'PayrollController@store' => [
         'period_start' => '2024-07-01',

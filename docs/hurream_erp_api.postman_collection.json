@@ -1621,7 +1621,7 @@
                         "description": "ShareSalesController::addPayment\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"payment\": {\n        \"amount\": 100000,\n        \"channel\": \"bank_transfer\",\n        \"reference_no\": \"INV-2025-02\",\n        \"bank_name\": \"DBBL\",\n        \"gateway\": \"manual\",\n        \"transaction_id\": \"BATCH-222\",\n        \"note\": \"Second installment\",\n        \"received_at\": \"2025-01-10 10:30:00\"\n    }\n}",
+                            "raw": "{\n    \"note\": \"Add request payload here\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1667,7 +1667,7 @@
                         "description": "ShareSalesController::sellSingle\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"customer_id\": 12,\n    \"project_id\": 3,\n    \"share_units\": 10,\n    \"share_price\": 25000,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 75000,\n    \"installment_months\": 12,\n    \"stage\": \"M\u00d6W-101\",\n    \"payment\": {\n        \"amount\": 75000,\n        \"channel\": \"bank_transfer\",\n        \"reference_no\": \"PO-2025-001\",\n        \"bank_name\": \"City Bank\",\n        \"gateway\": \"manual\",\n        \"transaction_id\": \"TRX-1001\",\n        \"note\": \"Down payment at booking\",\n        \"received_at\": \"2025-01-05 10:00:00\"\n    }\n}",
+                            "raw": "{\n    \"customer_id\": 12,\n    \"project_id\": 3,\n    \"share_units\": 10,\n    \"share_price\": 25000,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 75000,\n    \"installment_months\": 12,\n    \"stage\": \"M\u00d6W-101\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1713,7 +1713,7 @@
                         "description": "ShareSalesController::sellPackage\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"customer_id\": 12,\n    \"project_id\": 3,\n    \"package_id\": 5,\n    \"payment_mode\": \"one_time\",\n    \"down_payment\": 500000,\n    \"installment_months\": 1,\n    \"stage\": \"M\u00d6W-101\",\n    \"payment\": {\n        \"amount\": 500000,\n        \"channel\": \"cash\",\n        \"reference_no\": \"RCPT-77\",\n        \"note\": \"Paid in full at counter\",\n        \"received_at\": \"2025-01-05 11:00:00\"\n    }\n}",
+                            "raw": "{\n    \"customer_id\": 12,\n    \"project_id\": 3,\n    \"package_id\": 5,\n    \"payment_mode\": \"one_time\",\n    \"down_payment\": 500000,\n    \"installment_months\": 1,\n    \"stage\": \"M\u00d6W-101\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1752,7 +1752,7 @@
                         "description": "ShareSalesController::sellSingleSelf\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"project_id\": 3,\n    \"share_units\": 5,\n    \"share_price\": 25000,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 50000,\n    \"installment_months\": 6,\n    \"stage\": \"M\u00d6W-201\",\n    \"payment\": {\n        \"amount\": 50000,\n        \"channel\": \"sslcommerz\",\n        \"transaction_id\": \"SSL-REQ-8899\",\n        \"note\": \"Gateway payment\",\n        \"received_at\": \"2025-01-05 12:00:00\"\n    }\n}",
+                            "raw": "{\n    \"project_id\": 3,\n    \"share_units\": 5,\n    \"share_price\": 25000,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 50000,\n    \"installment_months\": 6,\n    \"stage\": \"M\u00d6W-201\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1791,7 +1791,289 @@
                         "description": "ShareSalesController::sellPackageSelf\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"project_id\": 3,\n    \"package_id\": 5,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 200000,\n    \"installment_months\": 8,\n    \"stage\": \"M\u00d6W-201\",\n    \"payment\": {\n        \"amount\": 200000,\n        \"channel\": \"card\",\n        \"reference_no\": \"POS-444\",\n        \"note\": \"Card at front desk\",\n        \"received_at\": \"2025-01-05 15:30:00\"\n    }\n}",
+                            "raw": "{\n    \"project_id\": 3,\n    \"package_id\": 5,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 200000,\n    \"installment_months\": 8,\n    \"stage\": \"M\u00d6W-201\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Installment",
+            "item": [
+                {
+                    "name": "GET /sales/{id}/installments",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/sales/{id}/installments",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "sales",
+                                ":id",
+                                "installments"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "InstallmentController::shareSaleInstallments\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /sales/{sale_id}/installments/{installment_id}/pay",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/sales/{sale_id}/installments/{installment_id}/pay",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "sales",
+                                ":sale_id",
+                                "installments",
+                                ":installment_id",
+                                "pay"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "sale_id",
+                                    "value": ""
+                                },
+                                {
+                                    "key": "installment_id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "InstallmentController::payShareSaleInstallment\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"payment\": {\n        \"amount\": 30000,\n        \"channel\": \"sslcommerz\",\n        \"gateway\": \"sslcommerz\",\n        \"transaction_id\": \"SSL-449922\",\n        \"reference_no\": \"RCPT-2024-300\",\n        \"note\": \"Installment for Oceanview sale\",\n        \"received_at\": \"2024-07-19 12:05:00\"\n    }\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /installments",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/installments",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "installments"
+                            ]
+                        },
+                        "description": "InstallmentController::index\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /installments/due",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/installments/due",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "installments",
+                                "due"
+                            ]
+                        },
+                        "description": "InstallmentController::due\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /installments/schedule",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/installments/schedule",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "installments",
+                                "schedule"
+                            ]
+                        },
+                        "description": "InstallmentController::schedule\nMiddleware: auth"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /installments",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/installments",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "installments"
+                            ]
+                        },
+                        "description": "InstallmentController::store\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"related_type\": \"customer_share\",\n    \"related_id\": 10,\n    \"due_date\": \"2024-09-01\",\n    \"amount\": 25000,\n    \"status\": \"pending\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /installments/pay",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/installments/pay",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "installments",
+                                "pay"
+                            ]
+                        },
+                        "description": "InstallmentController::pay\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"installment_id\": 44,\n    \"payment\": {\n        \"amount\": 25000,\n        \"channel\": \"bank_transfer\",\n        \"reference_no\": \"TRX-2024-0001\",\n        \"bank_name\": \"BRAC Bank\",\n        \"transaction_id\": \"NEFT9988\",\n        \"note\": \"July installment collection\",\n        \"received_at\": \"2024-07-18 10:30:00\"\n    }\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST /installments/{id}/mark-paid",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/installments/{id}/mark-paid",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "installments",
+                                ":id",
+                                "mark-paid"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "InstallmentController::markPaid\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"payment\": {\n        \"channel\": \"cash\",\n        \"note\": \"Paid at counter\",\n        \"received_at\": \"2024-07-18 09:15:00\"\n    }\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -3669,205 +3951,6 @@
             ]
         },
         {
-            "name": "Installment",
-            "item": [
-                {
-                    "name": "GET /installments",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/installments",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "installments"
-                            ]
-                        },
-                        "description": "InstallmentController::index\nMiddleware: auth"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "GET /installments/due",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/installments/due",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "installments",
-                                "due"
-                            ]
-                        },
-                        "description": "InstallmentController::due\nMiddleware: auth"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "GET /installments/schedule",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/installments/schedule",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "installments",
-                                "schedule"
-                            ]
-                        },
-                        "description": "InstallmentController::schedule\nMiddleware: auth"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "POST /installments",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/installments",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "installments"
-                            ]
-                        },
-                        "description": "InstallmentController::store\nMiddleware: auth",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"related_type\": \"customer_share\",\n    \"related_id\": 10,\n    \"due_date\": \"2024-09-01\",\n    \"amount\": 25000,\n    \"status\": \"pending\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "POST /installments/pay",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/installments/pay",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "installments",
-                                "pay"
-                            ]
-                        },
-                        "description": "InstallmentController::pay\nMiddleware: auth",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"installment_id\": 44,\n    \"payment_channel\": \"bkash\",\n    \"reference\": \"BKASH-998877\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "POST /installments/{id}/mark-paid",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/installments/{id}/mark-paid",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "installments",
-                                ":id",
-                                "mark-paid"
-                            ],
-                            "variable": [
-                                {
-                                    "key": "id",
-                                    "value": ""
-                                }
-                            ]
-                        },
-                        "description": "InstallmentController::markPaid\nMiddleware: auth",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"payment_reference\": \"MANUAL-2024-0718\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        }
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
             "name": "Payroll",
             "item": [
                 {
@@ -4617,6 +4700,73 @@
             ]
         },
         {
+            "name": "Document",
+            "item": [
+                {
+                    "name": "GET /receipt/{receipt_no}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/receipt/{receipt_no}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "receipt",
+                                ":receipt_no"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "receipt_no",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "DocumentController::receipt"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET /invoice/{invoice_no}",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/invoice/{invoice_no}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "invoice",
+                                ":invoice_no"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "invoice_no",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "DocumentController::invoice"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
             "name": "NotificationTemplate",
             "item": [
                 {
@@ -4828,61 +4978,6 @@
                                 }
                             }
                         }
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
-            "name": "Documents",
-            "item": [
-                {
-                    "name": "GET /receipt/{receipt_no}",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "text/html"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/receipt/:receipt_no",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "receipt",
-                                ":receipt_no"
-                            ]
-                        },
-                        "description": "Public receipt view with optional ?format=pdf or &download=1"
-                    },
-                    "response": []
-                },
-                {
-                    "name": "GET /invoice/{invoice_no}",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "text/html"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/invoice/:invoice_no",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "invoice",
-                                ":invoice_no"
-                            ]
-                        },
-                        "description": "Public invoice view with optional ?format=pdf or &download=1"
                     },
                     "response": []
                 }
