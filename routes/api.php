@@ -82,6 +82,8 @@ $router->add('GET', '/sales', [ShareSalesController::class, 'index'], ['auth']);
 $router->add('GET', '/sales/{id}', [ShareSalesController::class, 'show'], ['auth']);
 $router->add('DELETE', '/sales/{id}', [ShareSalesController::class, 'destroy'], ['auth', 'role:admin']);
 $router->add('POST', '/sales/{id}/payments', [ShareSalesController::class, 'addPayment'], ['auth']);
+$router->add('GET', '/sales/{id}/installments', [InstallmentController::class, 'shareSaleInstallments'], ['auth']);
+$router->add('POST', '/sales/{sale_id}/installments/{installment_id}/pay', [InstallmentController::class, 'payShareSaleInstallment'], ['auth']);
 $router->add('POST', '/projects/{project_id}/sales/single', [ShareSalesController::class, 'sellSingle'], ['auth']);
 $router->add('POST', '/projects/{project_id}/sales/package', [ShareSalesController::class, 'sellPackage'], ['auth']);
 $router->add('POST', '/self/sales/single', [ShareSalesController::class, 'sellSingleSelf'], ['auth']);
