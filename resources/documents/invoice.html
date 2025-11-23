@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f8f9fa; color: #212529; }
+        .container { max-width: 880px; margin: 24px auto; background: #fff; padding: 32px; border: 1px solid #dee2e6; border-radius: 8px; }
+        h1 { color: #198754; margin-bottom: 8px; }
+        .muted { color: #6c757d; }
+        .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+        .card { background: #f1f5f9; padding: 16px; border-radius: 6px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th, td { padding: 8px 6px; text-align: left; border-bottom: 1px solid #e9ecef; }
+        th { background: #e2e8f0; }
+        .qr { text-align: right; }
+        .qr img { width: 160px; height: 160px; border: 1px solid #e9ecef; padding: 8px; background: #fff; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Invoice</h1>
+    <div class="muted">Sale ID: {{sale_id}}</div>
+    <div class="grid">
+        <div class="card">
+            <div><strong>Invoice No:</strong> {{invoice_no}}</div>
+            <div><strong>Project:</strong> {{project_code}} — {{project_name}}</div>
+            <div><strong>Sale Type:</strong> {{sale_type}}</div>
+            <div><strong>Shares:</strong> {{total_shares}} (+{{bonus_shares}} bonus)</div>
+            <div><strong>Share Price:</strong> {{share_price}}</div>
+            <div><strong>Total Amount:</strong> {{total_amount}}</div>
+            <div><strong>Total Paid:</strong> {{total_paid}}</div>
+            <div><strong>Balance:</strong> {{balance}}</div>
+            <div><strong>Link:</strong> <a href="{{invoice_url}}">{{invoice_url}}</a></div>
+        </div>
+        <div class="card">
+            <div><strong>Customer:</strong> {{customer_name}}</div>
+            <div><strong>Phone:</strong> {{customer_phone}}</div>
+            <div><strong>Email:</strong> {{customer_email}}</div>
+            <div><strong>Address:</strong> {{customer_address}}</div>
+        </div>
+        <div class="card" style="grid-column: span 2;">
+            <strong>Payments</strong>
+            <table>
+                <thead>
+                <tr><th>Receipt</th><th>Channel</th><th style="text-align:right">Amount</th><th>Date</th></tr>
+                </thead>
+                <tbody>
+                {{payment_rows}}
+                </tbody>
+            </table>
+        </div>
+        <div class="qr" style="grid-column: span 2;">
+            <img src="{{qr_code}}" alt="Invoice QR">
+        </div>
+    </div>
+</div>
+</body>
+</html>

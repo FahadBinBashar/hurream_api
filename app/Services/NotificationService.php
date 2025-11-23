@@ -27,4 +27,24 @@ class NotificationService
             null
         );
     }
+
+    public function sendReceiptNotification(array $customer, string $receiptNo, string $receiptUrl): void
+    {
+        $message = sprintf(
+            'Payment received. Receipt %s is available at %s',
+            $receiptNo,
+            $receiptUrl
+        );
+
+        AuditLogger::log(
+            Auth::user(),
+            'notify',
+            'share_sale_payments',
+            'receipt',
+            $customer['id'] ?? null,
+            ['message' => $message, 'channel' => 'sms_whatsapp'],
+            null,
+            null
+        );
+    }
 }
