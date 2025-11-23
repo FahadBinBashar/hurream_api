@@ -7,9 +7,13 @@ use App\Core\Request;
 use App\Models\Customer;
 use App\Models\Project;
 use App\Models\Share;
+use App\Models\ShareSalePayment;
 use App\Models\SharePackage;
 use App\Models\ShareSale;
 use App\Models\ShareSaleBatch;
+use App\Models\Transaction;
+use App\Models\Voucher;
+use App\Models\VoucherLine;
 use App\Services\CertificateGenerator;
 use App\Services\InstallmentScheduleService;
 use App\Services\NotificationService;
@@ -182,6 +186,11 @@ class ShareSalesController extends Controller
 
     private function processSingleSale(array $payload, Request $request, string $saleSource)
     {
+        $paymentPayload = $this->preparePaymentPayload($payload);
+        if ($response = $this->validatePaymentPayload($paymentPayload)) {
+            return $response;
+        }
+
         if ($response = $this->validateSingleSalePayload($payload)) {
             return $response;
         }
@@ -218,6 +227,9 @@ class ShareSalesController extends Controller
         $remaining = max($totalAmount - $downPayment, 0);
         $monthlyInstallment = $installmentMonths > 0 ? round($remaining / $installmentMonths, 2) : 0;
         $stage = $payload['stage'] ?? 'MÖW-1';
+        if ($paymentPayload && (float)$paymentPayload['amount'] > $totalAmount) {
+            return $this->json(['message' => 'Payment amount cannot exceed total amount'], 422);
+        }
 
         $pdo = Database::connection();
         $pdo->beginTransaction();
@@ -305,6 +317,11 @@ class ShareSalesController extends Controller
             throw $exception;
         }
 
+        $paymentRecord = null;
+        if ($paymentPayload) {
+            $paymentRecord = $this->recordSalePayment($sale, $shareRecord, $paymentPayload);
+        }
+
         $this->notificationService->sendSaleConfirmation($sale, $customer);
         AuditLogger::log(Auth::user(), 'create', 'share_sales', 'share_sale', (int)$sale['id'], $sale, $request->ip(), $request->userAgent());
 
@@ -313,12 +330,18 @@ class ShareSalesController extends Controller
                 'sale' => $sale,
                 'share' => $shareRecord,
                 'allocations' => $allocations,
+                'payment' => $paymentRecord,
             ],
         ], 201);
     }
 
     private function processPackageSale(array $payload, Request $request, string $saleSource)
     {
+        $paymentPayload = $this->preparePaymentPayload($payload);
+        if ($response = $this->validatePaymentPayload($paymentPayload)) {
+            return $response;
+        }
+
         if ($response = $this->validatePackageSalePayload($payload)) {
             return $response;
         }
@@ -367,6 +390,9 @@ class ShareSalesController extends Controller
         $monthlyInstallment = $installmentMonths > 0 ? round($remaining / max(1, $installmentMonths), 2) : 0;
         $benefits = $this->benefitService->snapshot($package);
         $stage = $payload['stage'] ?? 'MÖW-1';
+        if ($paymentPayload && (float)$paymentPayload['amount'] > $packagePrice) {
+            return $this->json(['message' => 'Payment amount cannot exceed total package price'], 422);
+        }
 
         $pdo = Database::connection();
         $pdo->beginTransaction();
@@ -454,6 +480,11 @@ class ShareSalesController extends Controller
             throw $exception;
         }
 
+        $paymentRecord = null;
+        if ($paymentPayload) {
+            $paymentRecord = $this->recordSalePayment($sale, $shareRecord, $paymentPayload);
+        }
+
         $this->notificationService->sendSaleConfirmation($sale, $customer);
         AuditLogger::log(Auth::user(), 'create', 'share_sales', 'share_sale', (int)$sale['id'], $sale, $request->ip(), $request->userAgent());
 
@@ -463,8 +494,46 @@ class ShareSalesController extends Controller
                 'share' => $shareRecord,
                 'allocations' => $allocations,
                 'benefits' => $benefits,
+                'payment' => $paymentRecord,
             ],
         ], 201);
+    }
+
+    public function addPayment(Request $request, array $params)
+    {
+        $saleId = (int)$params['id'];
+        $sale = ShareSale::find($saleId);
+        if (!$sale) {
+            return $this->json(['message' => 'Sale not found'], 404);
+        }
+
+        $paymentPayload = $this->preparePaymentPayload($request->all());
+        if ($response = $this->validatePaymentPayload($paymentPayload)) {
+            return $response;
+        }
+        if (!$paymentPayload) {
+            return $this->json(['message' => 'Payment details are required'], 422);
+        }
+
+        $pdo = Database::connection();
+        $stmt = $pdo->prepare('SELECT * FROM customer_shares WHERE sale_id = :sale LIMIT 1');
+        $stmt->execute(['sale' => $saleId]);
+        $share = $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        if (!$share) {
+            return $this->json(['message' => 'Customer share not found for sale'], 404);
+        }
+
+        $paidStmt = $pdo->prepare('SELECT COALESCE(SUM(amount), 0) AS total_paid FROM share_sale_payments WHERE share_sale_id = :sale');
+        $paidStmt->execute(['sale' => $saleId]);
+        $totalPaid = (float)$paidStmt->fetchColumn();
+        $totalAmount = (float)$sale['total_amount'];
+        if ((float)$paymentPayload['amount'] + $totalPaid > $totalAmount) {
+            return $this->json(['message' => 'Payment exceeds remaining balance'], 422);
+        }
+
+        $paymentRecord = $this->recordSalePayment($sale, $share, $paymentPayload);
+
+        return $this->json(['data' => $paymentRecord], 201);
     }
 
     private function validateSingleSalePayload(array $payload)
@@ -508,6 +577,56 @@ class ShareSalesController extends Controller
         return null;
     }
 
+    private function validatePaymentPayload(?array $payload)
+    {
+        if ($payload === null) {
+            return null;
+        }
+
+        $rules = [
+            'amount' => 'required|numeric|min:0.01',
+            'channel' => 'required|in:cash,bank_transfer,sslcommerz,card',
+            'reference_no' => '',
+            'bank_name' => '',
+            'gateway' => '',
+            'transaction_id' => '',
+            'note' => '',
+            'received_at' => 'date',
+        ];
+
+        $errors = Validator::make($payload, $rules);
+        if (!empty($errors)) {
+            return $this->json(['message' => 'Payment validation failed', 'errors' => $errors], 422);
+        }
+
+        return null;
+    }
+
+    private function preparePaymentPayload(array $payload): ?array
+    {
+        $payment = $payload['payment'] ?? null;
+        if (!is_array($payment)) {
+            return null;
+        }
+
+        $normalized = [
+            'amount' => isset($payment['amount']) ? (float)$payment['amount'] : null,
+            'channel' => $payment['channel'] ?? 'cash',
+            'reference_no' => $payment['reference_no'] ?? null,
+            'bank_name' => $payment['bank_name'] ?? null,
+            'gateway' => $payment['gateway'] ?? null,
+            'transaction_id' => $payment['transaction_id'] ?? null,
+            'note' => $payment['note'] ?? null,
+            'received_at' => $payment['received_at'] ?? date('Y-m-d H:i:s'),
+        ];
+
+        if ($normalized['amount'] === null || $normalized['amount'] <= 0) {
+            return null;
+        }
+
+        return $normalized;
+    }
+
     private function authenticatedCustomerId(): ?int
     {
         $user = Auth::user();
@@ -522,5 +641,74 @@ class ShareSalesController extends Controller
     {
         $prefix = $projectCode ? strtoupper($projectCode) : 'HRM';
         return sprintf('%s-%s', $prefix, date('YmdHis'));
+    }
+
+    private function generateReceiptNo(?string $projectCode): string
+    {
+        $prefix = $projectCode ? strtoupper($projectCode) : 'HRM';
+
+        return sprintf('%s-RCPT-%s-%s', $prefix, date('YmdHis'), random_int(100, 999));
+    }
+
+    private function recordSalePayment(array $sale, array $share, array $paymentPayload): array
+    {
+        $pdo = Database::connection();
+        $pdo->beginTransaction();
+
+        try {
+            $project = Project::find((int)$sale['project_id']);
+            $receiptNo = $this->generateReceiptNo($project['project_code'] ?? null);
+            $paymentRecord = ShareSalePayment::create([
+                'share_sale_id' => (int)$sale['id'],
+                'customer_id' => (int)$sale['customer_id'],
+                'amount' => (float)$paymentPayload['amount'],
+                'payment_channel' => $paymentPayload['channel'],
+                'receipt_no' => $receiptNo,
+                'reference_no' => $paymentPayload['reference_no'] ?? null,
+                'bank_name' => $paymentPayload['bank_name'] ?? null,
+                'gateway' => $paymentPayload['gateway'] ?? null,
+                'transaction_id' => $paymentPayload['transaction_id'] ?? null,
+                'metadata' => json_encode(['note' => $paymentPayload['note'] ?? null]),
+                'received_at' => $paymentPayload['received_at'],
+            ]);
+
+            Transaction::create([
+                'share_id' => (int)$share['id'],
+                'amount' => (float)$paymentPayload['amount'],
+                'payment_type' => $paymentPayload['channel'],
+                'date' => $paymentPayload['received_at'],
+            ]);
+
+            $voucher = Voucher::create([
+                'voucher_no' => 'SALE-' . $sale['id'] . '-' . time(),
+                'voucher_type' => 'receipt',
+                'date' => date('Y-m-d', strtotime($paymentPayload['received_at'])),
+                'description' => 'Share sale payment via ' . $paymentPayload['channel'],
+                'created_by' => Auth::user()['id'] ?? null,
+                'status' => 'approved',
+            ]);
+
+            VoucherLine::create([
+                'voucher_id' => $voucher['id'],
+                'account_id' => 1,
+                'debit' => (float)$paymentPayload['amount'],
+                'credit' => 0,
+                'description' => 'Payment received',
+            ]);
+            VoucherLine::create([
+                'voucher_id' => $voucher['id'],
+                'account_id' => 2,
+                'debit' => 0,
+                'credit' => (float)$paymentPayload['amount'],
+                'description' => 'Share sale income',
+            ]);
+
+            $pdo->commit();
+        } catch (Throwable $exception) {
+            $pdo->rollBack();
+            throw $exception;
+        }
+
+        return array_merge($paymentRecord, ['voucher_id' => $voucher['id']]);
     }
 }

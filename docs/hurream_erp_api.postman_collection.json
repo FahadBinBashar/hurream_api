@@ -1587,6 +1587,51 @@
                     "response": []
                 },
                 {
+                    "name": "POST /sales/{id}/payments",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/sales/{id}/payments",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "sales",
+                                ":id",
+                                "payments"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": ""
+                                }
+                            ]
+                        },
+                        "description": "ShareSalesController::addPayment\nMiddleware: auth",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"payment\": {\n        \"amount\": 100000,\n        \"channel\": \"bank_transfer\",\n        \"reference_no\": \"INV-2025-02\",\n        \"bank_name\": \"DBBL\",\n        \"gateway\": \"manual\",\n        \"transaction_id\": \"BATCH-222\",\n        \"note\": \"Second installment\",\n        \"received_at\": \"2025-01-10 10:30:00\"\n    }\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    },
+                    "response": []
+                },
+                {
                     "name": "POST /projects/{project_id}/sales/single",
                     "request": {
                         "method": "POST",
@@ -1622,7 +1667,7 @@
                         "description": "ShareSalesController::sellSingle\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"customer_id\": 12,\n    \"project_id\": 3,\n    \"share_units\": 10,\n    \"share_price\": 25000,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 75000,\n    \"installment_months\": 12,\n    \"stage\": \"M\u00d6W-101\"\n}",
+                            "raw": "{\n    \"customer_id\": 12,\n    \"project_id\": 3,\n    \"share_units\": 10,\n    \"share_price\": 25000,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 75000,\n    \"installment_months\": 12,\n    \"stage\": \"M\u00d6W-101\",\n    \"payment\": {\n        \"amount\": 75000,\n        \"channel\": \"bank_transfer\",\n        \"reference_no\": \"PO-2025-001\",\n        \"bank_name\": \"City Bank\",\n        \"gateway\": \"manual\",\n        \"transaction_id\": \"TRX-1001\",\n        \"note\": \"Down payment at booking\",\n        \"received_at\": \"2025-01-05 10:00:00\"\n    }\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1668,7 +1713,7 @@
                         "description": "ShareSalesController::sellPackage\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"customer_id\": 12,\n    \"project_id\": 3,\n    \"package_id\": 5,\n    \"payment_mode\": \"one_time\",\n    \"down_payment\": 500000,\n    \"installment_months\": 1,\n    \"stage\": \"M\u00d6W-101\"\n}",
+                            "raw": "{\n    \"customer_id\": 12,\n    \"project_id\": 3,\n    \"package_id\": 5,\n    \"payment_mode\": \"one_time\",\n    \"down_payment\": 500000,\n    \"installment_months\": 1,\n    \"stage\": \"M\u00d6W-101\",\n    \"payment\": {\n        \"amount\": 500000,\n        \"channel\": \"cash\",\n        \"reference_no\": \"RCPT-77\",\n        \"note\": \"Paid in full at counter\",\n        \"received_at\": \"2025-01-05 11:00:00\"\n    }\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1707,7 +1752,7 @@
                         "description": "ShareSalesController::sellSingleSelf\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"project_id\": 3,\n    \"share_units\": 5,\n    \"share_price\": 25000,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 50000,\n    \"installment_months\": 6,\n    \"stage\": \"M\u00d6W-201\"\n}",
+                            "raw": "{\n    \"project_id\": 3,\n    \"share_units\": 5,\n    \"share_price\": 25000,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 50000,\n    \"installment_months\": 6,\n    \"stage\": \"M\u00d6W-201\",\n    \"payment\": {\n        \"amount\": 50000,\n        \"channel\": \"sslcommerz\",\n        \"transaction_id\": \"SSL-REQ-8899\",\n        \"note\": \"Gateway payment\",\n        \"received_at\": \"2025-01-05 12:00:00\"\n    }\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1746,7 +1791,7 @@
                         "description": "ShareSalesController::sellPackageSelf\nMiddleware: auth",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"project_id\": 3,\n    \"package_id\": 5,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 200000,\n    \"installment_months\": 8,\n    \"stage\": \"M\u00d6W-201\"\n}",
+                            "raw": "{\n    \"project_id\": 3,\n    \"package_id\": 5,\n    \"payment_mode\": \"installment\",\n    \"down_payment\": 200000,\n    \"installment_months\": 8,\n    \"stage\": \"M\u00d6W-201\",\n    \"payment\": {\n        \"amount\": 200000,\n        \"channel\": \"card\",\n        \"reference_no\": \"POS-444\",\n        \"note\": \"Card at front desk\",\n        \"received_at\": \"2025-01-05 15:30:00\"\n    }\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
