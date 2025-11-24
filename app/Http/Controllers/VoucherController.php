@@ -15,7 +15,7 @@ class VoucherController extends Controller
     public function index(): array
     {
         $pdo = Database::connection();
-        $sql = 'SELECT v.*, (SELECT JSON_GROUP_ARRAY(JSON_OBJECT("account_id", account_id, "debit", debit, "credit", credit, "description", description)) FROM voucher_lines WHERE voucher_id = v.id) AS lines FROM vouchers v ORDER BY date DESC';
+        $sql = 'SELECT v.*, (SELECT JSON_ARRAYAGG(JSON_OBJECT("account_id", account_id, "debit", debit, "credit", credit, "description", description)) FROM voucher_lines WHERE voucher_id = v.id) AS `lines` FROM vouchers v ORDER BY date DESC';
         $rows = $pdo->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
 
         return ['data' => $rows];
