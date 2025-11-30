@@ -12,6 +12,7 @@ use App\Models\EmployeeKpi;
 use App\Models\EmployeeSalary;
 use App\Models\Grade;
 use App\Models\LeaveRequest;
+use App\Models\User;
 use App\Support\AuditLogger;
 use App\Support\Auth;
 use App\Support\DocumentUpload;
@@ -20,9 +21,11 @@ use App\Support\Validator;
 use function array_flip;
 use function array_intersect_key;
 use function array_merge;
+use function bin2hex;
 use function is_array;
 use function is_string;
 use function json_encode;
+use function random_bytes;
 
 class EmployeeController extends Controller
 {
@@ -42,7 +45,7 @@ class EmployeeController extends Controller
             'nid' => 'required|regex:/^\\d{10,17}$/|unique:employees,nid',
             'address' => 'required',
             'phone' => 'required|regex:/^01[3-9]\\d{8}$/',
-            'email' => 'email',
+            'email' => 'required|email',
             'education' => 'required',
             'grade_id' => 'required|numeric|min:1',
             'designation_id' => 'required|numeric|min:1',
@@ -74,9 +77,20 @@ class EmployeeController extends Controller
             unset($payload['documents']);
         }
 
+        $temporaryPassword = $this->generateTemporaryPassword();
+        $userAccount = $this->createEmployeeUser($payload, $temporaryPassword, $request);
+        if ($userAccount instanceof Response) {
+            return $userAccount;
+        }
+
         $employee = Employee::create($payload);
         AuditLogger::log(Auth::user(), 'create', 'employees', 'employee', (int)$employee['id'], $payload, $request->ip(), $request->userAgent());
-        return $this->json(['data' => $employee], 201);
+        return $this->json([
+            'data' => [
+                'employee' => $employee,
+                'user' => $userAccount,
+            ],
+        ], 201);
     }
 
     public function show(Request $request, array $params)
@@ -486,5 +500,34 @@ class EmployeeController extends Controller
         }
 
         return $paths;
+    }
+
+    private function createEmployeeUser(array $payload, string $temporaryPassword, Request $request): array|Response
+    {
+        if (User::findByEmail($payload['email'])) {
+            return $this->json(['message' => 'User already exists for this email'], 409);
+        }
+
+        $user = User::create([
+            'name' => $payload['name'],
+            'email' => $payload['email'],
+            'password' => password_hash($temporaryPassword, PASSWORD_BCRYPT),
+            'role' => 'employee',
+            'grade_id' => $payload['grade_id'] ?? null,
+            'NID' => $payload['nid'] ?? null,
+            'phone' => $payload['phone'] ?? null,
+        ]);
+
+        AuditLogger::log(Auth::user(), 'create', 'users', 'user', (int)$user['id'], ['role' => 'employee', 'source' => 'employee_onboarding'], $request->ip(), $request->userAgent());
+
+        unset($user['password']);
+        $user['temporary_password'] = $temporaryPassword;
+
+        return $user;
+    }
+
+    private function generateTemporaryPassword(): string
+    {
+        return bin2hex(random_bytes(4));
     }
 }
